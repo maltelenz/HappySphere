@@ -3,14 +3,13 @@ package com.maltelenz.sensortrouble;
 import java.util.List;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
-import com.maltelenz.framework.Screen;
 import com.maltelenz.framework.Input.TouchEvent;
+import com.maltelenz.framework.Screen;
 
-public class GameScreen extends Screen {
+public class Level1Screen extends Screen {
     enum GameState {
         Running, Finished
     }
@@ -21,19 +20,11 @@ public class GameScreen extends Screen {
     // You would create game objects here.
 
     int touchesLeft = 6;
-    Paint paint;
 
-    public GameScreen(Game game) {
+    public Level1Screen(Game game) {
         super(game);
 
         // Initialize game objects here
-
-        // Defining a paint object
-        paint = new Paint();
-        paint.setTextSize(50);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setAntiAlias(true);
-        paint.setColor(Color.WHITE);
     }
 
     @Override
@@ -104,9 +95,6 @@ public class GameScreen extends Screen {
     }
 
     private void nullify() {
-        // Set all variables to null. Will be recreating them in the constructor.
-        paint = null;
-
         // Call garbage collector to clean up memory.
         System.gc();
     }
@@ -115,14 +103,14 @@ public class GameScreen extends Screen {
     private void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(Color.GRAY);
-        g.drawStringCentered(Integer.toString(touchesLeft), paint);
+        g.drawStringCentered(Integer.toString(touchesLeft));
     }
 
     private void drawGameFinishedUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(Color.GRAY);
-        g.drawStringCentered("SUCCESS.", paint);
-		g.drawImage(Assets.next, 0, 0);
+        g.drawStringCentered("SUCCESS.");
+		g.drawButton("Next", 500, 500);
     }
 
     @Override

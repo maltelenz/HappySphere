@@ -1,8 +1,5 @@
 package com.maltelenz.framework;
 
-
-import android.graphics.Paint;
-
 public interface Graphics {
 	public static enum ImageFormat {
 		ARGB8888, ARGB4444, RGB565
@@ -21,10 +18,12 @@ public interface Graphics {
 
 	public void drawImage(Image Image, int x, int y);
 
-	void drawString(String text, int x, int y, Paint paint);
+	void drawString(String text, int x, int y);
 
-	void drawStringCentered(String text, Paint paint);
+	void drawStringCentered(String text);
 
+	public void drawButton(String string, int x, int y);
+	
 	public int getWidth();
 
 	public int getHeight();

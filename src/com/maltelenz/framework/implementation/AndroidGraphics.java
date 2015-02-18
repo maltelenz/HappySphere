@@ -9,6 +9,8 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
@@ -21,6 +23,7 @@ public class AndroidGraphics implements Graphics {
 	Bitmap frameBuffer;
 	Canvas canvas;
 	Paint paint;
+	Paint textPaint;
 	Rect srcRect = new Rect();
 	Rect dstRect = new Rect();
 
@@ -29,6 +32,12 @@ public class AndroidGraphics implements Graphics {
 		this.frameBuffer = frameBuffer;
 		this.canvas = new Canvas(frameBuffer);
 		this.paint = new Paint();
+		this.textPaint = new Paint();
+        
+		textPaint.setTextSize(50);
+		textPaint.setTextAlign(Paint.Align.CENTER);
+		textPaint.setAntiAlias(true);
+		textPaint.setColor(Color.WHITE);
 	}
 
 	@Override
@@ -97,15 +106,28 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	@Override
-	public void drawString(String text, int x, int y, Paint paint) {
-		canvas.drawText(text, x, y, paint);
+	public void drawString(String text, int x, int y) {
+		canvas.drawText(text, x, y, textPaint);
 	}
 
 	@Override
-	public void drawStringCentered(String text, Paint paint) {
-		drawString(text, getWidth()/2, getHeight()/2, paint);
+	public void drawStringCentered(String text) {
+		drawString(text, getWidth()/2, getHeight()/2);
 	}
 
+	@Override
+	public void drawButton(String text, int x, int y) {
+		int xw = 500;
+		int yw = 150;
+		Paint gradientPaint = new Paint();
+		LinearGradient gradient = new LinearGradient(x - xw/2, y - yw/2, x + xw/2, y + yw/2, Color.GRAY, Color.BLACK, android.graphics.Shader.TileMode.CLAMP);
+		gradientPaint.setDither(true);
+		gradientPaint.setShader(gradient);
+	    canvas.drawRect(x - xw/2, y - yw/2, x + xw/2, y + yw/2, gradientPaint);
+		canvas.drawText(text, x, y, textPaint);
+    }
+
+	
 	public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
 		srcRect.left = srcX;
 		srcRect.top = srcY;
