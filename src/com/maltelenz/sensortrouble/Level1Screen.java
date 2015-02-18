@@ -4,6 +4,9 @@ import java.util.List;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.RadialGradient;
+import android.graphics.Shader.TileMode;
 import android.graphics.Typeface;
 
 import com.maltelenz.framework.Game;
@@ -15,6 +18,8 @@ public class Level1Screen extends LevelScreen {
 
     int maxTouches = 5;
     int touchesLeft = maxTouches;
+    
+    int circleRadius = 300;
 
     public Level1Screen(Game game) {
         super(game);
@@ -43,13 +48,19 @@ public class Level1Screen extends LevelScreen {
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
+
+        Paint circlePainter = new Paint();
+        circlePainter.setColor(ColorPalette.cherry);
+        circlePainter.setStyle(Style.STROKE);
+        circlePainter.setStrokeWidth(5);
+        g.drawCircle(g.getWidth()/2, g.getHeight()/2, circleRadius, circlePainter);
+
         Paint largePainter = new Paint();
         largePainter.setTextSize(150);
         largePainter.setTextAlign(Paint.Align.CENTER);
         largePainter.setAntiAlias(true);
         largePainter.setColor(Color.WHITE);
         largePainter.setTypeface(Typeface.DEFAULT_BOLD);
-
         g.drawStringCentered(Integer.toString(touchesLeft), largePainter);
     }
 

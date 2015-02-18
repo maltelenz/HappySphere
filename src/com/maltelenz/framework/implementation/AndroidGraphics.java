@@ -98,6 +98,11 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
+    public void drawCircle(int x, int y, int radius, Paint painter) {
+        canvas.drawCircle(x, y, radius, painter);
+    }
+
+    @Override
     public void drawRect(int x, int y, int width, int height, int color) {
         paint.setColor(color);
         paint.setStyle(Style.FILL);
@@ -126,7 +131,7 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void drawString(String text, int x, int y, Paint painter) {
-        canvas.drawText(text, x, y + fontSize / 2, painter);
+        canvas.drawText(text, x, y + painter.getFontMetrics().bottom, painter);
     }
 
     @Override
@@ -153,7 +158,7 @@ public class AndroidGraphics implements Graphics {
         rectanglePainter.setColor(ColorPalette.button);
         rectanglePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
         canvas.drawRect(x0, y0, x1, y1, rectanglePainter);
-        canvas.drawText(text, x0 + (x1 - x0) / 2, y0 + (y1 - y0) / 2 + fontSize / 2, textPaint);
+        drawString(text, x0 + (x1 - x0) / 2, y0 + (y1 - y0) / 2);
     }
 
     public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {

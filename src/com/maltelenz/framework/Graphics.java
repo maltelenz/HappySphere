@@ -42,4 +42,6 @@ public interface Graphics {
 
     public void drawARGB(int i, int j, int k, int l);
 
+    void drawCircle(int x, int y, int radius, Paint painter);
+
 }
