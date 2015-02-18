@@ -117,14 +117,14 @@ public class GameScreen extends Screen {
 
     private void drawRunningUI() {
         Graphics g = game.getGraphics();
-        g.drawRect(0, 0, 1281, 801, Color.BLACK);
-        g.drawString(Integer.toString(touchesLeft), 640, 300, paint);
+        g.clearScreen(Color.GRAY);
+        g.drawStringCentered(Integer.toString(touchesLeft), paint);
     }
 
     private void drawGameFinishedUI() {
         Graphics g = game.getGraphics();
-        g.drawRect(0, 0, 1281, 801, Color.BLACK);
-        g.drawString("SUCCESS.", 640, 300, paint);
+        g.clearScreen(Color.GRAY);
+        g.drawStringCentered("SUCCESS.", paint);
 		g.drawImage(Assets.next, 0, 0);
     }
 

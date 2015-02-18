@@ -32,15 +32,17 @@ public abstract class AndroidGame extends Activity implements Game {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-        int frameBufferWidth = isPortrait ? 800: 1280;
-        int frameBufferHeight = isPortrait ? 1280: 800;
+        int xSize = getWindowManager().getDefaultDisplay().getWidth();
+        int ySize = getWindowManager().getDefaultDisplay().getHeight();
+        int frameBufferWidth = isPortrait ? xSize: ySize;
+        int frameBufferHeight = isPortrait ? ySize: xSize;
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
                 frameBufferHeight, Config.RGB_565);
         
         float scaleX = (float) frameBufferWidth
-                / getWindowManager().getDefaultDisplay().getWidth();
+                / xSize;
         float scaleY = (float) frameBufferHeight
-                / getWindowManager().getDefaultDisplay().getHeight();
+                / ySize;
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
         graphics = new AndroidGraphics(getAssets(), frameBuffer);

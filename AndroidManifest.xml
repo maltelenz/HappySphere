@@ -19,8 +19,7 @@
         <activity
             android:name="SensorGame"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            android:label="SensorTrouble"
-            android:screenOrientation="landscape" >
+            android:label="SensorTrouble">
              <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

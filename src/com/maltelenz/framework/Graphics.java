@@ -23,6 +23,8 @@ public interface Graphics {
 
 	void drawString(String text, int x, int y, Paint paint);
 
+	void drawStringCentered(String text, Paint paint);
+
 	public int getWidth();
 
 	public int getHeight();

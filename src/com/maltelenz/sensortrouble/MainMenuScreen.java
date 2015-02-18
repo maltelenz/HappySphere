@@ -40,7 +40,7 @@ public class MainMenuScreen extends Screen {
 	@Override
 	public void paint(float deltaTime) {
 		Graphics g = game.getGraphics();
-        g.drawRect(0, 0, 1281, 801, Color.BLACK);
+        g.clearScreen(Color.GRAY);
         g.drawImage(Assets.start, 0, 0);
 	}
 
