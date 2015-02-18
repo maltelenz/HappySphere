@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
+import android.provider.MediaStore.Audio;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.maltelenz.framework.Audio;
 import com.maltelenz.framework.FileIO;
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
@@ -22,27 +22,28 @@ public abstract class AndroidGame extends Activity implements Game {
     Input input;
     FileIO fileIO;
     Screen screen;
-	private float xScale = 1.0F;
-	private float yScale = 1.0F;
+    private float xScale = 1.0F;
+    private float yScale = 1.0F;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            );
 
         Bitmap frameBuffer = getFrameBuffer();
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
         graphics = new AndroidGraphics(getAssets(), frameBuffer);
         fileIO = new AndroidFileIO(this);
-        audio = new AndroidAudio(this);
         input = new AndroidInput(this, renderView, xScale, yScale);
         screen = getInitScreen();
         setContentView(renderView);
-        
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -82,11 +83,6 @@ public abstract class AndroidGame extends Activity implements Game {
     }
 
     @Override
-    public Audio getAudio() {
-        return audio;
-    }
-
-    @Override
     public void setScreen(Screen screen) {
         if (screen == null)
             throw new IllegalArgumentException("Screen must not be null");
@@ -99,7 +95,7 @@ public abstract class AndroidGame extends Activity implements Game {
     }
     
     public Screen getCurrentScreen() {
-    	return screen;
+        return screen;
     }
 
     private int getFrameBufferWidth() {
@@ -110,10 +106,9 @@ public abstract class AndroidGame extends Activity implements Game {
     }
 
     private Bitmap getFrameBuffer() {
-    	Log.d("FB Width", Integer.toString(getFrameBufferWidth()));
-    	Log.d("FB Height", Integer.toString(getFrameBufferHeight()));
-        Bitmap frameBuffer = Bitmap.createBitmap(getFrameBufferWidth(),
-        		getFrameBufferHeight(), Config.RGB_565);
+        Log.d("FB Width", Integer.toString(getFrameBufferWidth()));
+        Log.d("FB Height", Integer.toString(getFrameBufferHeight()));
+        Bitmap frameBuffer = Bitmap.createBitmap(getFrameBufferWidth(), getFrameBufferHeight(), Config.RGB_565);
         return frameBuffer;
     }
 }

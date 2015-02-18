@@ -7,13 +7,12 @@ import android.view.View;
 
 import com.maltelenz.framework.Input;
 
-public class AndroidInput implements Input {    
+public class AndroidInput implements Input {
     TouchHandler touchHandler;
 
     public AndroidInput(Context context, View view, float scaleX, float scaleY) {
-        touchHandler = new MultiTouchHandler(view, scaleX, scaleY);        
+        touchHandler = new MultiTouchHandler(view, scaleX, scaleY);
     }
-
 
     @Override
     public boolean isTouchDown(int pointer) {
@@ -30,11 +29,8 @@ public class AndroidInput implements Input {
         return touchHandler.getTouchY(pointer);
     }
 
-
-
     @Override
     public List<TouchEvent> getTouchEvents() {
         return touchHandler.getTouchEvents();
     }
-    
 }

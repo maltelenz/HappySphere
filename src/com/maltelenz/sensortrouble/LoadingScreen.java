@@ -14,33 +14,27 @@ public class LoadingScreen extends Screen {
     public void update(float deltaTime) {
         Graphics g = game.getGraphics();
         Assets.start = g.newImage("start.png", ImageFormat.RGB565);
-        Assets.next = g.newImage("next.png", ImageFormat.RGB565);
-       
+
         game.setScreen(new MainMenuScreen(game));
     }
 
     @Override
     public void paint(float deltaTime) {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 
     @Override
     public void backButton() {
-
     }
 }

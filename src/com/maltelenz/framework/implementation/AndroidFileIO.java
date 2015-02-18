@@ -16,18 +16,14 @@ import android.preference.PreferenceManager;
 import com.maltelenz.framework.FileIO;
 
 public class AndroidFileIO implements FileIO {
-	Context context;
+    Context context;
     AssetManager assets;
     String externalStoragePath;
 
     public AndroidFileIO(Context context) {
         this.context = context;
         this.assets = context.getAssets();
-        this.externalStoragePath = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + File.separator;
-        
- 
-    
+        this.externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
     }
 
     @Override
@@ -44,8 +40,8 @@ public class AndroidFileIO implements FileIO {
     public OutputStream writeFile(String file) throws IOException {
         return new FileOutputStream(externalStoragePath + file);
     }
-    
+
     public SharedPreferences getSharedPref() {
-    	return PreferenceManager.getDefaultSharedPreferences(context);
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 }

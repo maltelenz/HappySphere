@@ -43,7 +43,7 @@ public class Level1Screen extends Screen {
             TouchEvent event = touchEvents.get(i);
 
             if (event.type == TouchEvent.TOUCH_DOWN) {
-            	touchesLeft--;
+                touchesLeft--;
             }
         }
        
@@ -52,29 +52,28 @@ public class Level1Screen extends Screen {
         }
     }
 
-	private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
-		if (event.x > x && event.x < x + width - 1 && event.y > y && event.y < y + height - 1)
-			return true;
-		else
-			return false;
-	}
+    private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
+        if (event.x > x && event.x < x + width - 1 && event.y > y && event.y < y + height - 1)
+            return true;
+        else
+            return false;
+    }
     
     private void updateGameFinished(List<TouchEvent> touchEvents) {
-		Graphics g = game.getGraphics();
-		g.drawImage(Assets.next, 0, 0);
+        Graphics g = game.getGraphics();
+        g.drawButton("Next", 500, 500);
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_UP) {
-				if (inBounds(event, 0, 0, 250, 250)) {
-					// Restart Game
+                if (inBounds(event, 0, 0, 250, 250)) {
+                    // Restart Game
                     nullify();
                     game.setScreen(new MainMenuScreen(game));
                     return;
-				}
-			}
+                }
+            }
         }
-
     }
 
     @Override
@@ -110,22 +109,19 @@ public class Level1Screen extends Screen {
         Graphics g = game.getGraphics();
         g.clearScreen(Color.GRAY);
         g.drawStringCentered("SUCCESS.");
-		g.drawButton("Next", 500, 500);
+        g.drawButton("Next", 500, 500);
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 
     @Override

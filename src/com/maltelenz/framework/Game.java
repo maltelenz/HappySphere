@@ -2,8 +2,6 @@ package com.maltelenz.framework;
 
 public interface Game {
 
-    public Audio getAudio();
-
     public Input getInput();
 
     public FileIO getFileIO();

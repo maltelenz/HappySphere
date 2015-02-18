@@ -8,7 +8,7 @@ import com.maltelenz.framework.Graphics.ImageFormat;
 public class AndroidImage implements Image {
     Bitmap bitmap;
     ImageFormat format;
-    
+
     public AndroidImage(Bitmap bitmap, ImageFormat format) {
         this.bitmap = bitmap;
         this.format = format;
@@ -32,5 +32,5 @@ public class AndroidImage implements Image {
     @Override
     public void dispose() {
         bitmap.recycle();
-    }      
+    }
 }

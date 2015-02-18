@@ -12,47 +12,41 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
     Thread renderThread = null;
     SurfaceHolder holder;
     volatile boolean running = false;
-    
+
     public AndroidFastRenderView(AndroidGame game, Bitmap framebuffer) {
         super(game);
         this.game = game;
         this.framebuffer = framebuffer;
         this.holder = getHolder();
-
     }
 
     public void resume(Bitmap frameBuffer) {
-    	this.framebuffer = frameBuffer;
+        this.framebuffer = frameBuffer;
         running = true;
         renderThread = new Thread(this);
-        renderThread.start();   
+        renderThread.start();
+    }
 
-    }      
-    
     public void run() {
         Rect dstRect = new Rect();
         long startTime = System.nanoTime();
-        while(running) {  
+        while(running) {
             if(!holder.getSurface().isValid())
-                continue;           
-            
+                continue;
 
             float deltaTime = (System.nanoTime() - startTime) / 10000000.000f;
             startTime = System.nanoTime();
-            
+
             if (deltaTime > 3.15){
-            	deltaTime = (float) 3.15;
-           }
-     
+                deltaTime = (float) 3.15;
+            }
 
             game.getCurrentScreen().update(deltaTime);
             game.getCurrentScreen().paint(deltaTime);
-          
-            
             
             Canvas canvas = holder.lockCanvas();
             canvas.getClipBounds(dstRect);
-            canvas.drawBitmap(framebuffer, null, dstRect, null);                           
+            canvas.drawBitmap(framebuffer, null, dstRect, null);
             holder.unlockCanvasAndPost(canvas);
             
             
@@ -68,9 +62,6 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
             } catch (InterruptedException e) {
                 // retry
             }
-            
         }
-    }     
-    
-  
+    }
 }
