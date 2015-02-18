@@ -53,7 +53,7 @@ public class MainMenuScreen extends Screen {
     @Override
     public void paint(float deltaTime) {
         Graphics g = game.getGraphics();
-        g.clearScreen(Color.GRAY);
+        g.clearScreen(ColorPalette.background);
         g.drawStartButton(
                 (screenWidth - startButtonWidth)/2,
                 (screenHeight - startButtonHeight)/2,

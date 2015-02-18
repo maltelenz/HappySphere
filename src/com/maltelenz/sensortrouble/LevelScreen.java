@@ -18,6 +18,7 @@ public abstract class LevelScreen extends Screen {
     GameState state = GameState.Running;
     private int nextButtonWidth = 500;
     private int nextButtonHeight = 150;
+    private int progressBarHeight = 20;
 
     public LevelScreen(Game game) {
         super(game);
@@ -28,6 +29,8 @@ public abstract class LevelScreen extends Screen {
     abstract protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime);
 
     abstract Screen nextLevel();
+
+    abstract float percentDone();
 
     @Override
     public void update(float deltaTime) {
@@ -70,10 +73,13 @@ public abstract class LevelScreen extends Screen {
 
     @Override
     public void paint(float deltaTime) {
-        if (state == GameState.Running)
+        if (state == GameState.Running) {
             drawRunningUI();
-        if (state == GameState.Finished)
+            drawProgressOverlay();
+        }
+        if (state == GameState.Finished) {
             drawGameFinishedUI();
+        }
     }
 
     private void nullify() {
@@ -81,11 +87,18 @@ public abstract class LevelScreen extends Screen {
         System.gc();
     }
 
+    protected void drawProgressOverlay() {
+        Graphics g = game.getGraphics();
+        
+        g.drawRectWithShadow(0, 0, Math.round(percentDone() * g.getWidth()), progressBarHeight, ColorPalette.progress);
+    }
+
     private void drawGameFinishedUI() {
         Graphics g = game.getGraphics();
-        g.clearScreen(Color.GRAY);
+        g.clearScreen(ColorPalette.background);
         g.drawStringCentered("SUCCESS.");
         g.drawNextButton(nextButtonWidth, nextButtonHeight);
+        drawProgressOverlay();
     }
 
     @Override

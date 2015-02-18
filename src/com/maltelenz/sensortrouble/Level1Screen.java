@@ -3,6 +3,8 @@ package com.maltelenz.sensortrouble;
 import java.util.List;
 
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
@@ -11,7 +13,8 @@ import com.maltelenz.framework.Screen;
 
 public class Level1Screen extends LevelScreen {
 
-    int touchesLeft = 6;
+    int maxTouches = 5;
+    int touchesLeft = maxTouches;
 
     public Level1Screen(Game game) {
         super(game);
@@ -32,10 +35,22 @@ public class Level1Screen extends LevelScreen {
         }
     }
 
+    @Override
+    float percentDone() {
+        return ((float) (maxTouches - touchesLeft))/maxTouches;
+    }
+    
     void drawRunningUI() {
         Graphics g = game.getGraphics();
-        g.clearScreen(Color.GRAY);
-        g.drawStringCentered(Integer.toString(touchesLeft));
+        g.clearScreen(ColorPalette.background);
+        Paint largePainter = new Paint();
+        largePainter.setTextSize(150);
+        largePainter.setTextAlign(Paint.Align.CENTER);
+        largePainter.setAntiAlias(true);
+        largePainter.setColor(Color.WHITE);
+        largePainter.setTypeface(Typeface.DEFAULT_BOLD);
+
+        g.drawStringCentered(Integer.toString(touchesLeft), largePainter);
     }
 
     @Override

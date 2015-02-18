@@ -12,11 +12,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Image;
+import com.maltelenz.sensortrouble.ColorPalette;
 
 public class AndroidGraphics implements Graphics {
     AssetManager assets;
@@ -40,6 +42,7 @@ public class AndroidGraphics implements Graphics {
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.WHITE);
+        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
     @Override
@@ -102,6 +105,15 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
+    public void drawRectWithShadow(int x, int y, int width, int height, int color) {
+        Paint rectanglePainter = new Paint();
+        rectanglePainter.setColor(color);
+        rectanglePainter.setStyle(Style.FILL);
+        rectanglePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.rectangleShadow);
+        canvas.drawRect(x, y, x + width - 1, y + height - 1, rectanglePainter);
+    }
+
+    @Override
     public void drawARGB(int a, int r, int g, int b) {
         paint.setStyle(Style.FILL);
         canvas.drawARGB(a, r, g, b);
@@ -109,12 +121,22 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void drawString(String text, int x, int y) {
-        canvas.drawText(text, x, y + fontSize/2, textPaint);
+        drawString(text, x, y, textPaint);
+    }
+
+    @Override
+    public void drawString(String text, int x, int y, Paint painter) {
+        canvas.drawText(text, x, y + fontSize / 2, painter);
     }
 
     @Override
     public void drawStringCentered(String text) {
-        drawString(text, getWidth()/2, getHeight()/2);
+        drawStringCentered(text, textPaint);
+    }
+
+    @Override
+    public void drawStringCentered(String text, Paint painter) {
+        drawString(text, getWidth() / 2, getHeight() / 2, painter);
     }
 
     public void drawNextButton(int width, int height) {
@@ -127,15 +149,13 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void drawButton(String text, int x0, int y0, int x1, int y1) {
-        Paint gradientPaint = new Paint();
-        LinearGradient gradient = new LinearGradient(x0, y0, x1, y1, Color.GRAY, Color.BLACK, android.graphics.Shader.TileMode.CLAMP);
-        gradientPaint.setDither(true);
-        gradientPaint.setShader(gradient);
-        canvas.drawRect(x0, y0, x1, y1, gradientPaint);
-        canvas.drawText(text, x0 + (x1 - x0)/2, y0 + (y1 - y0)/2 + fontSize/2, textPaint);
+        Paint rectanglePainter = new Paint();
+        rectanglePainter.setColor(ColorPalette.button);
+        rectanglePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
+        canvas.drawRect(x0, y0, x1, y1, rectanglePainter);
+        canvas.drawText(text, x0 + (x1 - x0) / 2, y0 + (y1 - y0) / 2 + fontSize / 2, textPaint);
     }
 
-    
     public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
         srcRect.left = srcX;
         srcRect.top = srcY;
