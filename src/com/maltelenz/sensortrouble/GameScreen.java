@@ -34,7 +34,6 @@ public class GameScreen extends Screen {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setAntiAlias(true);
         paint.setColor(Color.WHITE);
-
     }
 
     @Override
@@ -105,9 +104,7 @@ public class GameScreen extends Screen {
     }
 
     private void nullify() {
-
-        // Set all variables to null. You will be recreating them in the
-        // constructor.
+        // Set all variables to null. Will be recreating them in the constructor.
         paint = null;
 
         // Call garbage collector to clean up memory.
