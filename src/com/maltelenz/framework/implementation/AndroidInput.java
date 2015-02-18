@@ -3,7 +3,6 @@ package com.maltelenz.framework.implementation;
 import java.util.List;
 
 import android.content.Context;
-import android.os.Build.VERSION;
 import android.view.View;
 
 import com.maltelenz.framework.Input;
@@ -12,10 +11,7 @@ public class AndroidInput implements Input {
     TouchHandler touchHandler;
 
     public AndroidInput(Context context, View view, float scaleX, float scaleY) {
-        if(Integer.parseInt(VERSION.SDK) < 5) 
-            touchHandler = new SingleTouchHandler(view, scaleX, scaleY);
-        else
-            touchHandler = new MultiTouchHandler(view, scaleX, scaleY);        
+        touchHandler = new MultiTouchHandler(view, scaleX, scaleY);        
     }
 
 
