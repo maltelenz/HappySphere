@@ -61,26 +61,35 @@ public class GameScreen extends Screen {
             state = GameState.Finished;
         }
     }
+
+	private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
+		if (event.x > x && event.x < x + width - 1 && event.y > y && event.y < y + height - 1)
+			return true;
+		else
+			return false;
+	}
     
     private void updateGameFinished(List<TouchEvent> touchEvents) {
+		Graphics g = game.getGraphics();
+		g.drawImage(Assets.next, 0, 0);
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_UP) {
-                if (event.x > 300 && event.x < 980 && event.y > 100
-                        && event.y < 500) {
+				if (inBounds(event, 0, 0, 250, 250)) {
+					// Restart Game
                     nullify();
                     game.setScreen(new MainMenuScreen(game));
                     return;
-                }
-            }
+				}
+			}
         }
 
     }
 
     @Override
     public void paint(float deltaTime) {
-        Graphics g = game.getGraphics();
+        // Graphics g = game.getGraphics();
 
         // First draw the game elements.
 
@@ -116,6 +125,7 @@ public class GameScreen extends Screen {
         Graphics g = game.getGraphics();
         g.drawRect(0, 0, 1281, 801, Color.BLACK);
         g.drawString("SUCCESS.", 640, 300, paint);
+		g.drawImage(Assets.next, 0, 0);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.maltelenz.sensortrouble;
 
 import java.util.List;
 
+import android.graphics.Color;
+
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Screen;
@@ -14,14 +16,12 @@ public class MainMenuScreen extends Screen {
 
 	@Override
 	public void update(float deltaTime) {
-		Graphics g = game.getGraphics();
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
 		int len = touchEvents.size();
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
-
 				if (inBounds(event, 0, 0, 250, 250)) {
 					// Start Game
 					game.setScreen(new GameScreen(game));
@@ -40,7 +40,8 @@ public class MainMenuScreen extends Screen {
 	@Override
 	public void paint(float deltaTime) {
 		Graphics g = game.getGraphics();
-		g.drawImage(Assets.menu, 0, 0);
+        g.drawRect(0, 0, 1281, 801, Color.BLACK);
+        g.drawImage(Assets.start, 0, 0);
 	}
 
 	@Override
