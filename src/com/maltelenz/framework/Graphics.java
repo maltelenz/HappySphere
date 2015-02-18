@@ -22,8 +22,12 @@ public interface Graphics {
 
     void drawStringCentered(String text);
 
-    public void drawButton(String string, int x, int y);
-    
+    public void drawNextButton(int width, int height);
+
+    public void drawStartButton(int x0, int y0, int x1, int y1);
+
+    public void drawButton(String text, int x0, int y0, int x1, int y1);
+
     public int getWidth();
 
     public int getHeight();

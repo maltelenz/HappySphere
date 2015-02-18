@@ -10,23 +10,17 @@ import com.maltelenz.framework.Screen;
 import com.maltelenz.framework.Input.TouchEvent;
 
 public class MainMenuScreen extends Screen {
+
+    private int startButtonWidth = 500;
+    private int startButtonHeight = 150;
+
+    private int screenWidth;
+    private int screenHeight;
+
     public MainMenuScreen(Game game) {
         super(game);
-    }
-
-    @Override
-    public void update(float deltaTime) {
-        List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-        int len = touchEvents.size();
-        for (int i = 0; i < len; i++) {
-            TouchEvent event = touchEvents.get(i);
-            if (event.type == TouchEvent.TOUCH_UP) {
-                if (inBounds(event, 0, 0, 250, 250)) {
-                    // Start Game
-                    game.setScreen(new Level1Screen(game));
-                }
-            }
-        }
+        screenWidth = game.getGraphics().getWidth();
+        screenHeight = game.getGraphics().getHeight();
     }
 
     private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
@@ -37,10 +31,35 @@ public class MainMenuScreen extends Screen {
     }
 
     @Override
+    public void update(float deltaTime) {
+        List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+        int len = touchEvents.size();
+        for (int i = 0; i < len; i++) {
+            TouchEvent event = touchEvents.get(i);
+            if (event.type == TouchEvent.TOUCH_UP) {
+                if (inBounds(event,
+                        (screenWidth - startButtonWidth)/2,
+                        (screenHeight - startButtonHeight)/2,
+                        startButtonWidth,
+                        startButtonHeight)
+                    ) {
+                    // Start Game
+                    game.setScreen(new Level1Screen(game));
+                }
+            }
+        }
+    }
+
+    @Override
     public void paint(float deltaTime) {
         Graphics g = game.getGraphics();
         g.clearScreen(Color.GRAY);
-        g.drawImage(Assets.start, 0, 0);
+        g.drawStartButton(
+                (screenWidth - startButtonWidth)/2,
+                (screenHeight - startButtonHeight)/2,
+                (screenWidth + startButtonWidth)/2,
+                (screenHeight + startButtonHeight)/2
+            );
     }
 
     @Override

@@ -27,6 +27,8 @@ public class AndroidGraphics implements Graphics {
     Rect srcRect = new Rect();
     Rect dstRect = new Rect();
 
+    private float fontSize = 50;
+
     public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
         this.assets = assets;
         this.frameBuffer = frameBuffer;
@@ -34,7 +36,7 @@ public class AndroidGraphics implements Graphics {
         this.paint = new Paint();
         this.textPaint = new Paint();
 
-        textPaint.setTextSize(50);
+        textPaint.setTextSize(fontSize);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.WHITE);
@@ -107,7 +109,7 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void drawString(String text, int x, int y) {
-        canvas.drawText(text, x, y, textPaint);
+        canvas.drawText(text, x, y + fontSize/2, textPaint);
     }
 
     @Override
@@ -115,16 +117,22 @@ public class AndroidGraphics implements Graphics {
         drawString(text, getWidth()/2, getHeight()/2);
     }
 
+    public void drawNextButton(int width, int height) {
+        drawButton("Next", getWidth() - width, getHeight() - height, getWidth(), getHeight());
+    }
+
+    public void drawStartButton(int x0, int y0, int x1, int y1) {
+        drawButton("Start", x0, y0, x1, y1);
+    }
+
     @Override
-    public void drawButton(String text, int x, int y) {
-        int xw = 500;
-        int yw = 150;
+    public void drawButton(String text, int x0, int y0, int x1, int y1) {
         Paint gradientPaint = new Paint();
-        LinearGradient gradient = new LinearGradient(x - xw/2, y - yw/2, x + xw/2, y + yw/2, Color.GRAY, Color.BLACK, android.graphics.Shader.TileMode.CLAMP);
+        LinearGradient gradient = new LinearGradient(x0, y0, x1, y1, Color.GRAY, Color.BLACK, android.graphics.Shader.TileMode.CLAMP);
         gradientPaint.setDither(true);
         gradientPaint.setShader(gradient);
-        canvas.drawRect(x - xw/2, y - yw/2, x + xw/2, y + yw/2, gradientPaint);
-        canvas.drawText(text, x, y, textPaint);
+        canvas.drawRect(x0, y0, x1, y1, gradientPaint);
+        canvas.drawText(text, x0 + (x1 - x0)/2, y0 + (y1 - y0)/2 + fontSize/2, textPaint);
     }
 
     
