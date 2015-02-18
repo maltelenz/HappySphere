@@ -8,5 +8,4 @@ public class SensorGame extends AndroidGame {
     public Screen getInitScreen() {
         return new LoadingScreen(this);
     }
-   
 }

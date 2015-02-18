@@ -41,11 +41,6 @@ public class GameScreen extends Screen {
     public void update(float deltaTime) {
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
-        // We have four separate update methods in this example.
-        // Depending on the state of the game, we call different update methods.
-        // Refer to Unit 3's code. We did a similar thing without separating the
-        // update methods.
-
         if (state == GameState.Running)
             updateGameRunning(touchEvents, deltaTime);
         if (state == GameState.Finished)
@@ -53,11 +48,6 @@ public class GameScreen extends Screen {
     }
 
     private void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime) {
-       
-        //This is identical to the update() method from our Unit 2/3 game.
-       
-       
-        // 1. All touch input is handled here:
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
@@ -67,17 +57,11 @@ public class GameScreen extends Screen {
             }
         }
        
-        // 2. Check miscellaneous events like death:
-       
         if (touchesLeft == 0) {
             state = GameState.Finished;
         }
-       
-       
-        // 3. Call individual update() methods here.
-        // This is where all the game updates happen.
-        // For example, robot.update();
     }
+    
     private void updateGameFinished(List<TouchEvent> touchEvents) {
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
