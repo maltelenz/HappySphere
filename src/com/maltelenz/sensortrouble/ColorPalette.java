@@ -10,6 +10,8 @@ public class ColorPalette {
     public static int cherry = Color.rgb(255, 107, 107);
     public static int pillow = Color.rgb(196, 77, 88);
 
+    public static int progressBackground = Color.argb(20, 199, 244, 100);
+
     public static int rectangleShadow = Color.BLACK;
     public static int buttonShadow = Color.BLACK;
 }

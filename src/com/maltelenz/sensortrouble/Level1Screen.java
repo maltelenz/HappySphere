@@ -44,7 +44,12 @@ public class Level1Screen extends LevelScreen {
     float percentDone() {
         return ((float) (maxTouches - touchesLeft))/maxTouches;
     }
-    
+
+    @Override
+    int levelsDone() {
+        return 0;
+    }
+
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);

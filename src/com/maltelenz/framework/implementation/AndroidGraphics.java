@@ -10,11 +10,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Image;
@@ -100,6 +100,11 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void drawCircle(int x, int y, int radius, Paint painter) {
         canvas.drawCircle(x, y, radius, painter);
+    }
+
+    @Override
+    public void drawArc(RectF rect, float percent, Paint painter) {
+        canvas.drawArc(rect, -90, 360 * percent, false, painter);
     }
 
     @Override

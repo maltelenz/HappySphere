@@ -3,6 +3,9 @@ package com.maltelenz.sensortrouble;
 import java.util.List;
 
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.RectF;
 
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
@@ -16,9 +19,14 @@ public abstract class LevelScreen extends Screen {
         }
 
     GameState state = GameState.Running;
+    
+    private float numberOfLevels = 1;
+    
     private int nextButtonWidth = 500;
     private int nextButtonHeight = 150;
     private int progressBarHeight = 20;
+    private int levelIndicatorRadius = 100;
+    private int levelIndicatorPadding = 50;
 
     public LevelScreen(Game game) {
         super(game);
@@ -31,6 +39,8 @@ public abstract class LevelScreen extends Screen {
     abstract Screen nextLevel();
 
     abstract float percentDone();
+
+    abstract int levelsDone();
 
     @Override
     public void update(float deltaTime) {
@@ -75,7 +85,7 @@ public abstract class LevelScreen extends Screen {
     public void paint(float deltaTime) {
         if (state == GameState.Running) {
             drawRunningUI();
-            drawProgressOverlay();
+            drawProgressOverlay(false);
         }
         if (state == GameState.Finished) {
             drawGameFinishedUI();
@@ -87,10 +97,41 @@ public abstract class LevelScreen extends Screen {
         System.gc();
     }
 
-    protected void drawProgressOverlay() {
+    protected void drawProgressOverlay(boolean finished) {
         Graphics g = game.getGraphics();
-        
+        // Draw the progress for the current level
         g.drawRectWithShadow(0, 0, Math.round(percentDone() * g.getWidth()), progressBarHeight, ColorPalette.progress);
+        // Draw total progress
+        Paint arcPainter = new Paint();
+        arcPainter.setColor(ColorPalette.progressBackground);
+        arcPainter.setStyle(Style.FILL);
+        g.drawCircle(
+                g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
+                levelIndicatorRadius + levelIndicatorPadding,
+                levelIndicatorRadius,
+                arcPainter
+            );
+
+        arcPainter.setColor(ColorPalette.progress);
+        arcPainter.setStyle(Style.STROKE);
+        arcPainter.setStrokeWidth(15);
+        RectF arcRect = new RectF(
+                g.getWidth() - levelIndicatorPadding - 2 * levelIndicatorRadius,
+                levelIndicatorPadding,
+                g.getWidth() - levelIndicatorPadding,
+                2 * levelIndicatorRadius + levelIndicatorPadding
+            );
+        int levelsReallyDone = levelsDone();
+        if (finished) {
+            levelsReallyDone++;
+        }
+        g.drawArc(arcRect, levelsReallyDone/numberOfLevels, arcPainter);
+
+        g.drawString(
+                Integer.toString(levelsReallyDone),
+                g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
+                levelIndicatorRadius + levelIndicatorPadding
+            );
     }
 
     private void drawGameFinishedUI() {
@@ -98,7 +139,7 @@ public abstract class LevelScreen extends Screen {
         g.clearScreen(ColorPalette.background);
         g.drawStringCentered("SUCCESS.");
         g.drawNextButton(nextButtonWidth, nextButtonHeight);
-        drawProgressOverlay();
+        drawProgressOverlay(true);
     }
 
     @Override

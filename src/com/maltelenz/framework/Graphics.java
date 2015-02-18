@@ -1,6 +1,7 @@
 package com.maltelenz.framework;
 
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 public interface Graphics {
     public static enum ImageFormat {
@@ -43,5 +44,7 @@ public interface Graphics {
     public void drawARGB(int i, int j, int k, int l);
 
     void drawCircle(int x, int y, int radius, Paint painter);
+
+    public void drawArc(RectF rect, float percent, Paint painter);
 
 }
