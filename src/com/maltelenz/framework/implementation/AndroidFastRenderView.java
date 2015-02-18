@@ -21,7 +21,8 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 
     }
 
-    public void resume() { 
+    public void resume(Bitmap frameBuffer) {
+    	this.framebuffer = frameBuffer;
         running = true;
         renderThread = new Thread(this);
         renderThread.start();   
@@ -58,8 +59,8 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
         }
     }
 
-    public void pause() {                        
-        running = false;                        
+    public void pause() {
+        running = false;
         while(true) {
             try {
                 renderThread.join();

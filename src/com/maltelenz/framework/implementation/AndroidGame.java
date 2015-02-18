@@ -1,10 +1,10 @@
 package com.maltelenz.framework.implementation;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -22,6 +22,8 @@ public abstract class AndroidGame extends Activity implements Game {
     Input input;
     FileIO fileIO;
     Screen screen;
+	private float xScale = 1.0F;
+	private float yScale = 1.0F;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,24 +33,13 @@ public abstract class AndroidGame extends Activity implements Game {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-        int xSize = getWindowManager().getDefaultDisplay().getWidth();
-        int ySize = getWindowManager().getDefaultDisplay().getHeight();
-        int frameBufferWidth = isPortrait ? xSize: ySize;
-        int frameBufferHeight = isPortrait ? ySize: xSize;
-        Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
-                frameBufferHeight, Config.RGB_565);
-        
-        float scaleX = (float) frameBufferWidth
-                / xSize;
-        float scaleY = (float) frameBufferHeight
-                / ySize;
+        Bitmap frameBuffer = getFrameBuffer();
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
         graphics = new AndroidGraphics(getAssets(), frameBuffer);
         fileIO = new AndroidFileIO(this);
         audio = new AndroidAudio(this);
-        input = new AndroidInput(this, renderView, scaleX, scaleY);
+        input = new AndroidInput(this, renderView, xScale, yScale);
         screen = getInitScreen();
         setContentView(renderView);
         
@@ -59,7 +50,10 @@ public abstract class AndroidGame extends Activity implements Game {
     public void onResume() {
         super.onResume();
         screen.resume();
-        renderView.resume();
+        // Create a new frame buffer, because the screen may be rotated
+        Bitmap framebuffer = getFrameBuffer();
+        renderView.resume(framebuffer);
+        graphics = new AndroidGraphics(getAssets(), framebuffer);
     }
 
     @Override
@@ -105,7 +99,21 @@ public abstract class AndroidGame extends Activity implements Game {
     }
     
     public Screen getCurrentScreen() {
-
     	return screen;
+    }
+
+    private int getFrameBufferWidth() {
+        return getWindowManager().getDefaultDisplay().getWidth();
+    }
+    private int getFrameBufferHeight() {
+        return getWindowManager().getDefaultDisplay().getHeight();
+    }
+
+    private Bitmap getFrameBuffer() {
+    	Log.d("FB Width", Integer.toString(getFrameBufferWidth()));
+    	Log.d("FB Height", Integer.toString(getFrameBufferHeight()));
+        Bitmap frameBuffer = Bitmap.createBitmap(getFrameBufferWidth(),
+        		getFrameBufferHeight(), Config.RGB_565);
+        return frameBuffer;
     }
 }
