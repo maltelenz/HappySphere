@@ -5,8 +5,6 @@ import java.util.List;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.RadialGradient;
-import android.graphics.Shader.TileMode;
 import android.graphics.Typeface;
 
 import com.maltelenz.framework.Game;
@@ -14,40 +12,50 @@ import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
 import com.maltelenz.framework.Screen;
 
-public class Level1Screen extends LevelScreen {
+public class Level2Screen extends LevelScreen {
 
-    int maxTouches = 5;
-    int touchesLeft = maxTouches;
+    float touchLength = 500;
+    float timeLeft = touchLength;
+    
+    int touching = 0;
     
     int circleRadius = 300;
 
-    public Level1Screen(Game game) {
+    public Level2Screen(Game game) {
         super(game);
     }
 
     @Override
     protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime) {
+        
+        if (touching != 0) {
+            timeLeft -= deltaTime;
+        }
+        
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
 
             if (event.type == TouchEvent.TOUCH_DOWN) {
-                touchesLeft--;
+                touching++;
+            }
+            if (event.type == TouchEvent.TOUCH_UP) {
+                touching--;
             }
         }
-        if (touchesLeft == 0) {
+        if (timeLeft < 0) {
             state = GameState.Finished;
         }
     }
 
     @Override
     float percentDone() {
-        return ((float) (maxTouches - touchesLeft))/maxTouches;
+        return (touchLength - timeLeft)/touchLength;
     }
 
     @Override
     int levelsDone() {
-        return 0;
+        return 1;
     }
 
     void drawRunningUI() {
@@ -66,11 +74,11 @@ public class Level1Screen extends LevelScreen {
         largePainter.setAntiAlias(true);
         largePainter.setColor(Color.WHITE);
         largePainter.setTypeface(Typeface.DEFAULT_BOLD);
-        g.drawStringCentered(Integer.toString(touchesLeft), largePainter);
+        g.drawStringCentered(String.format("%.1f", timeLeft), largePainter);
     }
 
     @Override
     protected Screen nextLevel() {
-        return (new Level2Screen(game));
+        return (new MainMenuScreen(game));
     }
 }

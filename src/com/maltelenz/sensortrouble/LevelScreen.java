@@ -20,7 +20,7 @@ public abstract class LevelScreen extends Screen {
 
     GameState state = GameState.Running;
     
-    private float numberOfLevels = 1;
+    private float numberOfLevels = 2;
     
     private int nextButtonWidth = 500;
     private int nextButtonHeight = 150;
