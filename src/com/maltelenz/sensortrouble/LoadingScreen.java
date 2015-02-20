@@ -1,9 +1,7 @@
 package com.maltelenz.sensortrouble;
 
 import com.maltelenz.framework.Game;
-import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Screen;
-import com.maltelenz.framework.Graphics.ImageFormat;
 
 public class LoadingScreen extends Screen {
 

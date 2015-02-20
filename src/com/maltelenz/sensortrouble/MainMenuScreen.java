@@ -2,12 +2,10 @@ package com.maltelenz.sensortrouble;
 
 import java.util.List;
 
-import android.graphics.Color;
-
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
-import com.maltelenz.framework.Screen;
 import com.maltelenz.framework.Input.TouchEvent;
+import com.maltelenz.framework.Screen;
 
 public class MainMenuScreen extends Screen {
 

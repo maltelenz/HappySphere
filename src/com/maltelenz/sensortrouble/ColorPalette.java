@@ -1,7 +1,6 @@
 package com.maltelenz.sensortrouble;
 
 import android.graphics.Color;
-import android.graphics.Paint.Style;
 
 public class ColorPalette {
     public static int background = Color.rgb(85, 98, 112);
