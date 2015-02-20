@@ -98,9 +98,11 @@ public abstract class AndroidGame extends Activity implements Game {
         return screen;
     }
 
+    @SuppressWarnings("deprecation")
     private int getFrameBufferWidth() {
         return getWindowManager().getDefaultDisplay().getWidth();
     }
+    @SuppressWarnings("deprecation")
     private int getFrameBufferHeight() {
         return getWindowManager().getDefaultDisplay().getHeight();
     }
