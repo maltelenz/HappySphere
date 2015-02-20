@@ -29,8 +29,8 @@ public class Level2Screen extends LevelScreen {
     @Override
     protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime) {
         
-        if (touching != 0) {
-            timeLeft -= deltaTime;
+        if (touching > 0) {
+            timeLeft -= deltaTime * touching;
         }
         
         int len = touchEvents.size();
