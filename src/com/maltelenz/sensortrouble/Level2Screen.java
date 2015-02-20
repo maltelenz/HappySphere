@@ -23,6 +23,7 @@ public class Level2Screen extends LevelScreen {
 
     public Level2Screen(Game game) {
         super(game);
+        state = GameState.Running;
     }
 
     @Override
@@ -79,6 +80,6 @@ public class Level2Screen extends LevelScreen {
 
     @Override
     protected Screen nextLevel() {
-        return (new MainMenuScreen(game));
+        return (new Level3Screen(game));
     }
 }

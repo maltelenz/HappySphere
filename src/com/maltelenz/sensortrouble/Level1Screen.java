@@ -5,8 +5,6 @@ import java.util.List;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.RadialGradient;
-import android.graphics.Shader.TileMode;
 import android.graphics.Typeface;
 
 import com.maltelenz.framework.Game;
@@ -23,6 +21,7 @@ public class Level1Screen extends LevelScreen {
 
     public Level1Screen(Game game) {
         super(game);
+        state = GameState.Running;
     }
 
     @Override

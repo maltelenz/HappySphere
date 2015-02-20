@@ -2,7 +2,6 @@ package com.maltelenz.sensortrouble;
 
 import java.util.List;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
@@ -15,12 +14,12 @@ import com.maltelenz.framework.Screen;
 public abstract class LevelScreen extends Screen {
 
     protected enum GameState {
-            Running, Finished
+            Initializing, Running, Finished
         }
 
-    GameState state = GameState.Running;
+    GameState state = GameState.Initializing;
     
-    private float numberOfLevels = 2;
+    private float numberOfLevels = 3;
     
     private int nextButtonWidth = 500;
     private int nextButtonHeight = 150;
@@ -42,10 +41,23 @@ public abstract class LevelScreen extends Screen {
 
     abstract int levelsDone();
 
+    void updateGameInitializing(float deltaTime) {
+        return;
+    }
+
+    void drawInitializingUI() {
+        return;
+    }
+
     @Override
     public void update(float deltaTime) {
+        if (state == GameState.Initializing) {
+            updateGameInitializing(deltaTime);
+            return;
+        }
+
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-    
+
         if (state == GameState.Running)
             updateGameRunning(touchEvents, deltaTime);
         if (state == GameState.Finished)
@@ -83,6 +95,9 @@ public abstract class LevelScreen extends Screen {
 
     @Override
     public void paint(float deltaTime) {
+        if (state == GameState.Initializing) {
+            drawInitializingUI();
+        }
         if (state == GameState.Running) {
             drawRunningUI();
             drawProgressOverlay(false);
