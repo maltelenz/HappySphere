@@ -17,12 +17,11 @@ public class Level4Screen extends LevelScreen {
     List<GridArea> touched;
     private boolean finishSoon = false;
     private float timeToFinish = 100;
+    int nrX = 5;
+    int nrY = 7;
 
     public Level4Screen(Game game) {
         super(game);
-
-        int nrX = 5;
-        int nrY = 7;
 
         int boxWidth = Math.min(game.getGraphics().getWidth()/nrX, game.getGraphics().getHeight()/nrY);
         int xOffset = (game.getGraphics().getWidth() - nrX * boxWidth)/2;
@@ -96,16 +95,21 @@ public class Level4Screen extends LevelScreen {
         for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
             GridArea area = (GridArea) iterator.next();
             if(area.shape == Shape.Laser) {
-                followLaser(area, 0, 0);
+                followLaser(area, 0, 0, false);
             }
         }
     }
-    
-    void followLaser(GridArea area, int dx, int dy) {
+
+    void followLaser(GridArea area, int dx, int dy, boolean passedLaser) {
+        if (area.x + dx < 0 || area.x + dx > nrX ||
+                area.y + dy < 0 || area.y + dy > nrY ) {
+            return;
+        }
         int nextGridPointX = 0;
         int nextGridPointY = 0;
         int nextdx = dx;
         int nextdy = dy;
+        boolean nowHavePassedLaser = false;
 
         // Box, they eat lasers
         if (area.shape == Shape.Target) {
@@ -125,13 +129,35 @@ public class Level4Screen extends LevelScreen {
             nextGridPointY = area.y + dy;
         }
 
-        // New laser, laser goes in the new laser direction
+        // New laser, it will shoot its own laser
         if (area.shape == Shape.Laser) {
-            //TODO make laser respect rotation
-            nextGridPointX = area.x + 1;
+            if (passedLaser) {
+                //Already passed a laser, we can stop here
+                return;
+            }
+            nextGridPointX = area.x;
             nextGridPointY = area.y;
-            nextdx = 1;
+            nextdx = 0;
             nextdy = 0;
+            switch (area.getRotation()) {
+            case 0:
+                nextGridPointX = area.x + 1;
+                nextdx = 1;
+                break;
+            case 90:
+                nextGridPointY = area.y + 1;
+                nextdy = 1;
+                break;
+            case 180:
+                nextGridPointX = area.x - 1;
+                nextdx = -1;
+                break;
+            case 270:
+                nextGridPointY = area.y - 1;
+                nextdy = -1;
+                break;
+            }
+            nowHavePassedLaser = true;
         }
 
         // Triangle, they redirect lasers
@@ -242,7 +268,7 @@ public class Level4Screen extends LevelScreen {
                     a.inCominglaserDirection = LaserDirection.Vertical;
                 }
 
-                followLaser(a, nextdx, nextdy);
+                followLaser(a, nextdx, nextdy, nowHavePassedLaser);
                 return;
             }
         }

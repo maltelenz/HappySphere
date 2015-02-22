@@ -123,8 +123,15 @@ public class AndroidGraphics implements Graphics {
         laserCircle.set(ColorPalette.laserPaint);
         laserCircle.setStyle(Style.FILL_AND_STROKE);
         drawCircle(x + width/2, y + height/2, 50, laserCircle);
-        
-        drawLine(x + width/2, y + height/2, x + width, y + height/2, ColorPalette.laserPaint);
+
+        List<Point> laserPoints = new ArrayList<Point>();
+        laserPoints.add(new Point(x + width, y + height/2));
+        laserPoints.add(new Point(x + width/2, y));
+        laserPoints.add(new Point(x, y + height/2));
+        laserPoints.add(new Point(x + width/2, y + height));
+
+        Collections.rotate(laserPoints, rotation/90);
+        drawLine(laserPoints.get(0).x, laserPoints.get(0).y, x + width/2, y + width/2, ColorPalette.laserPaint);
     }
 
     @Override
@@ -139,7 +146,7 @@ public class AndroidGraphics implements Graphics {
             Collections.rotate(laserPoints, -rotation/90);
             drawLine(laserPoints.get(0).x, laserPoints.get(0).y, x + width/2, y + width/2, ColorPalette.laserPaint);
         }
-        
+
         Paint laserCircle = new Paint();
         laserCircle.setColor(ColorPalette.progress);
         laserCircle.setStrokeWidth(10);
@@ -178,7 +185,7 @@ public class AndroidGraphics implements Graphics {
         path.close();
 
         canvas.drawPath(path, paint);
-        
+
         if (lasered) {
             List<Point> laserPoints = new ArrayList<Point>();
             laserPoints.add(new Point(x, y + height/2));
