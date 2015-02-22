@@ -34,7 +34,7 @@ public class Level1Screen extends LevelScreen {
                 touchesLeft--;
             }
         }
-        if (touchesLeft == 0) {
+        if (touchesLeft <= 0) {
             state = GameState.Finished;
         }
     }
