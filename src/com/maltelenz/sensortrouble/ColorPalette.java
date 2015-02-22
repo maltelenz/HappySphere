@@ -1,6 +1,9 @@
 package com.maltelenz.sensortrouble;
 
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Join;
+import android.graphics.Paint.Style;
 
 public class ColorPalette {
     public static int background = Color.rgb(85, 98, 112);
@@ -13,4 +16,18 @@ public class ColorPalette {
 
     public static int rectangleShadow = Color.BLACK;
     public static int buttonShadow = Color.BLACK;
+    
+    public static int laser = cherry;
+
+    public static Paint laserPaint;
+
+    // Initialize paint
+    static {
+        laserPaint = new Paint();
+        laserPaint.setColor(laser);
+        laserPaint.setStrokeWidth(10);
+        laserPaint.setStyle(Style.STROKE);
+        laserPaint.setStrokeJoin(Join.BEVEL);
+        laserPaint.setAntiAlias(true);
+    }
 }

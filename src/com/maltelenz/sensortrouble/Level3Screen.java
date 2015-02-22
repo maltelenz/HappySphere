@@ -146,6 +146,6 @@ public class Level3Screen extends LevelScreen {
 
     @Override
     protected Screen nextLevel() {
-        return (new MainMenuScreen(game));
+        return (new Level4Screen(game));
     }
 }

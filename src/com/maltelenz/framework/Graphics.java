@@ -14,7 +14,17 @@ public interface Graphics {
 
     public void drawLine(int x, int y, int x2, int y2, int color);
 
+    public void drawLine(int x, int y, int x2, int y2, Paint paint);
+
+    public void drawLaser(int x, int y, int width, int height, int rotation);
+
+    public void drawTarget(int x, int y, int width, int height, int rotation, boolean lasered);
+
+    public void drawTriangle(int x, int y, int width, int height, int rotation, int color, boolean lasered);
+
     public void drawRect(int x, int y, int width, int height, int color);
+
+    public void drawRectNoFill(int x, int y, int width, int height, int color);
 
     public void drawRectWithShadow(int x, int y, int width, int height, int color);
 

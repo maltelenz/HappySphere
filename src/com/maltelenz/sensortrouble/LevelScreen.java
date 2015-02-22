@@ -19,7 +19,7 @@ public abstract class LevelScreen extends Screen {
 
     GameState state = GameState.Initializing;
     
-    private float numberOfLevels = 3;
+    private float numberOfLevels = 4;
     
     private int nextButtonWidth = 500;
     private int nextButtonHeight = 150;
@@ -120,6 +120,7 @@ public abstract class LevelScreen extends Screen {
         Paint arcPainter = new Paint();
         arcPainter.setColor(ColorPalette.progressBackground);
         arcPainter.setStyle(Style.FILL);
+        arcPainter.setAntiAlias(true);
         g.drawCircle(
                 g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
                 levelIndicatorRadius + levelIndicatorPadding,

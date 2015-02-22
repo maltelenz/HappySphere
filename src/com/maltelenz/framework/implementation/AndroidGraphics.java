@@ -2,6 +2,9 @@ package com.maltelenz.framework.implementation;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -12,6 +15,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -98,6 +103,11 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
+    public void drawLine(int x, int y, int x2, int y2, Paint paint) {
+        canvas.drawLine(x, y, x2, y2, paint);
+    }
+
+    @Override
     public void drawCircle(int x, int y, int radius, Paint painter) {
         canvas.drawCircle(x, y, radius, painter);
     }
@@ -105,6 +115,97 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void drawArc(RectF rect, float percent, Paint painter) {
         canvas.drawArc(rect, -90, 360 * percent, false, painter);
+    }
+
+    @Override
+    public void drawLaser(int x, int y, int width, int height, int rotation) {
+        Paint laserCircle = new Paint();
+        laserCircle.set(ColorPalette.laserPaint);
+        laserCircle.setStyle(Style.FILL_AND_STROKE);
+        drawCircle(x + width/2, y + height/2, 50, laserCircle);
+        
+        drawLine(x + width/2, y + height/2, x + width, y + height/2, ColorPalette.laserPaint);
+    }
+
+    @Override
+    public void drawTarget(int x, int y, int width, int height, int rotation, boolean lasered) {
+        if (lasered) {
+            List<Point> laserPoints = new ArrayList<Point>();
+            laserPoints.add(new Point(x, y + height/2));
+            laserPoints.add(new Point(x + width/2, y + height));
+            laserPoints.add(new Point(x + width, y + height/2));
+            laserPoints.add(new Point(x + width/2, y));
+
+            Collections.rotate(laserPoints, -rotation/90);
+            drawLine(laserPoints.get(0).x, laserPoints.get(0).y, x + width/2, y + width/2, ColorPalette.laserPaint);
+        }
+        
+        Paint laserCircle = new Paint();
+        laserCircle.setColor(ColorPalette.progress);
+        laserCircle.setStrokeWidth(10);
+        laserCircle.setAntiAlias(true);
+        if (lasered) {
+            laserCircle.setStyle(Style.FILL_AND_STROKE);
+        } else {
+            laserCircle.setStyle(Style.STROKE);
+        }
+        drawCircle(x + width/2, y + height/2, 50, laserCircle);
+    }
+
+    @Override
+    public void drawTriangle(int x, int y, int width, int height, int rotation, int color, boolean lasered) {
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setStrokeWidth(10);
+        paint.setStyle(Style.STROKE);
+        paint.setAntiAlias(true);
+
+        List<Point> points = new ArrayList<Point>();
+        points.add(new Point(x, y));
+        points.add(new Point(x + width, y));
+        points.add(new Point(x + width, y + height));
+        points.add(new Point(x, y + height));
+
+        Collections.rotate(points, rotation/90);
+
+        Path path = new Path();
+        path.moveTo(points.get(0).x, points.get(0).y);
+        path.lineTo(points.get(1).x, points.get(1).y);
+        path.moveTo(points.get(1).x, points.get(1).y);
+        path.lineTo(points.get(2).x, points.get(2).y);
+        path.moveTo(points.get(2).x, points.get(2).y);
+        path.lineTo(points.get(0).x, points.get(0).y);
+        path.close();
+
+        canvas.drawPath(path, paint);
+        
+        if (lasered) {
+            List<Point> laserPoints = new ArrayList<Point>();
+            laserPoints.add(new Point(x, y + height/2));
+            laserPoints.add(new Point(x + width/2, y + height));
+            laserPoints.add(new Point(x + width, y + height/2));
+            laserPoints.add(new Point(x + width/2, y));
+
+            Point centerPoint = new Point(x + width/2, y + width/2);
+
+            Collections.rotate(laserPoints, -rotation/90);
+
+            Path laserPath = new Path();
+            laserPath.moveTo(laserPoints.get(0).x, laserPoints.get(0).y);
+            laserPath.lineTo(centerPoint.x, centerPoint.y);
+            laserPath.moveTo(centerPoint.x, centerPoint.y);
+            laserPath.lineTo(laserPoints.get(1).x, laserPoints.get(1).y);
+            laserPath.moveTo(laserPoints.get(1).x, laserPoints.get(1).y);
+            laserPath.close();
+            canvas.drawPath(laserPath, ColorPalette.laserPaint);
+        }
+    }
+
+    @Override
+    public void drawRectNoFill(int x, int y, int width, int height, int color) {
+        paint.setColor(color);
+        paint.setStyle(Style.STROKE);
+        canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
     }
 
     @Override
