@@ -35,11 +35,7 @@ public abstract class LevelScreen extends Screen {
 
     abstract protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime);
 
-    abstract Screen nextLevel();
-
     abstract float percentDone();
-
-    abstract int levelsDone();
 
     void updateGameInitializing(float deltaTime) {
         return;
@@ -86,7 +82,7 @@ public abstract class LevelScreen extends Screen {
                         ) {
                     // Restart Game
                     nullify();
-                    game.setScreen(nextLevel());
+                    nextLevel();
                     return;
                 }
             }
@@ -137,7 +133,7 @@ public abstract class LevelScreen extends Screen {
                 g.getWidth() - levelIndicatorPadding,
                 2 * levelIndicatorRadius + levelIndicatorPadding
             );
-        int levelsReallyDone = levelsDone();
+        int levelsReallyDone = currentLevel();
         if (finished) {
             levelsReallyDone++;
         }

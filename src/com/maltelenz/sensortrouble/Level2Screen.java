@@ -10,7 +10,6 @@ import android.graphics.Typeface;
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
-import com.maltelenz.framework.Screen;
 
 public class Level2Screen extends LevelScreen {
 
@@ -54,11 +53,6 @@ public class Level2Screen extends LevelScreen {
         return (touchLength - timeLeft)/touchLength;
     }
 
-    @Override
-    int levelsDone() {
-        return 1;
-    }
-
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
@@ -78,8 +72,4 @@ public class Level2Screen extends LevelScreen {
         g.drawStringCentered(String.format("%.1f", timeLeft), largePainter);
     }
 
-    @Override
-    protected Screen nextLevel() {
-        return (new Level3Screen(game));
-    }
 }

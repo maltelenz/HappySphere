@@ -7,7 +7,6 @@ import java.util.List;
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
-import com.maltelenz.framework.Screen;
 import com.maltelenz.sensortrouble.GridArea.LaserDirection;
 import com.maltelenz.sensortrouble.GridArea.Shape;
 
@@ -279,11 +278,6 @@ public class Level4Screen extends LevelScreen {
         return 0;
     }
 
-    @Override
-    int levelsDone() {
-        return 3;
-    }
-
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
@@ -318,8 +312,4 @@ public class Level4Screen extends LevelScreen {
         }
     }
 
-    @Override
-    protected Screen nextLevel() {
-        return (new MainMenuScreen(game));
-    }
 }

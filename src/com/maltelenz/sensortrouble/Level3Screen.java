@@ -6,7 +6,6 @@ import java.util.List;
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
-import com.maltelenz.framework.Screen;
 
 public class Level3Screen extends LevelScreen {
 
@@ -109,11 +108,6 @@ public class Level3Screen extends LevelScreen {
         return ((float) step)/touchAreas.size();
     }
 
-    @Override
-    int levelsDone() {
-        return 2;
-    }
-
     private void drawGrid() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
@@ -144,8 +138,4 @@ public class Level3Screen extends LevelScreen {
         }
     }
 
-    @Override
-    protected Screen nextLevel() {
-        return (new Level4Screen(game));
-    }
 }

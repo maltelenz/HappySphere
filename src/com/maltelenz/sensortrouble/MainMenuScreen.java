@@ -42,7 +42,7 @@ public class MainMenuScreen extends Screen {
                         startButtonHeight)
                     ) {
                     // Start Game
-                    game.setScreen(new Level1Screen(game));
+                    startLevel();
                 }
             }
         }
