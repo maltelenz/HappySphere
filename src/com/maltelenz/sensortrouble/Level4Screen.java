@@ -14,8 +14,9 @@ public class Level4Screen extends LevelScreen {
 
     List<GridArea> grid;
     List<GridArea> touched;
-    private boolean finishSoon = false;
-    private float timeToFinish = 100;
+    private boolean currentlyLasering = false;
+    private float timeToFinish = 300;
+    private float timeLeftLasering = timeToFinish;
     int nrX = 5;
     int nrY = 7;
 
@@ -65,12 +66,17 @@ public class Level4Screen extends LevelScreen {
 
     @Override
     protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime) {
-        if (finishSoon) {
-            timeToFinish  -= deltaTime;
-            if (timeToFinish < 0) {
+        if (currentlyLasering) {
+            timeLeftLasering  -= deltaTime;
+            if (timeLeftLasering < 0) {
                 state = GameState.Finished;
             }
+        } else {
+            //Not lasering, progress goes backwards
+            timeLeftLasering = Math.min(timeToFinish, timeLeftLasering + deltaTime);
         }
+        // Assume not lasering unless found shown otherwise below.
+        currentlyLasering = false;
 
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
@@ -113,7 +119,7 @@ public class Level4Screen extends LevelScreen {
         // Box, they eat lasers
         if (area.shape == Shape.Target) {
             //Target lit, level finished
-            finishSoon  = true;
+            currentlyLasering  = true;
             return;
         }
 
@@ -275,7 +281,7 @@ public class Level4Screen extends LevelScreen {
 
     @Override
     float percentDone() {
-        return 0;
+        return 1 - timeLeftLasering/timeToFinish;
     }
 
     void drawRunningUI() {
