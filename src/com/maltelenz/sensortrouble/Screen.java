@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import com.maltelenz.framework.Game;
+import com.maltelenz.framework.Input.TouchEvent;
 
 public class Screen {
     protected final Game game;
@@ -66,5 +67,12 @@ public class Screen {
 
     public boolean backButton() {
         return true;
+    }
+
+    protected boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
+    if (event.x > x && event.x < x + width - 1 && event.y > y && event.y < y + height - 1)
+        return true;
+    else
+        return false;
     }
 }

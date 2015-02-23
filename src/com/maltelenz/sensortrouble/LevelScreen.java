@@ -26,8 +26,16 @@ public abstract class LevelScreen extends Screen {
     private int levelIndicatorRadius = 100;
     private int levelIndicatorPadding = 50;
 
+    private Button nextButton;
+
     public LevelScreen(Game game) {
         super(game);
+        
+        nextButton = new Button("Next",
+                game.getGraphics().getWidth() - nextButtonWidth,
+                game.getGraphics().getHeight() - nextButtonHeight,
+                game.getGraphics().getWidth(),
+                game.getGraphics().getHeight());
     }
 
     abstract void drawRunningUI();
@@ -59,27 +67,15 @@ public abstract class LevelScreen extends Screen {
             updateGameFinished(touchEvents);
     }
 
-    private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
-        if (event.x > x && event.x < x + width - 1 && event.y > y && event.y < y + height - 1)
-            return true;
-        else
-            return false;
-    }
-
     private void updateGameFinished(List<TouchEvent> touchEvents) {
         Graphics g = game.getGraphics();
-        g.drawNextButton(nextButtonWidth, nextButtonHeight);
+        g.drawButton(nextButton);
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_UP) {
-                if (inBounds(event,
-                            game.getGraphics().getWidth() - nextButtonWidth,
-                            game.getGraphics().getHeight() - nextButtonHeight,
-                            nextButtonWidth,
-                            nextButtonHeight)
-                        ) {
-                    // Restart Game
+                if (nextButton.inBounds(event)) {
+                    // Start next level
                     nullify();
                     nextLevel();
                     return;
@@ -149,7 +145,7 @@ public abstract class LevelScreen extends Screen {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
         g.drawStringCentered("SUCCESS.");
-        g.drawNextButton(nextButtonWidth, nextButtonHeight);
+        g.drawButton(nextButton);
         drawProgressOverlay(true);
     }
 

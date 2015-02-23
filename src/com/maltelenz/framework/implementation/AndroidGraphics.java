@@ -23,6 +23,7 @@ import android.graphics.Typeface;
 
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Image;
+import com.maltelenz.sensortrouble.Button;
 import com.maltelenz.sensortrouble.ColorPalette;
 
 public class AndroidGraphics implements Graphics {
@@ -257,14 +258,6 @@ public class AndroidGraphics implements Graphics {
         drawString(text, getWidth() / 2, getHeight() / 2, painter);
     }
 
-    public void drawNextButton(int width, int height) {
-        drawButton("Next", getWidth() - width, getHeight() - height, getWidth(), getHeight());
-    }
-
-    public void drawStartButton(int x0, int y0, int x1, int y1) {
-        drawButton("Start", x0, y0, x1, y1);
-    }
-
     @Override
     public void drawButton(String text, int x0, int y0, int x1, int y1) {
         Paint rectanglePainter = new Paint();
@@ -272,6 +265,11 @@ public class AndroidGraphics implements Graphics {
         rectanglePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
         canvas.drawRect(x0, y0, x1, y1, rectanglePainter);
         drawString(text, x0 + (x1 - x0) / 2, y0 + (y1 - y0) / 2);
+    }
+
+    @Override
+    public void drawButton(Button b) {
+        drawButton(b.text, b.x0, b.y0, b.x1, b.y1);
     }
 
     public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {

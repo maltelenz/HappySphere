@@ -1,5 +1,7 @@
 package com.maltelenz.framework;
 
+import com.maltelenz.sensortrouble.Button;
+
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -41,11 +43,9 @@ public interface Graphics {
 
     public void drawStringCentered(String string, Paint largePainter);
 
-    public void drawNextButton(int width, int height);
-
-    public void drawStartButton(int x0, int y0, int x1, int y1);
-
     public void drawButton(String text, int x0, int y0, int x1, int y1);
+
+    public void drawButton(Button b);
 
     public int getWidth();
 
