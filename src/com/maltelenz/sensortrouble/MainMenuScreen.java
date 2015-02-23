@@ -72,6 +72,7 @@ public class MainMenuScreen extends Screen {
     }
 
     @Override
-    public void backButton() {
+    public boolean backButton() {
+        return true;
     }
 }

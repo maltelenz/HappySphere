@@ -68,6 +68,14 @@ public abstract class AndroidGame extends Activity implements Game {
     }
 
     @Override
+    public void onBackPressed() {
+        if(screen.backButton()) {
+            // If the screen says we can exit, use default implementation and exit.
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public Input getInput() {
         return input;
     }

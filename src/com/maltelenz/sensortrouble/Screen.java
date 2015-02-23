@@ -64,6 +64,7 @@ public class Screen {
     public void dispose() {
     }
 
-    public void backButton() {
+    public boolean backButton() {
+        return true;
     }
 }

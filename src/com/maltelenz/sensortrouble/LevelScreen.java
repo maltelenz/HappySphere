@@ -154,8 +154,9 @@ public abstract class LevelScreen extends Screen {
     }
 
     @Override
-    public void backButton() {
-        pause();
+    public boolean backButton() {
+        game.setScreen(new MainMenuScreen(game));
+        return false;
     }
 
 }
