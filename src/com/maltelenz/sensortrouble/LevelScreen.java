@@ -22,7 +22,7 @@ public abstract class LevelScreen extends Screen {
     
     private int nextButtonWidth = 500;
     private int nextButtonHeight = 150;
-    private int progressBarHeight = 20;
+    private int progressBarHeight = 30;
     private int levelIndicatorRadius = 100;
     private int levelIndicatorPadding = 50;
 
@@ -106,7 +106,9 @@ public abstract class LevelScreen extends Screen {
     protected void drawProgressOverlay(boolean finished) {
         Graphics g = game.getGraphics();
         // Draw the progress for the current level
-        g.drawRectWithShadow(0, 0, Math.round(percentDone() * g.getWidth()), progressBarHeight, ColorPalette.progress);
+        int xmax = Math.round(percentDone() * g.getWidth());
+        g.drawRectWithShadow(0, 0, xmax, progressBarHeight, ColorPalette.progress);
+        g.drawRect(xmax, 0, g.getWidth() - xmax, progressBarHeight, ColorPalette.inactiveProgress);
         // Draw total progress
         Paint arcPainter = new Paint();
         arcPainter.setColor(ColorPalette.progressBackground);
@@ -114,7 +116,7 @@ public abstract class LevelScreen extends Screen {
         arcPainter.setAntiAlias(true);
         g.drawCircle(
                 g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
-                levelIndicatorRadius + levelIndicatorPadding,
+                levelIndicatorRadius + levelIndicatorPadding + progressBarHeight,
                 levelIndicatorRadius,
                 arcPainter
             );
@@ -122,11 +124,12 @@ public abstract class LevelScreen extends Screen {
         arcPainter.setColor(ColorPalette.progress);
         arcPainter.setStyle(Style.STROKE);
         arcPainter.setStrokeWidth(15);
+        arcPainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
         RectF arcRect = new RectF(
                 g.getWidth() - levelIndicatorPadding - 2 * levelIndicatorRadius,
-                levelIndicatorPadding,
+                levelIndicatorPadding + progressBarHeight,
                 g.getWidth() - levelIndicatorPadding,
-                2 * levelIndicatorRadius + levelIndicatorPadding
+                2 * levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
             );
         int levelsReallyDone = currentLevel();
         if (finished) {
@@ -134,10 +137,14 @@ public abstract class LevelScreen extends Screen {
         }
         g.drawArc(arcRect, levelsReallyDone/numberOfLevels, arcPainter);
 
+        arcPainter.setColor(ColorPalette.inactiveProgress);
+        arcPainter.clearShadowLayer();
+        g.drawArc(arcRect, 100 - levelsReallyDone/numberOfLevels, arcPainter);
+
         g.drawString(
                 Integer.toString(levelsReallyDone),
                 g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
-                levelIndicatorRadius + levelIndicatorPadding
+                levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
             );
     }
 

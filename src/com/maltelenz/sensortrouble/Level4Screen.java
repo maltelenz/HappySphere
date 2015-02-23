@@ -286,23 +286,23 @@ public class Level4Screen extends LevelScreen {
             int width = area.x1 - area.x0;
             int height = area.y1 - area.y0;
             if (area.shape == Shape.Empty) {
-                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.progress);
+                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
                 if (area.lasered) {
                     if (area.inCominglaserDirection == LaserDirection.Horizontal) {
-                        g.drawLine(area.x0, area.y0 + height/2, area.x1, area.y0 + height/2, ColorPalette.laserPaint);
+                        g.drawLaserLine(area.x0, area.y0 + height/2, area.x1, area.y0 + height/2);
                     } else {
-                        g.drawLine(area.x0 + width/2, area.y0, area.x0 + width/2, area.y1, ColorPalette.laserPaint);
+                        g.drawLaserLine(area.x0 + width/2, area.y0, area.x0 + width/2, area.y1);
                     }
                 }
             } else if (area.shape == Shape.Box) {
-                g.drawRect(area.x0, area.y0, width, height, ColorPalette.cherry);
+                g.drawRect(area.x0, area.y0, width, height, ColorPalette.box);
             } else if (area.shape == Shape.Triangle) {
                 g.drawTriangle(area.x0, area.y0, width, height, area.getRotation(), ColorPalette.button, area.lasered);
             } else if (area.shape == Shape.Laser) {
-                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.progress);
+                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
                 g.drawLaser(area.x0, area.y0, width, height, area.getRotation());
             } else if (area.shape == Shape.Target) {
-                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.progress);
+                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
                 g.drawTarget(area.x0, area.y0, width, height, area.getRotation(), area.lasered);
             }
         }

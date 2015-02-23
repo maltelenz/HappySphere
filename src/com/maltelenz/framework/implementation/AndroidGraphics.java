@@ -12,8 +12,8 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -31,7 +31,10 @@ public class AndroidGraphics implements Graphics {
     Bitmap frameBuffer;
     Canvas canvas;
     Paint paint;
-    Paint textPaint;
+    Paint darkTextPaint;
+    Paint lightTextPaint;
+    Paint laserPaint;
+    
     Rect srcRect = new Rect();
     Rect dstRect = new Rect();
 
@@ -42,13 +45,24 @@ public class AndroidGraphics implements Graphics {
         this.frameBuffer = frameBuffer;
         this.canvas = new Canvas(frameBuffer);
         this.paint = new Paint();
-        this.textPaint = new Paint();
+        this.darkTextPaint = new Paint();
 
-        textPaint.setTextSize(fontSize);
-        textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setAntiAlias(true);
-        textPaint.setColor(Color.WHITE);
-        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        darkTextPaint.setTextSize(fontSize);
+        darkTextPaint.setTextAlign(Paint.Align.CENTER);
+        darkTextPaint.setAntiAlias(true);
+        darkTextPaint.setColor(ColorPalette.darkText);
+        darkTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
+
+        this.lightTextPaint = new Paint();
+        lightTextPaint.set(darkTextPaint);
+        lightTextPaint.setColor(ColorPalette.lightText);
+        
+        laserPaint = new Paint();
+        laserPaint.setColor(ColorPalette.laser);
+        laserPaint.setStrokeWidth(10);
+        laserPaint.setStyle(Style.STROKE);
+        laserPaint.setStrokeJoin(Join.BEVEL);
+        laserPaint.setAntiAlias(true);
     }
 
     @Override
@@ -109,6 +123,11 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
+    public void drawLaserLine(int x, int y, int x2, int y2) {
+        canvas.drawLine(x, y, x2, y2, laserPaint);
+    }
+
+    @Override
     public void drawCircle(int x, int y, int radius, Paint painter) {
         canvas.drawCircle(x, y, radius, painter);
     }
@@ -121,7 +140,7 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void drawLaser(int x, int y, int width, int height, int rotation) {
         Paint laserCircle = new Paint();
-        laserCircle.set(ColorPalette.laserPaint);
+        laserCircle.set(laserPaint);
         laserCircle.setStyle(Style.FILL_AND_STROKE);
         drawCircle(x + width/2, y + height/2, 50, laserCircle);
 
@@ -132,7 +151,7 @@ public class AndroidGraphics implements Graphics {
         laserPoints.add(new Point(x + width/2, y + height));
 
         Collections.rotate(laserPoints, rotation/90);
-        drawLine(laserPoints.get(0).x, laserPoints.get(0).y, x + width/2, y + width/2, ColorPalette.laserPaint);
+        drawLine(laserPoints.get(0).x, laserPoints.get(0).y, x + width/2, y + width/2, laserPaint);
     }
 
     @Override
@@ -145,7 +164,7 @@ public class AndroidGraphics implements Graphics {
             laserPoints.add(new Point(x + width/2, y));
 
             Collections.rotate(laserPoints, -rotation/90);
-            drawLine(laserPoints.get(0).x, laserPoints.get(0).y, x + width/2, y + width/2, ColorPalette.laserPaint);
+            drawLine(laserPoints.get(0).x, laserPoints.get(0).y, x + width/2, y + width/2, laserPaint);
         }
 
         Paint laserCircle = new Paint();
@@ -205,7 +224,7 @@ public class AndroidGraphics implements Graphics {
             laserPath.lineTo(laserPoints.get(1).x, laserPoints.get(1).y);
             laserPath.moveTo(laserPoints.get(1).x, laserPoints.get(1).y);
             laserPath.close();
-            canvas.drawPath(laserPath, ColorPalette.laserPaint);
+            canvas.drawPath(laserPath, laserPaint);
         }
     }
 
@@ -240,7 +259,7 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void drawString(String text, int x, int y) {
-        drawString(text, x, y, textPaint);
+        drawString(text, x, y, darkTextPaint);
     }
 
     @Override
@@ -250,7 +269,7 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void drawStringCentered(String text) {
-        drawStringCentered(text, textPaint);
+        drawStringCentered(text, darkTextPaint);
     }
 
     @Override
@@ -264,7 +283,7 @@ public class AndroidGraphics implements Graphics {
         rectanglePainter.setColor(ColorPalette.button);
         rectanglePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
         canvas.drawRect(x0, y0, x1, y1, rectanglePainter);
-        drawString(text, x0 + (x1 - x0) / 2, y0 + (y1 - y0) / 2);
+        drawString(text, x0 + (x1 - x0) / 2, y0 + (y1 - y0) / 2, lightTextPaint);
     }
 
     @Override

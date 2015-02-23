@@ -3,6 +3,9 @@ package com.maltelenz.sensortrouble;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Paint;
+import android.graphics.Typeface;
+
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
@@ -22,6 +25,8 @@ public class Level3Screen extends LevelScreen {
 
     private boolean drawFailure = false;
 
+    private Paint oopsiePaint;
+    
     public Level3Screen(Game game) {
         super(game);
 
@@ -51,6 +56,14 @@ public class Level3Screen extends LevelScreen {
                 game.getGraphics().getWidth()/2,
                 game.getGraphics().getHeight()
         ));
+        
+        this.oopsiePaint = new Paint();
+
+        oopsiePaint.setTextSize(100);
+        oopsiePaint.setTextAlign(Paint.Align.CENTER);
+        oopsiePaint.setAntiAlias(true);
+        oopsiePaint.setColor(ColorPalette.oopsie);
+        oopsiePaint.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
     @Override
@@ -112,8 +125,8 @@ public class Level3Screen extends LevelScreen {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
         
-        g.drawLine(g.getWidth()/2, 0, g.getWidth()/2, g.getHeight(), ColorPalette.cherry);
-        g.drawLine(0, g.getHeight()/2, g.getWidth(), g.getHeight()/2, ColorPalette.cherry);
+        g.drawLine(g.getWidth()/2, 0, g.getWidth()/2, g.getHeight(), ColorPalette.gridLines);
+        g.drawLine(0, g.getHeight()/2, g.getWidth(), g.getHeight()/2, ColorPalette.gridLines);
     }
 
     @Override
@@ -129,7 +142,7 @@ public class Level3Screen extends LevelScreen {
 
         Graphics g = game.getGraphics();
         if (drawFailure) {
-            g.drawRect(0, 0, g.getWidth(), g.getHeight(), ColorPalette.pillow);
+            g.drawStringCentered("Oopsie! Try again!", oopsiePaint);
         }
 
         if (drawTouch) {

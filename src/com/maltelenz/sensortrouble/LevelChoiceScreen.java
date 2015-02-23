@@ -2,7 +2,6 @@ package com.maltelenz.sensortrouble;
 
 import java.util.List;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
@@ -81,7 +80,7 @@ public class LevelChoiceScreen extends Screen {
         levelPaint.setTextSize(70);
         levelPaint.setTextAlign(Paint.Align.CENTER);
         levelPaint.setAntiAlias(true);
-        levelPaint.setColor(Color.WHITE);
+        levelPaint.setColor(ColorPalette.darkText);
         levelPaint.setTypeface(Typeface.DEFAULT_BOLD);
         g.drawStringCentered(Integer.toString(levelChosen), levelPaint);
     }

@@ -48,9 +48,11 @@ public class Level1Screen extends LevelScreen {
         g.clearScreen(ColorPalette.background);
 
         Paint circlePainter = new Paint();
-        circlePainter.setColor(ColorPalette.cherry);
-        circlePainter.setStyle(Style.STROKE);
+        circlePainter.setColor(ColorPalette.button);
+        circlePainter.setStyle(Style.FILL_AND_STROKE);
         circlePainter.setStrokeWidth(5);
+        circlePainter.setAntiAlias(true);
+        circlePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
         g.drawCircle(g.getWidth()/2, g.getHeight()/2, circleRadius, circlePainter);
 
         Paint largePainter = new Paint();
