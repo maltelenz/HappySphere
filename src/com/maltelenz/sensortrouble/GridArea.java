@@ -8,17 +8,17 @@ public class GridArea {
         Empty, Triangle, Box, Laser, Target
     }
 
-    protected enum LaserDirection {
-        Horizontal, Vertical
+    public enum LaserDirection {
+        Left, Top, Right, Bottom
     }
 
     int x, y, x0, y0, x1, y1;
     Shape shape;
     int rotation = 0;
     boolean lasered = false;
-    LaserDirection inCominglaserDirection = LaserDirection.Horizontal;
+    LaserDirection inCominglaserDirection = LaserDirection.Left;
 
-    public GridArea(int x, int y, int x0, int y0, int x1, int y1, Shape s) {
+    public GridArea(int x, int y, int x0, int y0, int x1, int y1, Shape s, int rotation) {
         this.x = x;
         this.y = y;
         this.x0 = x0;
@@ -26,6 +26,7 @@ public class GridArea {
         this.x1 = x1;
         this.y1 = y1;
         this.shape = s;
+        this.rotation = rotation;
     }
 
     public boolean inBounds(TouchEvent event) {
@@ -37,5 +38,13 @@ public class GridArea {
 
     public int getRotation() {
         return this.rotation % 360;
+    }
+    
+    public LaserDirection getLaserDirection() {
+        return this.inCominglaserDirection;
+    }
+
+    public boolean isInComingHorizontal() {
+        return inCominglaserDirection == LaserDirection.Left || inCominglaserDirection == LaserDirection.Right;
     }
 }

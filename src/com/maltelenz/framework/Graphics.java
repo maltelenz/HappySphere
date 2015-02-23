@@ -1,9 +1,10 @@
 package com.maltelenz.framework;
 
-import com.maltelenz.sensortrouble.Button;
-
 import android.graphics.Paint;
 import android.graphics.RectF;
+
+import com.maltelenz.sensortrouble.Button;
+import com.maltelenz.sensortrouble.GridArea.LaserDirection;
 
 public interface Graphics {
     public static enum ImageFormat {
@@ -22,7 +23,7 @@ public interface Graphics {
 
     public void drawLaser(int x, int y, int width, int height, int rotation);
 
-    public void drawTarget(int x, int y, int width, int height, int rotation, boolean lasered);
+    public void drawTarget(int x, int y, int width, int height, LaserDirection inComingDirection, boolean lasered);
 
     public void drawTriangle(int x, int y, int width, int height, int rotation, int color, boolean lasered);
 

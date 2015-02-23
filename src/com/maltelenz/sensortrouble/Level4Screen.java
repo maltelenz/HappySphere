@@ -32,6 +32,8 @@ public class Level4Screen extends LevelScreen {
         for (int x = 0; x < nrX; x++) {
             for (int y = 0; y < nrY; y++) {
                 Shape shape = Shape.Empty;
+                int rotation = 0;
+                
                 if (x == 2 && y == 3) {
                     shape = Shape.Box;
                 }
@@ -41,12 +43,21 @@ public class Level4Screen extends LevelScreen {
                 if (x == 1 && y == 6) {
                     shape = Shape.Triangle;
                 }
+                if (x == 0 && y == 0) {
+                    shape = Shape.Triangle;
+                }
+                if (x == 3 && y == 0) {
+                    shape = Shape.Triangle;
+                    rotation = 270;
+                }
                 if (x == 0 && y == 1) {
                     shape = Shape.Laser;
+                    rotation = 270;
                 }
-                if (x == 4 && y == 6) {
+                if (x == 3 && y == 6) {
                     shape = Shape.Target;
                 }
+                
                 grid.add(new GridArea(
                         x,
                         y,
@@ -54,7 +65,8 @@ public class Level4Screen extends LevelScreen {
                         yOffset + y * boxWidth,
                         xOffset + (x + 1) * boxWidth,
                         yOffset + (y + 1) * boxWidth,
-                        shape
+                        shape,
+                        rotation
                 ));
             }
         }
@@ -106,8 +118,8 @@ public class Level4Screen extends LevelScreen {
     }
 
     void followLaser(GridArea area, int dx, int dy, boolean passedLaser) {
-        if (area.x + dx < 0 || area.x + dx > nrX ||
-                area.y + dy < 0 || area.y + dy > nrY ) {
+        if (area.x < 0 || area.x > nrX ||
+                area.y < 0 || area.y > nrY ) {
             return;
         }
         int nextGridPointX = 0;
@@ -116,9 +128,8 @@ public class Level4Screen extends LevelScreen {
         int nextdy = dy;
         boolean nowHavePassedLaser = false;
 
-        // Box, they eat lasers
+        //Target lit, level soon finished
         if (area.shape == Shape.Target) {
-            //Target lit, level finished
             currentlyLasering  = true;
             return;
         }
@@ -130,8 +141,6 @@ public class Level4Screen extends LevelScreen {
 
         // Empty space, laser goes in current direction
         if (area.shape == Shape.Empty) {
-            nextGridPointX = area.x + dx;
-            nextGridPointY = area.y + dy;
         }
 
         // New laser, it will shoot its own laser
@@ -140,25 +149,19 @@ public class Level4Screen extends LevelScreen {
                 //Already passed a laser, we can stop here
                 return;
             }
-            nextGridPointX = area.x;
-            nextGridPointY = area.y;
             nextdx = 0;
             nextdy = 0;
             switch (area.getRotation()) {
             case 0:
-                nextGridPointX = area.x + 1;
                 nextdx = 1;
                 break;
             case 90:
-                nextGridPointY = area.y + 1;
                 nextdy = 1;
                 break;
             case 180:
-                nextGridPointX = area.x - 1;
                 nextdx = -1;
                 break;
             case 270:
-                nextGridPointY = area.y - 1;
                 nextdy = -1;
                 break;
             }
@@ -167,15 +170,12 @@ public class Level4Screen extends LevelScreen {
 
         // Triangle, they redirect lasers
         if (area.shape == Shape.Triangle) {
-            nextGridPointX = area.x;
-            nextGridPointY = area.y;
             nextdx = 0;
             nextdy = 0;
             switch (area.getRotation()) {
             case 0:
                 switch (dx) {
                 case 1:
-                    nextGridPointY = area.y + 1;
                     nextdy = 1;
                     break;
                 case -1:
@@ -187,7 +187,6 @@ public class Level4Screen extends LevelScreen {
                         area.lasered = false;
                         return;
                     case -1:
-                        nextGridPointX = area.x - 1;
                         nextdx = -1;
                         break;
                     }
@@ -199,7 +198,6 @@ public class Level4Screen extends LevelScreen {
                     area.lasered = false;
                     return;
                 case -1:
-                    nextGridPointY = area.y + 1;
                     nextdy = 1;
                     break;
                 case 0:
@@ -208,7 +206,6 @@ public class Level4Screen extends LevelScreen {
                         area.lasered = false;
                         return;
                     case -1:
-                        nextGridPointX = area.x + 1;
                         nextdx = 1;
                         break;
                     }
@@ -220,13 +217,11 @@ public class Level4Screen extends LevelScreen {
                     area.lasered = false;
                     return;
                 case -1:
-                    nextGridPointY = area.y - 1;
                     nextdy = -1;
                     break;
                 case 0:
                     switch (dy) {
                     case 1:
-                        nextGridPointX = area.x + 1;
                         nextdx = 1;
                         break;
                     case -1:
@@ -238,7 +233,6 @@ public class Level4Screen extends LevelScreen {
             case 270:
                 switch (dx) {
                 case 1:
-                    nextGridPointY = area.y - 1;
                     nextdy = -1;
                     break;
                 case -1:
@@ -247,8 +241,7 @@ public class Level4Screen extends LevelScreen {
                 case 0:
                     switch (dy) {
                     case 1:
-                        nextGridPointX = area.x - 1;
-                        nextdx = 1;
+                        nextdx = -1;
                         break;
                     case -1:
                         area.lasered = false;
@@ -263,14 +256,21 @@ public class Level4Screen extends LevelScreen {
             }
         }
 
+        nextGridPointX = area.x + nextdx;
+        nextGridPointY = area.y + nextdy;
+
         for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
             GridArea a = (GridArea) iterator.next();
             if(a.x == nextGridPointX && a.y == nextGridPointY) {
                 a.lasered = true;
-                if (nextdx != 0) {
-                    a.inCominglaserDirection = LaserDirection.Horizontal;
+                if (nextdx == 1) {
+                    a.inCominglaserDirection = LaserDirection.Left;
+                } else if (nextdx == -1) {
+                    a.inCominglaserDirection = LaserDirection.Right;
+                } else if (nextdy == 1) {
+                    a.inCominglaserDirection = LaserDirection.Top;
                 } else {
-                    a.inCominglaserDirection = LaserDirection.Vertical;
+                    a.inCominglaserDirection = LaserDirection.Bottom;
                 }
 
                 followLaser(a, nextdx, nextdy, nowHavePassedLaser);
@@ -294,7 +294,7 @@ public class Level4Screen extends LevelScreen {
             if (area.shape == Shape.Empty) {
                 g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
                 if (area.lasered) {
-                    if (area.inCominglaserDirection == LaserDirection.Horizontal) {
+                    if (area.isInComingHorizontal()) {
                         g.drawLaserLine(area.x0, area.y0 + height/2, area.x1, area.y0 + height/2);
                     } else {
                         g.drawLaserLine(area.x0 + width/2, area.y0, area.x0 + width/2, area.y1);
@@ -309,7 +309,7 @@ public class Level4Screen extends LevelScreen {
                 g.drawLaser(area.x0, area.y0, width, height, area.getRotation());
             } else if (area.shape == Shape.Target) {
                 g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
-                g.drawTarget(area.x0, area.y0, width, height, area.getRotation(), area.lasered);
+                g.drawTarget(area.x0, area.y0, width, height, area.getLaserDirection(), area.lasered);
             }
         }
         for (Iterator<GridArea> iterator = touched.iterator(); iterator.hasNext();) {

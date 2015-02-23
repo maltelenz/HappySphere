@@ -25,6 +25,7 @@ import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Image;
 import com.maltelenz.sensortrouble.Button;
 import com.maltelenz.sensortrouble.ColorPalette;
+import com.maltelenz.sensortrouble.GridArea.LaserDirection;
 
 public class AndroidGraphics implements Graphics {
     AssetManager assets;
@@ -155,16 +156,26 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
-    public void drawTarget(int x, int y, int width, int height, int rotation, boolean lasered) {
+    public void drawTarget(int x, int y, int width, int height, LaserDirection inComingDirection, boolean lasered) {
         if (lasered) {
-            List<Point> laserPoints = new ArrayList<Point>();
-            laserPoints.add(new Point(x, y + height/2));
-            laserPoints.add(new Point(x + width/2, y + height));
-            laserPoints.add(new Point(x + width, y + height/2));
-            laserPoints.add(new Point(x + width/2, y));
+            Point incomingPoint = null;
+            switch (inComingDirection) {
+            case Left:
+                incomingPoint = new Point(x, y + height/2);
+                break;
+            case Right:
+                incomingPoint = new Point(x + width, y + height/2);
+                break;
+            case Top:
+                incomingPoint = new Point(x + width/2, y);
+                break;
+            case Bottom: default:
+                incomingPoint = new Point(x + width/2, y + height);
+                break;
 
-            Collections.rotate(laserPoints, -rotation/90);
-            drawLine(laserPoints.get(0).x, laserPoints.get(0).y, x + width/2, y + width/2, laserPaint);
+            }
+
+            drawLine(incomingPoint.x, incomingPoint.y, x + width/2, y + width/2, laserPaint);
         }
 
         Paint laserCircle = new Paint();
