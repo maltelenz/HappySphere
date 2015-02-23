@@ -20,6 +20,10 @@ public class Screen {
         levels.add(Level4Screen.class);
     }
 
+    public int numberOfLevels() {
+        return levels.size();
+    }
+
     public void startLevel() {
         startLevel(0);
     }

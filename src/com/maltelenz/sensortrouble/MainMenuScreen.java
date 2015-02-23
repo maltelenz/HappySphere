@@ -14,7 +14,7 @@ public class MainMenuScreen extends Screen {
     private int screenWidth;
     private int screenHeight;
     private Button startButton;
-
+    private Button levelChoiceButton;
 
     public MainMenuScreen(Game game) {
         super(game);
@@ -26,6 +26,11 @@ public class MainMenuScreen extends Screen {
                 (screenHeight - buttonHeight)/2,
                 (screenWidth + buttonWidth)/2,
                 (screenHeight + buttonHeight)/2);
+        levelChoiceButton = new Button("Choose Level",
+                (screenWidth - buttonWidth)/2,
+                (screenHeight - buttonHeight)/2 + 2 * buttonHeight,
+                (screenWidth + buttonWidth)/2,
+                (screenHeight + buttonHeight)/2 + 2 * buttonHeight);
     }
 
     @Override
@@ -38,6 +43,8 @@ public class MainMenuScreen extends Screen {
                 if (startButton.inBounds(event)) {
                     // Start Game
                     startLevel();
+                } else if (levelChoiceButton.inBounds(event)) {
+                    game.setScreen(new LevelChoiceScreen(game));
                 }
             }
         }
@@ -48,6 +55,7 @@ public class MainMenuScreen extends Screen {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
         g.drawButton(startButton);
+        g.drawButton(levelChoiceButton);
     }
 
     @Override
