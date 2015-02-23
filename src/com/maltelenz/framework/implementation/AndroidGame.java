@@ -13,7 +13,7 @@ import com.maltelenz.framework.FileIO;
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input;
-import com.maltelenz.framework.Screen;
+import com.maltelenz.sensortrouble.Screen;
 
 public abstract class AndroidGame extends Activity implements Game {
     AndroidFastRenderView renderView;

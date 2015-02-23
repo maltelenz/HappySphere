@@ -1,5 +1,7 @@
 package com.maltelenz.framework;
 
+import com.maltelenz.sensortrouble.Screen;
+
 public interface Game {
 
     public Input getInput();

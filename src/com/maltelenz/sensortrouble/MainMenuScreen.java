@@ -5,7 +5,6 @@ import java.util.List;
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
-import com.maltelenz.framework.Screen;
 
 public class MainMenuScreen extends Screen {
 

@@ -1,14 +1,9 @@
-package com.maltelenz.framework;
+package com.maltelenz.sensortrouble;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
-import com.maltelenz.sensortrouble.Level1Screen;
-import com.maltelenz.sensortrouble.Level2Screen;
-import com.maltelenz.sensortrouble.Level3Screen;
-import com.maltelenz.sensortrouble.Level4Screen;
-import com.maltelenz.sensortrouble.LevelScreen;
-import com.maltelenz.sensortrouble.MainMenuScreen;
+import com.maltelenz.framework.Game;
 
 public class Screen {
     protected final Game game;

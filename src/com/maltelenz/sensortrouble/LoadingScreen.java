@@ -1,7 +1,6 @@
 package com.maltelenz.sensortrouble;
 
 import com.maltelenz.framework.Game;
-import com.maltelenz.framework.Screen;
 
 public class LoadingScreen extends Screen {
 
@@ -14,23 +13,4 @@ public class LoadingScreen extends Screen {
         game.setScreen(new MainMenuScreen(game));
     }
 
-    @Override
-    public void paint(float deltaTime) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void dispose() {
-    }
-
-    @Override
-    public void backButton() {
-    }
 }

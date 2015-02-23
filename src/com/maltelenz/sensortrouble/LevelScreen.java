@@ -9,7 +9,6 @@ import android.graphics.RectF;
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
-import com.maltelenz.framework.Screen;
 
 public abstract class LevelScreen extends Screen {
 
@@ -152,18 +151,6 @@ public abstract class LevelScreen extends Screen {
         g.drawStringCentered("SUCCESS.");
         g.drawNextButton(nextButtonWidth, nextButtonHeight);
         drawProgressOverlay(true);
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void dispose() {
     }
 
     @Override
