@@ -17,9 +17,7 @@ public abstract class LevelScreen extends Screen {
         }
 
     GameState state = GameState.Initializing;
-    
-    private float numberOfLevels = 4;
-    
+
     private int nextButtonWidth = 500;
     private int nextButtonHeight = 150;
     private int progressBarHeight = 30;
@@ -135,11 +133,11 @@ public abstract class LevelScreen extends Screen {
         if (finished) {
             levelsReallyDone++;
         }
-        g.drawArc(arcRect, levelsReallyDone/numberOfLevels, arcPainter);
+        g.drawArc(arcRect, (float) levelsReallyDone/numberOfLevels(), arcPainter);
 
         arcPainter.setColor(ColorPalette.inactiveProgress);
         arcPainter.clearShadowLayer();
-        g.drawArc(arcRect, 100 - levelsReallyDone/numberOfLevels, arcPainter);
+        g.drawArc(arcRect, 100 - (float) levelsReallyDone/numberOfLevels(), arcPainter);
 
         g.drawString(
                 Integer.toString(levelsReallyDone),

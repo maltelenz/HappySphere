@@ -26,6 +26,7 @@ import com.maltelenz.framework.Image;
 import com.maltelenz.sensortrouble.Button;
 import com.maltelenz.sensortrouble.ColorPalette;
 import com.maltelenz.sensortrouble.GridArea.LaserDirection;
+import com.maltelenz.sensortrouble.TouchPoint;
 
 public class AndroidGraphics implements Graphics {
     AssetManager assets;
@@ -35,7 +36,8 @@ public class AndroidGraphics implements Graphics {
     Paint darkTextPaint;
     Paint lightTextPaint;
     Paint laserPaint;
-    
+    Paint oopsiePaint;
+
     Rect srcRect = new Rect();
     Rect dstRect = new Rect();
 
@@ -64,6 +66,14 @@ public class AndroidGraphics implements Graphics {
         laserPaint.setStyle(Style.STROKE);
         laserPaint.setStrokeJoin(Join.BEVEL);
         laserPaint.setAntiAlias(true);
+
+        this.oopsiePaint = new Paint();
+
+        oopsiePaint.setTextSize(100);
+        oopsiePaint.setTextAlign(Paint.Align.CENTER);
+        oopsiePaint.setAntiAlias(true);
+        oopsiePaint.setColor(ColorPalette.oopsie);
+        oopsiePaint.setTypeface(Typeface.DEFAULT_BOLD);        
     }
 
     @Override
@@ -284,6 +294,11 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
+    public void drawOopsieString() {
+        drawStringCentered("Oopsie! Try again!", oopsiePaint);
+    }
+
+    @Override
     public void drawStringCentered(String text, Paint painter) {
         drawString(text, getWidth() / 2, getHeight() / 2, painter);
     }
@@ -345,5 +360,19 @@ public class AndroidGraphics implements Graphics {
     @Override
     public int getHeight() {
         return frameBuffer.getHeight();
+    }
+
+    @Override
+    public void drawPoint(TouchPoint point, int pointRadius) {
+        Paint pointPaint = new Paint();
+        pointPaint.setStrokeWidth(10);
+        pointPaint.setAntiAlias(true);
+        pointPaint.setStyle(Style.FILL_AND_STROKE);
+        if (point.isTouched()) {
+            pointPaint.setColor(ColorPalette.progress);
+        } else {
+            pointPaint.setColor(ColorPalette.inactiveProgress);
+        }
+        drawCircle(point.x, point.y, pointRadius, pointPaint);
     }
 }

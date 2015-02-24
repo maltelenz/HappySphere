@@ -18,6 +18,7 @@ public class Screen {
         levels.add(Level2Screen.class);
         levels.add(Level3Screen.class);
         levels.add(Level4Screen.class);
+        levels.add(Level5Screen.class);
     }
 
     public int numberOfLevels() {

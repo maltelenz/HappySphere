@@ -5,6 +5,7 @@ import android.graphics.RectF;
 
 import com.maltelenz.sensortrouble.Button;
 import com.maltelenz.sensortrouble.GridArea.LaserDirection;
+import com.maltelenz.sensortrouble.TouchPoint;
 
 public interface Graphics {
     public static enum ImageFormat {
@@ -46,6 +47,8 @@ public interface Graphics {
 
     public void drawStringCentered(String string, Paint largePainter);
 
+    public void drawOopsieString();
+
     public void drawButton(String text, int x0, int y0, int x1, int y1);
 
     public void drawButton(Button b);
@@ -59,5 +62,7 @@ public interface Graphics {
     void drawCircle(int x, int y, int radius, Paint painter);
 
     public void drawArc(RectF rect, float percent, Paint painter);
+
+    public void drawPoint(TouchPoint point, int pointRadius);
 
 }
