@@ -23,7 +23,14 @@ public class LevelChoiceScreen extends Screen {
     private Button lowerButton;
     private Button higherButton;
     private Button startButton;
-    
+
+    private boolean lowerPressed = false;
+    private boolean higherPressed = false;
+
+    private float pressRepetitionTime = 15;
+    private float longPressInitTime = 75;
+    private float pressTimeLeft = longPressInitTime;
+
     private int levelChosen = 1;
 
     public LevelChoiceScreen(Game game) {
@@ -50,17 +57,37 @@ public class LevelChoiceScreen extends Screen {
 
     @Override
     public void update(float deltaTime) {
+        if (pressTimeLeft < 0) {
+            if (higherPressed) {
+                levelChosen  = Math.min(levelChosen + 1, numberOfLevels());
+            } else if (lowerPressed) {
+                levelChosen = Math.max(levelChosen - 1, 1);
+            }
+            pressTimeLeft = pressRepetitionTime;
+        }
+
+        if (lowerPressed || higherPressed) {
+            pressTimeLeft -= deltaTime;
+        }
+
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
-            if (event.type == TouchEvent.TOUCH_UP) {
+            if (event.type == TouchEvent.TOUCH_DOWN) {
                 if (lowerButton.inBounds(event)) {
                     levelChosen = Math.max(levelChosen - 1, 1);
+                    lowerPressed = true;
                 }
                 if (higherButton.inBounds(event)) {
                     levelChosen  = Math.min(levelChosen + 1, numberOfLevels());
+                    higherPressed = true;
                 }
+            }
+            if (event.type == TouchEvent.TOUCH_UP) {
+                lowerPressed = false;
+                higherPressed = false;
+                pressTimeLeft = longPressInitTime;
                 if (startButton.inBounds(event)) {
                     // Start Game
                     startLevel(levelChosen - 1);
