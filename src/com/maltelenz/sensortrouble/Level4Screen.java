@@ -280,7 +280,7 @@ public class Level4Screen extends LevelScreen {
     }
 
     @Override
-    float percentDone() {
+    double percentDone() {
         return 1 - timeLeftLasering/timeToFinish;
     }
 

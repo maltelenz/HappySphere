@@ -375,4 +375,9 @@ public class AndroidGraphics implements Graphics {
         }
         drawCircle(point.x, point.y, pointRadius, pointPaint);
     }
+
+    @Override
+    public void drawPoints(float[] drawingPoints, Paint paint) {
+        canvas.drawPoints(drawingPoints, paint);
+    }
 }

@@ -39,8 +39,8 @@ public class Level1Screen extends LevelScreen {
     }
 
     @Override
-    float percentDone() {
-        return ((float) (maxTouches - touchesLeft))/maxTouches;
+    double percentDone() {
+        return ((double) (maxTouches - touchesLeft))/maxTouches;
     }
 
     void drawRunningUI() {

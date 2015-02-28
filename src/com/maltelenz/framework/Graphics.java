@@ -59,10 +59,12 @@ public interface Graphics {
 
     public void drawARGB(int i, int j, int k, int l);
 
-    void drawCircle(int x, int y, int radius, Paint painter);
+    public void drawCircle(int x, int y, int radius, Paint painter);
 
     public void drawArc(RectF rect, float percent, Paint painter);
 
     public void drawPoint(TouchPoint point, int pointRadius);
+
+    public void drawPoints(float[] drawingPoints, Paint paint);
 
 }

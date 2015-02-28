@@ -105,8 +105,8 @@ public class Level3Screen extends LevelScreen {
 
     
     @Override
-    float percentDone() {
-        return ((float) step)/touchAreas.size();
+    double percentDone() {
+        return ((double) step)/touchAreas.size();
     }
 
     private void drawGrid() {

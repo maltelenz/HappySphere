@@ -40,7 +40,7 @@ public abstract class LevelScreen extends Screen {
 
     abstract protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime);
 
-    abstract float percentDone();
+    abstract double percentDone();
 
     void updateGameInitializing(float deltaTime) {
         return;
@@ -104,7 +104,7 @@ public abstract class LevelScreen extends Screen {
     protected void drawProgressOverlay(boolean finished) {
         Graphics g = game.getGraphics();
         // Draw the progress for the current level
-        int xmax = Math.round(percentDone() * g.getWidth());
+        int xmax = (int) Math.round(percentDone() * g.getWidth());
         g.drawRectWithShadow(0, 0, xmax, progressBarHeight, ColorPalette.progress);
         g.drawRect(xmax, 0, g.getWidth() - xmax, progressBarHeight, ColorPalette.inactiveProgress);
         // Draw total progress

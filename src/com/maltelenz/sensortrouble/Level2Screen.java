@@ -49,7 +49,7 @@ public class Level2Screen extends LevelScreen {
     }
 
     @Override
-    float percentDone() {
+    double percentDone() {
         return (touchLength - timeLeft)/touchLength;
     }
 
