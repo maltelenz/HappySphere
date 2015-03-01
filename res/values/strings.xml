@@ -1,5 +1,7 @@
 <resources>
 
     <string name="app_name">AndroidGame</string>
+    <string name="level_preference_file_key">com.maltelenz.sensortrouble.leveling</string>
+    <string name="max_level_achieved">MaxLevelAchieved</string>
 
 </resources>

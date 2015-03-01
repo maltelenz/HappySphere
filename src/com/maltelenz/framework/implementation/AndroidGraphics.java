@@ -149,6 +149,11 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
+    public void drawPartialArc(RectF rect, float startPercent, float sweepPercent, Paint painter) {
+        canvas.drawArc(rect, -90 + 360 * startPercent, 360 * sweepPercent, false, painter);
+    }
+
+    @Override
     public void drawLaser(int x, int y, int width, int height, int rotation) {
         Paint laserCircle = new Paint();
         laserCircle.set(laserPaint);

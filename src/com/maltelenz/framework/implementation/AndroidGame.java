@@ -1,6 +1,8 @@
 package com.maltelenz.framework.implementation;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import com.maltelenz.framework.FileIO;
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input;
+import com.maltelenz.sensortrouble.R;
 import com.maltelenz.sensortrouble.Screen;
 
 public abstract class AndroidGame extends Activity implements Game {
@@ -104,6 +107,26 @@ public abstract class AndroidGame extends Activity implements Game {
     
     public Screen getCurrentScreen() {
         return screen;
+    }
+
+    private SharedPreferences getLevelPreferences() {
+        return this.getSharedPreferences(getString(R.string.level_preference_file_key), Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void updateMaxLevel(int level) {
+        if (level > getMaxLevel()) {
+            SharedPreferences preferences = getLevelPreferences();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt(getString(R.string.max_level_achieved), level);
+            editor.commit();
+        }
+    }
+
+    @Override
+    public int getMaxLevel() {
+        SharedPreferences preferences = getLevelPreferences();
+        return preferences.getInt(getString(R.string.max_level_achieved), 0);
     }
 
     @SuppressWarnings("deprecation")

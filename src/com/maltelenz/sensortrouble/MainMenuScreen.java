@@ -56,6 +56,8 @@ public class MainMenuScreen extends Screen {
         g.clearScreen(ColorPalette.background);
         g.drawButton(startButton);
         g.drawButton(levelChoiceButton);
+
+        drawGameProgressOverlay(false, false);
     }
 
     @Override

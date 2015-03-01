@@ -63,6 +63,8 @@ public interface Graphics {
 
     public void drawArc(RectF rect, float percent, Paint painter);
 
+    public void drawPartialArc(RectF rect, float startPercent, float sweepPercent, Paint painter);
+
     public void drawPoint(TouchPoint point, int pointRadius);
 
     public void drawPoints(float[] drawingPoints, Paint paint);

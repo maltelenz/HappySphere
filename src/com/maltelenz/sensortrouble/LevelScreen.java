@@ -2,10 +2,6 @@ package com.maltelenz.sensortrouble;
 
 import java.util.List;
 
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.RectF;
-
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
@@ -20,11 +16,10 @@ public abstract class LevelScreen extends Screen {
 
     private int nextButtonWidth = 500;
     private int nextButtonHeight = 150;
-    private int progressBarHeight = 30;
-    private int levelIndicatorRadius = 100;
-    private int levelIndicatorPadding = 50;
 
     private Button nextButton;
+
+    private boolean updatedLevelFinished = false;
 
     public LevelScreen(Game game) {
         super(game);
@@ -61,8 +56,13 @@ public abstract class LevelScreen extends Screen {
 
         if (state == GameState.Running)
             updateGameRunning(touchEvents, deltaTime);
-        if (state == GameState.Finished)
+        if (state == GameState.Finished) {
             updateGameFinished(touchEvents);
+            if (!updatedLevelFinished) {
+                game.updateMaxLevel(currentLevel() + 1); // +1 because currentLevel() is 0-indexed.
+                updatedLevelFinished = true;
+            }
+        }
     }
 
     private void updateGameFinished(List<TouchEvent> touchEvents) {
@@ -89,7 +89,8 @@ public abstract class LevelScreen extends Screen {
         }
         if (state == GameState.Running) {
             drawRunningUI();
-            drawProgressOverlay(false);
+            drawGameProgressOverlay(true, false);
+            drawLevelProgressOverlay();
         }
         if (state == GameState.Finished) {
             drawGameFinishedUI();
@@ -101,49 +102,12 @@ public abstract class LevelScreen extends Screen {
         System.gc();
     }
 
-    protected void drawProgressOverlay(boolean finished) {
+    protected void drawLevelProgressOverlay() {
         Graphics g = game.getGraphics();
         // Draw the progress for the current level
         int xmax = (int) Math.round(percentDone() * g.getWidth());
         g.drawRectWithShadow(0, 0, xmax, progressBarHeight, ColorPalette.progress);
         g.drawRect(xmax, 0, g.getWidth() - xmax, progressBarHeight, ColorPalette.inactiveProgress);
-        // Draw total progress
-        Paint arcPainter = new Paint();
-        arcPainter.setColor(ColorPalette.progressBackground);
-        arcPainter.setStyle(Style.FILL);
-        arcPainter.setAntiAlias(true);
-        g.drawCircle(
-                g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
-                levelIndicatorRadius + levelIndicatorPadding + progressBarHeight,
-                levelIndicatorRadius,
-                arcPainter
-            );
-
-        arcPainter.setColor(ColorPalette.progress);
-        arcPainter.setStyle(Style.STROKE);
-        arcPainter.setStrokeWidth(15);
-        arcPainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
-        RectF arcRect = new RectF(
-                g.getWidth() - levelIndicatorPadding - 2 * levelIndicatorRadius,
-                levelIndicatorPadding + progressBarHeight,
-                g.getWidth() - levelIndicatorPadding,
-                2 * levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
-            );
-        int levelsReallyDone = currentLevel();
-        if (finished) {
-            levelsReallyDone++;
-        }
-        g.drawArc(arcRect, (float) levelsReallyDone/numberOfLevels(), arcPainter);
-
-        arcPainter.setColor(ColorPalette.inactiveProgress);
-        arcPainter.clearShadowLayer();
-        g.drawArc(arcRect, 100 - (float) levelsReallyDone/numberOfLevels(), arcPainter);
-
-        g.drawString(
-                Integer.toString(levelsReallyDone),
-                g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
-                levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
-            );
     }
 
     private void drawGameFinishedUI() {
@@ -151,7 +115,8 @@ public abstract class LevelScreen extends Screen {
         g.clearScreen(ColorPalette.background);
         g.drawStringCentered("SUCCESS.");
         g.drawButton(nextButton);
-        drawProgressOverlay(true);
+        drawGameProgressOverlay(true, true);
+        drawLevelProgressOverlay();
     }
 
     @Override

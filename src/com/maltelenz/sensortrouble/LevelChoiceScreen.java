@@ -59,7 +59,7 @@ public class LevelChoiceScreen extends Screen {
     public void update(float deltaTime) {
         if (pressTimeLeft < 0) {
             if (higherPressed) {
-                levelChosen  = Math.min(levelChosen + 1, numberOfLevels());
+                levelChosen  = Math.min(Math.min(levelChosen + 1, game.getMaxLevel() + 1), numberOfLevels());
             } else if (lowerPressed) {
                 levelChosen = Math.max(levelChosen - 1, 1);
             }
@@ -80,7 +80,7 @@ public class LevelChoiceScreen extends Screen {
                     lowerPressed = true;
                 }
                 if (higherButton.inBounds(event)) {
-                    levelChosen  = Math.min(levelChosen + 1, numberOfLevels());
+                    levelChosen  = Math.min(Math.min(levelChosen + 1, game.getMaxLevel() + 1), numberOfLevels());
                     higherPressed = true;
                 }
             }
@@ -110,6 +110,8 @@ public class LevelChoiceScreen extends Screen {
         levelPaint.setColor(ColorPalette.darkText);
         levelPaint.setTypeface(Typeface.DEFAULT_BOLD);
         g.drawStringCentered(Integer.toString(levelChosen), levelPaint);
+
+        drawGameProgressOverlay(false, false);
     }
 
     @Override

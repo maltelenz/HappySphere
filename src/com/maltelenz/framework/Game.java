@@ -15,4 +15,11 @@ public interface Game {
     public Screen getCurrentScreen();
 
     public Screen getInitScreen();
+
+    public void updateMaxLevel(int level);
+
+    /**
+     * @return the highest level finished, 1-indexed
+     */
+    public int getMaxLevel();
 }

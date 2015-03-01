@@ -3,14 +3,23 @@ package com.maltelenz.sensortrouble;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.RectF;
+
 import com.maltelenz.framework.Game;
+import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
 
 public class Screen {
     protected final Game game;
     
     private ArrayList<Class<? extends LevelScreen>> levels;
-    
+
+    private int levelIndicatorRadius = 100;
+    private int levelIndicatorPadding = 50;
+    protected int progressBarHeight = 30;
+
     public Screen(Game game) {
         this.game = game;
         levels = new ArrayList<Class<? extends LevelScreen>>();
@@ -21,14 +30,24 @@ public class Screen {
         levels.add(Level5Screen.class);
     }
 
+    /**
+     * @return the number of levels available in the game
+     */
     public int numberOfLevels() {
         return levels.size();
     }
 
+    /**
+     * Starts the first level not yet completed
+     */
     public void startLevel() {
-        startLevel(0);
+        startLevel(Math.min(game.getMaxLevel(), numberOfLevels() - 1));
     }
 
+    /**
+     * Starts the given level
+     * @param level The level to start, 0-indexed
+     */
     public void startLevel(int level) {
         try {
             Constructor<?> c;
@@ -42,10 +61,20 @@ public class Screen {
         }
     }
 
+    /**
+     * @return the level currently played, 0-indexed
+     */
     public int currentLevel() {
-        return levels.indexOf(this.game.getCurrentScreen().getClass());
+        int level = levels.indexOf(this.game.getCurrentScreen().getClass());
+        if(level == -1) {
+            level = game.getMaxLevel();
+        }
+        return level;
     }
 
+    /**
+     * Start the level after the currently played
+     */
     public void nextLevel() {
         int nr = currentLevel() + 1;
         if (nr > levels.size() - 1) {
@@ -72,6 +101,62 @@ public class Screen {
 
     public boolean backButton() {
         return true;
+    }
+
+    /**
+     * Draws the progress overlay for the complete game (number of levels finished)
+     * @param playing if currently playing a level
+     */
+    protected void drawGameProgressOverlay(boolean playing, boolean finished) {
+        Graphics g = game.getGraphics();
+        // Draw total progress
+        Paint arcPainter = new Paint();
+        arcPainter.setColor(ColorPalette.progressBackground);
+        arcPainter.setStyle(Style.FILL);
+        arcPainter.setAntiAlias(true);
+        g.drawCircle(
+                g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
+                levelIndicatorRadius + levelIndicatorPadding + progressBarHeight,
+                levelIndicatorRadius,
+                arcPainter
+            );
+
+        arcPainter.setColor(ColorPalette.progress);
+        arcPainter.setStyle(Style.STROKE);
+        arcPainter.setStrokeWidth(15);
+        arcPainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
+        RectF arcRect = new RectF(
+                g.getWidth() - levelIndicatorPadding - 2 * levelIndicatorRadius,
+                levelIndicatorPadding + progressBarHeight,
+                g.getWidth() - levelIndicatorPadding,
+                2 * levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
+            );
+        int maxLevelAchieved = game.getMaxLevel();
+        float percentDone = (float) maxLevelAchieved/numberOfLevels();
+        g.drawArc(arcRect, percentDone, arcPainter);
+
+        arcPainter.setColor(ColorPalette.inactiveProgress);
+        arcPainter.clearShadowLayer();
+        g.drawArc(arcRect, 100 - (float) maxLevelAchieved/numberOfLevels(), arcPainter);
+
+        if (playing) {
+            // Draw small indicator at current level
+            
+            int currentLevel = currentLevel();
+            if (finished) {
+                currentLevel++;
+            }
+            float currentPercent = (float) currentLevel/numberOfLevels();
+
+            arcPainter.setColor(ColorPalette.laser);
+            g.drawPartialArc(arcRect, currentPercent, 0.01f, arcPainter);
+        }
+
+        g.drawString(
+                Integer.toString(maxLevelAchieved),
+                g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
+                levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
+            );
     }
 
     protected boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
