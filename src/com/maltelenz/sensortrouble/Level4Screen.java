@@ -291,7 +291,7 @@ public class Level4Screen extends LevelScreen {
             GridArea area = (GridArea) iterator.next();
             int width = area.x1 - area.x0;
             int height = area.y1 - area.y0;
-            // Always draw a rectangle to an unbroken grid look.
+            // Always draw a rectangle to get an unbroken grid look.
             g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
             if (area.shape == Shape.Empty) {
                 if (area.lasered) {
