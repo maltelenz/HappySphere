@@ -210,7 +210,7 @@ public class AndroidGraphics implements Graphics {
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setStrokeWidth(10);
-        paint.setStyle(Style.STROKE);
+        paint.setStyle(Style.FILL);
         paint.setAntiAlias(true);
 
         List<Point> points = new ArrayList<Point>();
@@ -224,9 +224,7 @@ public class AndroidGraphics implements Graphics {
         Path path = new Path();
         path.moveTo(points.get(0).x, points.get(0).y);
         path.lineTo(points.get(1).x, points.get(1).y);
-        path.moveTo(points.get(1).x, points.get(1).y);
         path.lineTo(points.get(2).x, points.get(2).y);
-        path.moveTo(points.get(2).x, points.get(2).y);
         path.lineTo(points.get(0).x, points.get(0).y);
         path.close();
 
@@ -246,10 +244,7 @@ public class AndroidGraphics implements Graphics {
             Path laserPath = new Path();
             laserPath.moveTo(laserPoints.get(0).x, laserPoints.get(0).y);
             laserPath.lineTo(centerPoint.x, centerPoint.y);
-            laserPath.moveTo(centerPoint.x, centerPoint.y);
             laserPath.lineTo(laserPoints.get(1).x, laserPoints.get(1).y);
-            laserPath.moveTo(laserPoints.get(1).x, laserPoints.get(1).y);
-            laserPath.close();
             canvas.drawPath(laserPath, laserPaint);
         }
     }

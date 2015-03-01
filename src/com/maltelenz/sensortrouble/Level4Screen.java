@@ -291,8 +291,9 @@ public class Level4Screen extends LevelScreen {
             GridArea area = (GridArea) iterator.next();
             int width = area.x1 - area.x0;
             int height = area.y1 - area.y0;
+            // Always draw a rectangle to an unbroken grid look.
+            g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
             if (area.shape == Shape.Empty) {
-                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
                 if (area.lasered) {
                     if (area.isInComingHorizontal()) {
                         g.drawLaserLine(area.x0, area.y0 + height/2, area.x1, area.y0 + height/2);
@@ -305,10 +306,8 @@ public class Level4Screen extends LevelScreen {
             } else if (area.shape == Shape.Triangle) {
                 g.drawTriangle(area.x0, area.y0, width, height, area.getRotation(), ColorPalette.button, area.lasered);
             } else if (area.shape == Shape.Laser) {
-                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
                 g.drawLaser(area.x0, area.y0, width, height, area.getRotation());
             } else if (area.shape == Shape.Target) {
-                g.drawRectNoFill(area.x0, area.y0, width, height, ColorPalette.gridLines);
                 g.drawTarget(area.x0, area.y0, width, height, area.getLaserDirection(), area.lasered);
             }
         }
