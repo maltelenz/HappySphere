@@ -385,4 +385,9 @@ public class AndroidGraphics implements Graphics {
     public void drawPoints(float[] drawingPoints, Paint paint) {
         canvas.drawPoints(drawingPoints, paint);
     }
+
+    @Override
+    public void drawPath(Path path, Paint paint) {
+        canvas.drawPath(path, paint);
+    }
 }

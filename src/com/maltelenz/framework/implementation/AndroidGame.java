@@ -94,6 +94,11 @@ public abstract class AndroidGame extends Activity implements Game {
     }
 
     @Override
+    public Context getContext() {
+        return this;
+    }
+    
+    @Override
     public void setScreen(Screen screen) {
         if (screen == null)
             throw new IllegalArgumentException("Screen must not be null");
@@ -104,7 +109,7 @@ public abstract class AndroidGame extends Activity implements Game {
         screen.update(0);
         this.screen = screen;
     }
-    
+
     public Screen getCurrentScreen() {
         return screen;
     }

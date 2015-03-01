@@ -1,6 +1,7 @@
 package com.maltelenz.framework;
 
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 
 import com.maltelenz.sensortrouble.Button;
@@ -68,5 +69,7 @@ public interface Graphics {
     public void drawPoint(TouchPoint point, int pointRadius);
 
     public void drawPoints(float[] drawingPoints, Paint paint);
+
+    public void drawPath(Path path, Paint paint);
 
 }

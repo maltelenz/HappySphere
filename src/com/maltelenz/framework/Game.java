@@ -1,5 +1,7 @@
 package com.maltelenz.framework;
 
+import android.content.Context;
+
 import com.maltelenz.sensortrouble.Screen;
 
 public interface Game {
@@ -15,6 +17,8 @@ public interface Game {
     public Screen getCurrentScreen();
 
     public Screen getInitScreen();
+    
+    public Context getContext();
 
     public void updateMaxLevel(int level);
 
