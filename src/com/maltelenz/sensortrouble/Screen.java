@@ -154,7 +154,7 @@ public class Screen {
         }
 
         g.drawString(
-                Integer.toString(currentLevel() + 1),
+                Integer.toString(Math.min(currentLevel() + 1, numberOfLevels())),
                 g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
                 levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
             );
