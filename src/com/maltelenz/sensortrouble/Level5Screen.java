@@ -24,6 +24,7 @@ public class Level5Screen extends LevelScreen {
     private int reverseSpeed;
     private Paint touchedPointPaint;
     private Paint unFinishedPixelPaint;
+    private boolean landscape;
 
     public Level5Screen(Game game) {
         super(game);
@@ -31,6 +32,12 @@ public class Level5Screen extends LevelScreen {
         gameHeight = game.getGraphics().getHeight();
         gameWidth = game.getGraphics().getWidth();
 
+        if (gameWidth > gameHeight) {
+            landscape = true;
+            gameHeight = game.getGraphics().getWidth();
+            gameWidth = game.getGraphics().getHeight();
+        }
+        
         finishedPixelPaint = new Paint();
         finishedPixelPaint.setColor(ColorPalette.progress);
         finishedPixelPaint.setAntiAlias(true);
@@ -65,17 +72,26 @@ public class Level5Screen extends LevelScreen {
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
+            int ypos;
+            int xpos;
+            if (landscape) {
+                ypos = event.x;
+                xpos = event.y;
+            } else {
+                ypos = event.y;
+                xpos = event.x;
+            }
             if (event.type == TouchEvent.TOUCH_DOWN) {
-                if (!grabbed  && Math.abs(event.y - currentPointY) < maxXDeviation) {
+                if (!grabbed  && Math.abs(ypos - currentPointY) < maxXDeviation) {
                     // Start touching
                     grabbed = true;
                 }
             } else if (event.type == TouchEvent.TOUCH_UP) {
                 grabbed = false;
             } else if (event.type == TouchEvent.TOUCH_DRAGGED) {
-                double distanceX = getDistanceX(event.x, event.y);
-                if (grabbed && distanceX < maxXDeviation && Math.abs(event.y - currentPointY) < maxYDeviation ) {
-                    currentPointY = event.y;
+                double distanceX = getDistanceX(xpos, ypos);
+                if (grabbed && distanceX < maxXDeviation && Math.abs(ypos - currentPointY) < maxYDeviation ) {
+                    currentPointY = ypos;
                 } else {
                     grabbed = false;
                 }
@@ -102,8 +118,13 @@ public class Level5Screen extends LevelScreen {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
 
-        float[] finishedPoints = Arrays.copyOfRange(drawingPoints, 0, currentPointY * 2);
-        float[] unFinishedPoints = Arrays.copyOfRange(drawingPoints, currentPointY * 2, drawingPoints.length);
+        int offset = 0;
+        if (landscape) {
+            offset = 1;
+        }
+
+        float[] finishedPoints = Arrays.copyOfRange(drawingPoints, 0 + offset, currentPointY * 2 + offset);
+        float[] unFinishedPoints = Arrays.copyOfRange(drawingPoints, currentPointY * 2 + offset, drawingPoints.length - offset);
         g.drawPoints(finishedPoints, finishedPixelPaint);
 
         g.drawPoints(unFinishedPoints, unFinishedPixelPaint);
@@ -114,7 +135,16 @@ public class Level5Screen extends LevelScreen {
         } else {
             usedPointPaint.set(unTouchedPointPaint);
         }
-        g.drawCircle(getXValue(currentPointY), currentPointY, maxXDeviation, usedPointPaint);
+        int xp;
+        int yp;
+        if (landscape) {
+            xp = currentPointY;
+            yp = getXValue(currentPointY);
+        } else {
+            xp = getXValue(currentPointY);
+            yp = currentPointY;
+        }
+        g.drawCircle(xp, yp, maxXDeviation, usedPointPaint);
     }
     
     private int getXValue(int y) {
