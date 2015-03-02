@@ -38,6 +38,7 @@ public abstract class AndroidGame extends Activity implements Game {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             );
+        lockOrientationPortrait();
 
         Bitmap frameBuffer = getFrameBuffer();
 
