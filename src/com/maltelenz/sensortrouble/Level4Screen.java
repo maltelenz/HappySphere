@@ -17,15 +17,32 @@ public class Level4Screen extends LevelScreen {
     private boolean currentlyLasering = false;
     private float timeToFinish = 300;
     private float timeLeftLasering = timeToFinish;
-    int nrX = 5;
-    int nrY = 7;
+    int nrX;
+    int nrY;
+    boolean landscape;
 
     public Level4Screen(Game game) {
         super(game);
 
-        int boxWidth = Math.min(game.getGraphics().getWidth()/nrX, game.getGraphics().getHeight()/nrY);
-        int xOffset = (game.getGraphics().getWidth() - nrX * boxWidth)/2;
-        int yOffset = (game.getGraphics().getHeight() - nrY * boxWidth)/2;
+        int gameWidth = game.getGraphics().getWidth();
+        int gameHeight = game.getGraphics().getHeight();
+
+        if (gameWidth > gameHeight) {
+            // Landscape
+            nrX = 7;
+            nrY = 5;
+            landscape = true;
+        } else {
+            //Portrait
+            nrX = 5;
+            nrY = 7;
+            landscape = false;
+        }
+
+        int boxWidth = Math.min(gameWidth/nrX, gameHeight/nrY);
+
+        int xOffset = (gameWidth - nrX * boxWidth)/2;
+        int yOffset = (gameHeight - nrY * boxWidth)/2;
         
         // Initialize data
         grid = new ArrayList<GridArea>();
@@ -33,29 +50,42 @@ public class Level4Screen extends LevelScreen {
             for (int y = 0; y < nrY; y++) {
                 Shape shape = Shape.Empty;
                 int rotation = 0;
-                
-                if (x == 2 && y == 3) {
+
+                int ix = x;
+                int iy = y;
+
+                if (landscape) {
+                    ix = y;
+                    iy = x;
+                }
+
+                if (ix == 2 && iy == 3) {
                     shape = Shape.Box;
                 }
-                if (x == 1 && y == 1) {
+
+                if (ix == 1 && iy == 1) {
                     shape = Shape.Triangle;
                 }
-                if (x == 1 && y == 6) {
+                if (ix == 1 && iy == 6) {
                     shape = Shape.Triangle;
                 }
-                if (x == 0 && y == 0) {
+                if (ix == 0 && iy == 0) {
                     shape = Shape.Triangle;
                 }
-                if (x == 3 && y == 0) {
+                if (ix == 3 && iy == 0) {
                     shape = Shape.Triangle;
                     rotation = 270;
                 }
-                if (x == 0 && y == 1) {
+                if (ix == 0 && iy == 1) {
                     shape = Shape.Laser;
                     rotation = 270;
                 }
-                if (x == 3 && y == 6) {
+                if (ix == 3 && iy == 6) {
                     shape = Shape.Target;
+                }
+                
+                if (landscape) {
+                    rotation = rotation - 90;
                 }
                 
                 grid.add(new GridArea(
