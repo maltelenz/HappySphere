@@ -34,6 +34,8 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
     public Level6Screen(Game game) {
         super(game);
 
+        game.lockOrientationPortrait();
+
         gameHeight = game.getGraphics().getHeight();
         gameWidth = game.getGraphics().getWidth();
 
@@ -103,6 +105,7 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
     @Override
     public void pause() {
         super.pause();
+        game.unLockOrientation();
         sensorManager.unregisterListener(this);
     }
 

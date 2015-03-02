@@ -3,6 +3,7 @@ package com.maltelenz.framework.implementation;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
@@ -132,6 +133,21 @@ public abstract class AndroidGame extends Activity implements Game {
     public int getMaxLevel() {
         SharedPreferences preferences = getLevelPreferences();
         return preferences.getInt(getString(R.string.max_level_achieved), 0);
+    }
+
+    @Override
+    public void lockOrientationPortrait() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    public void lockOrientationLandscape() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    @Override
+    public void unLockOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @SuppressWarnings("deprecation")

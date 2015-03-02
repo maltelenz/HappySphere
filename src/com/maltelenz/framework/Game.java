@@ -17,7 +17,7 @@ public interface Game {
     public Screen getCurrentScreen();
 
     public Screen getInitScreen();
-    
+
     public Context getContext();
 
     public void updateMaxLevel(int level);
@@ -26,4 +26,19 @@ public interface Game {
      * @return the highest level finished, 1-indexed
      */
     public int getMaxLevel();
+
+    /**
+     * Unlocks the screen orientation.
+     */
+    public void unLockOrientation();
+
+    /**
+     * Locks the screen in portrait mode.
+     */
+    public void lockOrientationPortrait();
+
+    /**
+     * Locks the screen in landscape mode.
+     */
+    public void lockOrientationLandscape();
 }
