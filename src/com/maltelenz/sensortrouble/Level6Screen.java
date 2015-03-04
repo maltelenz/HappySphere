@@ -19,7 +19,7 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
 
     private int gameHeight;
     private int gameWidth;
-    private int pointSize = 100;
+    private int pointSize;
     private int currentPointY;
     private int currentPointX;
     private Paint pointPaint;
@@ -27,7 +27,7 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
     private float gY;
     private SensorManager sensorManager;
     private Sensor gravitySensor;
-    private float speed = 2;
+    private float speed;
     private Path arrowPath;
     private Paint arrowPaint;
 
@@ -37,19 +37,22 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
         gameHeight = game.getGraphics().getHeight();
         gameWidth = game.getGraphics().getWidth();
 
+        pointSize = game.scale(100);
+
+        speed = game.scaleY(4);
+
         currentPointY = pointSize;
         currentPointX = gameWidth/2;
 
         pointPaint = new Paint();
         pointPaint.setColor(ColorPalette.laser);
         pointPaint.setAntiAlias(true);
-        pointPaint.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
+        pointPaint.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
 
         arrowPaint = new Paint();
         arrowPaint.setColor(ColorPalette.inactiveProgress);
         arrowPaint.setAntiAlias(true);
         arrowPaint.setStyle(Style.FILL);
-//        arrowPaint.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
 
         arrowPath = new Path();
         arrowPath.moveTo(Math.round(2.0 * gameWidth/5), Math.round(1.0 * gameHeight/5));

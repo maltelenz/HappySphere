@@ -10,8 +10,8 @@ import com.maltelenz.framework.Input;
 public class AndroidInput implements Input {
     TouchHandler touchHandler;
 
-    public AndroidInput(Context context, View view, float scaleX, float scaleY) {
-        touchHandler = new MultiTouchHandler(view, scaleX, scaleY);
+    public AndroidInput(Context context, View view) {
+        touchHandler = new MultiTouchHandler(view, 1.0F, 1.0F);
     }
 
     @Override

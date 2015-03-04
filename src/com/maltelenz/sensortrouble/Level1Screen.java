@@ -16,10 +16,13 @@ public class Level1Screen extends LevelScreen {
     int maxTouches = 5;
     int touchesLeft = maxTouches;
     
-    int circleRadius = 300;
+    int circleRadius;
 
     public Level1Screen(Game game) {
         super(game);
+
+        circleRadius = game.scale(300);
+
         state = GameState.Running;
     }
 
@@ -50,13 +53,13 @@ public class Level1Screen extends LevelScreen {
         Paint circlePainter = new Paint();
         circlePainter.setColor(ColorPalette.button);
         circlePainter.setStyle(Style.FILL_AND_STROKE);
-        circlePainter.setStrokeWidth(5);
+        circlePainter.setStrokeWidth(game.scale(5));
         circlePainter.setAntiAlias(true);
-        circlePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
+        circlePainter.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
         g.drawCircle(g.getWidth()/2, g.getHeight()/2, circleRadius, circlePainter);
 
         Paint largePainter = new Paint();
-        largePainter.setTextSize(150);
+        largePainter.setTextSize(game.scale(150));
         largePainter.setTextAlign(Paint.Align.CENTER);
         largePainter.setAntiAlias(true);
         largePainter.setColor(Color.WHITE);

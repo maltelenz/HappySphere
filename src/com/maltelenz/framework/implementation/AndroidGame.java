@@ -26,8 +26,6 @@ public abstract class AndroidGame extends Activity implements Game {
     Input input;
     FileIO fileIO;
     Screen screen;
-    private float xScale = 1.0F;
-    private float yScale = 1.0F;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +42,9 @@ public abstract class AndroidGame extends Activity implements Game {
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
         graphics = new AndroidGraphics(getAssets(), frameBuffer);
+
         fileIO = new AndroidFileIO(this);
-        input = new AndroidInput(this, renderView, xScale, yScale);
+        input = new AndroidInput(this, renderView);
         screen = getInitScreen();
         setContentView(renderView);
 
@@ -99,7 +98,7 @@ public abstract class AndroidGame extends Activity implements Game {
     public Context getContext() {
         return this;
     }
-    
+
     @Override
     public void setScreen(Screen screen) {
         if (screen == null)
@@ -118,6 +117,30 @@ public abstract class AndroidGame extends Activity implements Game {
 
     private SharedPreferences getLevelPreferences() {
         return this.getSharedPreferences(getString(R.string.level_preference_file_key), Context.MODE_PRIVATE);
+    }
+
+    public int scaleX(int in) {
+        return graphics.scaleX(in);
+    }
+
+    public int scaleY(int in) {
+        return graphics.scaleY(in);
+    }
+
+    public int scale(int in) {
+        return graphics.scale(in);
+    }
+
+    public float scaleX(float in) {
+        return graphics.scaleX(in);
+    }
+
+    public float scaleY(float in) {
+        return graphics.scaleY(in);
+    }
+
+    public float scale(float in) {
+        return graphics.scale(in);
     }
 
     @Override

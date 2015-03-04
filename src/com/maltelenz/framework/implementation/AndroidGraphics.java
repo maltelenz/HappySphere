@@ -1,16 +1,11 @@
 package com.maltelenz.framework.implementation;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Join;
@@ -41,7 +36,10 @@ public class AndroidGraphics implements Graphics {
     Rect srcRect = new Rect();
     Rect dstRect = new Rect();
 
-    private float fontSize = 50;
+    private float xScale;
+    private float yScale;
+
+    private float fontSize;
 
     public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
         this.assets = assets;
@@ -49,6 +47,11 @@ public class AndroidGraphics implements Graphics {
         this.canvas = new Canvas(frameBuffer);
         this.paint = new Paint();
         this.darkTextPaint = new Paint();
+
+        xScale = getWidth()/1080f;
+        yScale = getHeight()/1920f;
+
+        fontSize = scale(50);
 
         darkTextPaint.setTextSize(fontSize);
         darkTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -62,59 +65,48 @@ public class AndroidGraphics implements Graphics {
         
         laserPaint = new Paint();
         laserPaint.setColor(ColorPalette.laser);
-        laserPaint.setStrokeWidth(10);
+        laserPaint.setStrokeWidth(scale(10));
         laserPaint.setStyle(Style.STROKE);
         laserPaint.setStrokeJoin(Join.BEVEL);
         laserPaint.setAntiAlias(true);
 
         this.oopsiePaint = new Paint();
 
-        oopsiePaint.setTextSize(100);
+        oopsiePaint.setTextSize(scale(100));
         oopsiePaint.setTextAlign(Paint.Align.CENTER);
         oopsiePaint.setAntiAlias(true);
         oopsiePaint.setColor(ColorPalette.oopsie);
-        oopsiePaint.setTypeface(Typeface.DEFAULT_BOLD);        
+        oopsiePaint.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
     @Override
-    public Image newImage(String fileName, ImageFormat format) {
-        Config config = null;
-        if (format == ImageFormat.RGB565)
-            config = Config.RGB_565;
-        else if (format == ImageFormat.ARGB4444)
-            config = Config.ARGB_4444;
-        else
-            config = Config.ARGB_8888;
+    public int scaleX(int in) {
+        return Math.round(in * xScale);
+    }
 
-        Options options = new Options();
-        options.inPreferredConfig = config;
+    @Override
+    public int scaleY(int in) {
+        return Math.round(in * yScale);
+    }
 
-        InputStream in = null;
-        Bitmap bitmap = null;
-        try {
-            in = assets.open(fileName);
-            bitmap = BitmapFactory.decodeStream(in, null, options);
-            if (bitmap == null)
-                throw new RuntimeException("Couldn't load bitmap from asset '" + fileName + "'");
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't load bitmap from asset '" + fileName + "'");
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                }
-            }
-        }
+    @Override
+    public int scale(int in) {
+        return Math.min(scaleX(in), scaleY(in));
+    }
 
-        if (bitmap.getConfig() == Config.RGB_565)
-            format = ImageFormat.RGB565;
-        else if (bitmap.getConfig() == Config.ARGB_4444)
-            format = ImageFormat.ARGB4444;
-        else
-            format = ImageFormat.ARGB8888;
+    @Override
+    public float scaleX(float in) {
+        return in * xScale;
+    }
 
-        return new AndroidImage(bitmap, format);
+    @Override
+    public float scaleY(float in) {
+        return in * yScale;
+    }
+
+    @Override
+    public float scale(float in) {
+        return Math.min(scaleX(in), scaleY(in));
     }
 
     @Override
@@ -158,7 +150,7 @@ public class AndroidGraphics implements Graphics {
         Paint laserCircle = new Paint();
         laserCircle.set(laserPaint);
         laserCircle.setStyle(Style.FILL_AND_STROKE);
-        drawCircle(x + width/2, y + height/2, 50, laserCircle);
+        drawCircle(x + width/2, y + height/2, scale(50), laserCircle);
 
         List<Point> laserPoints = new ArrayList<Point>();
         laserPoints.add(new Point(x + width, y + height/2));
@@ -195,14 +187,14 @@ public class AndroidGraphics implements Graphics {
 
         Paint laserCircle = new Paint();
         laserCircle.setColor(ColorPalette.progress);
-        laserCircle.setStrokeWidth(10);
+        laserCircle.setStrokeWidth(scale(10));
         laserCircle.setAntiAlias(true);
         if (lasered) {
             laserCircle.setStyle(Style.FILL_AND_STROKE);
         } else {
             laserCircle.setStyle(Style.STROKE);
         }
-        drawCircle(x + width/2, y + height/2, 50, laserCircle);
+        drawCircle(x + width/2, y + height/2, scale(50), laserCircle);
     }
 
     @Override
@@ -268,7 +260,7 @@ public class AndroidGraphics implements Graphics {
         Paint rectanglePainter = new Paint();
         rectanglePainter.setColor(color);
         rectanglePainter.setStyle(Style.FILL);
-        rectanglePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.rectangleShadow);
+        rectanglePainter.setShadowLayer(scale(10.0f), scale(2.0f), scale(2.0f), ColorPalette.rectangleShadow);
         canvas.drawRect(x, y, x + width - 1, y + height - 1, rectanglePainter);
     }
 
@@ -307,7 +299,7 @@ public class AndroidGraphics implements Graphics {
     public void drawButton(String text, int x0, int y0, int x1, int y1) {
         Paint rectanglePainter = new Paint();
         rectanglePainter.setColor(ColorPalette.button);
-        rectanglePainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
+        rectanglePainter.setShadowLayer(scale(10.0f), scale(2.0f), scale(2.0f), ColorPalette.buttonShadow);
         canvas.drawRect(x0, y0, x1, y1, rectanglePainter);
         drawString(text, x0 + (x1 - x0) / 2, y0 + (y1 - y0) / 2, lightTextPaint);
     }

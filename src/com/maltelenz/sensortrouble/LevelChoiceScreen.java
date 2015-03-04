@@ -11,12 +11,12 @@ import com.maltelenz.framework.Input.TouchEvent;
 
 public class LevelChoiceScreen extends Screen {
 
-    private int buttonWidth = 150;
-    private int buttonHeight = 150;
-    private int textWidth = 200;
+    private int buttonWidth;
+    private int buttonHeight;
+    private int textWidth;
 
-    private int startButtonWidth = 500;
-    private int startButtonHeight = 150;
+    private int startButtonWidth;
+    private int startButtonHeight;
 
     private int screenWidth;
     private int screenHeight;
@@ -37,7 +37,14 @@ public class LevelChoiceScreen extends Screen {
         super(game);
         screenWidth = game.getGraphics().getWidth();
         screenHeight = game.getGraphics().getHeight();
-        
+
+        buttonWidth = game.scaleX(150);
+        buttonHeight = game.scaleY(150);
+        textWidth = game.scale(200);
+
+        startButtonWidth = game.scaleX(500);
+        startButtonHeight = game.scaleY(150);
+
         lowerButton = new Button("-",
                 (screenWidth - textWidth)/2 - buttonWidth,
                 (screenHeight - buttonHeight)/2,
@@ -104,7 +111,7 @@ public class LevelChoiceScreen extends Screen {
         g.drawButton(higherButton);
         g.drawButton(startButton);
         Paint levelPaint = new Paint();
-        levelPaint.setTextSize(70);
+        levelPaint.setTextSize(game.scale(70));
         levelPaint.setTextAlign(Paint.Align.CENTER);
         levelPaint.setAntiAlias(true);
         levelPaint.setColor(ColorPalette.darkText);

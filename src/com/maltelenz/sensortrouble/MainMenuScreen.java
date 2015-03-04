@@ -8,8 +8,8 @@ import com.maltelenz.framework.Input.TouchEvent;
 
 public class MainMenuScreen extends Screen {
 
-    private int buttonWidth = 500;
-    private int buttonHeight = 150;
+    private int buttonWidth;
+    private int buttonHeight;
 
     private int screenWidth;
     private int screenHeight;
@@ -20,7 +20,10 @@ public class MainMenuScreen extends Screen {
         super(game);
         screenWidth = game.getGraphics().getWidth();
         screenHeight = game.getGraphics().getHeight();
-        
+
+        buttonWidth = game.scaleX(500);
+        buttonHeight = game.scaleY(150);
+
         startButton = new Button("Start",
                 (screenWidth - buttonWidth)/2,
                 (screenHeight - buttonHeight)/2,

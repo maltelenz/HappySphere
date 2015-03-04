@@ -9,19 +9,24 @@ import android.graphics.RectF;
 
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
-import com.maltelenz.framework.Input.TouchEvent;
 
 public class Screen {
     protected final Game game;
     
     private ArrayList<Class<? extends LevelScreen>> levels;
 
-    private int levelIndicatorRadius = 100;
-    private int levelIndicatorPadding = 50;
-    protected int progressBarHeight = 30;
+    private int levelIndicatorRadius;
+    private int levelIndicatorPadding;
+    protected int progressBarHeight;
 
     public Screen(Game game) {
         this.game = game;
+
+        levelIndicatorRadius = game.scale(100);
+        levelIndicatorPadding = game.scale(50);
+        progressBarHeight = game.scaleY(30);
+
+        
         levels = new ArrayList<Class<? extends LevelScreen>>();
         levels.add(Level1Screen.class);
         levels.add(Level2Screen.class);
@@ -124,8 +129,8 @@ public class Screen {
 
         arcPainter.setColor(ColorPalette.progress);
         arcPainter.setStyle(Style.STROKE);
-        arcPainter.setStrokeWidth(15);
-        arcPainter.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
+        arcPainter.setStrokeWidth(game.scale(15));
+        arcPainter.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
         RectF arcRect = new RectF(
                 g.getWidth() - levelIndicatorPadding - 2 * levelIndicatorRadius,
                 levelIndicatorPadding + progressBarHeight,
@@ -160,10 +165,4 @@ public class Screen {
             );
     }
 
-    protected boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
-    if (event.x > x && event.x < x + width - 1 && event.y > y && event.y < y + height - 1)
-        return true;
-    else
-        return false;
-    }
 }

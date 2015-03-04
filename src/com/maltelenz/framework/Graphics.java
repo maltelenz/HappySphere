@@ -13,7 +13,17 @@ public interface Graphics {
         ARGB8888, ARGB4444, RGB565
     }
 
-    public Image newImage(String fileName, ImageFormat format);
+    public int scaleX(int in);
+
+    public int scaleY(int in);
+
+    public int scale(int in);
+
+    public float scaleX(float in);
+
+    public float scaleY(float in);
+
+    public float scale(float in);
 
     public void clearScreen(int color);
 

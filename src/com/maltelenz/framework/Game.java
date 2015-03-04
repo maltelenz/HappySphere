@@ -20,6 +20,18 @@ public interface Game {
 
     public Context getContext();
 
+    public int scaleX(int in);
+
+    public int scaleY(int in);
+
+    public int scale(int in);
+
+    public float scaleX(float in);
+
+    public float scaleY(float in);
+
+    public float scale(float in);
+
     public void updateMaxLevel(int level);
 
     /**

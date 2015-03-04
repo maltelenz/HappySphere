@@ -13,20 +13,25 @@ public class Level5Screen extends LevelScreen {
 
     private int gameHeight;
     private double gameWidth;
-    private int maxXDeviation = 100;
-    private int maxYDeviation = 100;
-    private int currentPointY = maxYDeviation;
+    private int maxXDeviation;
+    private int maxYDeviation;
+    private int currentPointY;
     private boolean grabbed = false;
     private Paint finishedPixelPaint;
     private Paint unTouchedPointPaint;
-    private int lineRadius = 10;
+    private int lineRadius;
     private float[] drawingPoints;
-    private int reverseSpeed;
+    private float reverseSpeed;
     private Paint touchedPointPaint;
     private Paint unFinishedPixelPaint;
 
     public Level5Screen(Game game) {
         super(game);
+
+        maxXDeviation = Math.max(game.scale(100), 50);
+        maxYDeviation = Math.max(game.scale(100), 50);
+        currentPointY = maxYDeviation;
+        lineRadius = game.scale(10);
 
         gameHeight = game.getGraphics().getHeight();
         gameWidth = game.getGraphics().getWidth();
@@ -43,7 +48,7 @@ public class Level5Screen extends LevelScreen {
         unTouchedPointPaint = new Paint();
         unTouchedPointPaint.setColor(ColorPalette.laser);
         unTouchedPointPaint.setAntiAlias(true);
-        unTouchedPointPaint.setShadowLayer(10.0f, 2.0f, 2.0f, ColorPalette.buttonShadow);
+        unTouchedPointPaint.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
 
         touchedPointPaint = new Paint();
         touchedPointPaint.set(unTouchedPointPaint);
@@ -55,7 +60,7 @@ public class Level5Screen extends LevelScreen {
             drawingPoints[y * 2 + 1] = y;
         }
 
-        reverseSpeed = (int) Math.round(gameHeight / 700.0);
+        reverseSpeed = game.scaleY(4.0f);
 
         state = GameState.Running;
     }
@@ -83,7 +88,7 @@ public class Level5Screen extends LevelScreen {
         }
 
         if (!grabbed) {
-            currentPointY = Math.max(maxYDeviation, currentPointY - reverseSpeed);
+            currentPointY = Math.max(maxYDeviation, Math.round((float) currentPointY - reverseSpeed));
         }
 
         if (currentPointY >= gameHeight - maxYDeviation) {
