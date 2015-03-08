@@ -18,6 +18,7 @@ import android.graphics.Typeface;
 
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Image;
+import com.maltelenz.sensortrouble.Barrier;
 import com.maltelenz.sensortrouble.Button;
 import com.maltelenz.sensortrouble.ColorPalette;
 import com.maltelenz.sensortrouble.GridArea.LaserDirection;
@@ -32,6 +33,7 @@ public class AndroidGraphics implements Graphics {
     Paint lightTextPaint;
     Paint laserPaint;
     Paint oopsiePaint;
+    Paint shooterPaint;
 
     Rect srcRect = new Rect();
     Rect dstRect = new Rect();
@@ -77,6 +79,13 @@ public class AndroidGraphics implements Graphics {
         oopsiePaint.setAntiAlias(true);
         oopsiePaint.setColor(ColorPalette.oopsie);
         oopsiePaint.setTypeface(Typeface.DEFAULT_BOLD);
+
+        shooterPaint = new Paint();
+        shooterPaint.setColor(ColorPalette.laser);
+        shooterPaint.setAntiAlias(true);
+        shooterPaint.setStyle(Style.FILL_AND_STROKE);
+        shooterPaint.setStrokeWidth(scale(10));
+        shooterPaint.setShadowLayer(scale(10.0f), scale(2.0f), scale(2.0f), ColorPalette.buttonShadow);
     }
 
     @Override
@@ -376,5 +385,21 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void drawPath(Path path, Paint paint) {
         canvas.drawPath(path, paint);
+    }
+
+    @Override
+    public void drawBarrier(Barrier b, Paint paint) {
+        canvas.drawRect(b.x0, b.y0, b.x1, b.y1, paint);
+    }
+
+    @Override
+    public void drawShooter(int currentPoint, int height, boolean pressed) {
+        RectF rect = new RectF(currentPoint - height, getHeight() - height, currentPoint + height, getHeight() + height);
+        if (pressed) {
+            shooterPaint.setStyle(Style.FILL_AND_STROKE);
+        } else {
+            shooterPaint.setStyle(Style.STROKE);
+        }
+        drawPartialArc(rect, -25, 50, shooterPaint);
     }
 }

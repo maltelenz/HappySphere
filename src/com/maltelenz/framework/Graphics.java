@@ -4,6 +4,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 
+import com.maltelenz.sensortrouble.Barrier;
 import com.maltelenz.sensortrouble.Button;
 import com.maltelenz.sensortrouble.GridArea.LaserDirection;
 import com.maltelenz.sensortrouble.TouchPoint;
@@ -81,5 +82,9 @@ public interface Graphics {
     public void drawPoints(float[] drawingPoints, Paint paint);
 
     public void drawPath(Path path, Paint paint);
+
+    public void drawBarrier(Barrier b, Paint paint);
+
+    public void drawShooter(int currentPoint, int height, boolean pressed);
 
 }
