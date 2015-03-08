@@ -29,11 +29,12 @@ public class Level7Screen extends LevelScreen {
     private List<Point> shots;
     private float shotWidth;
     private int speed;
-    private int shotLength;
+    private int shotSize;
     private int shotSpeed;
     private int shooterHeight;
     private int barrierPadding;
     private int maxShots;
+    private float nrTargetBarriers;
 
     public Level7Screen(Game game) {
         super(game);
@@ -52,7 +53,7 @@ public class Level7Screen extends LevelScreen {
         maxShots = 5;
 
         shotWidth = game.scaleX(15);
-        shotLength = game.scaleY(40);
+        shotSize = game.scaleY(20);
 
         speed = game.scaleX(20);
         shotSpeed = game.scaleY(15);
@@ -69,13 +70,13 @@ public class Level7Screen extends LevelScreen {
         for (int x = 0; x < 5; x++) {
             targetBarriers.add(new Barrier(barrierWidth * x + barrierPadding * (x + 1), progressBarHeight, barrierWidth * (x + 1) + barrierPadding * x, progressBarHeight + barrierHeight));
         }
+        nrTargetBarriers = targetBarriers.size();
 
         shots = new ArrayList<Point>();
 
         shotPaint = new Paint();
         shotPaint.setColor(ColorPalette.laser);
         shotPaint.setAntiAlias(true);
-        shotPaint.setStrokeWidth(shotWidth);
 
         barrierPaint = new Paint();
         barrierPaint.setColor(ColorPalette.box);
@@ -148,7 +149,7 @@ public class Level7Screen extends LevelScreen {
 
     @Override
     double percentDone() {
-        return (5 - targetBarriers.size()) / 5.0;
+        return (nrTargetBarriers - targetBarriers.size()) / nrTargetBarriers;
     }
 
     @Override
@@ -168,7 +169,7 @@ public class Level7Screen extends LevelScreen {
 
         for (Iterator<Point> iterator = shots.iterator(); iterator.hasNext();) {
             Point p = (Point) iterator.next();
-            g.drawLine(p.x, p.y, p.x, p.y + shotLength, shotPaint);
+            g.drawCircle(p.x, p.y + shotSize, shotSize, shotPaint);
         }
 
         g.drawShooter(currentPoint, shooterHeight, ((float) maxShots - shots.size()) / maxShots);
