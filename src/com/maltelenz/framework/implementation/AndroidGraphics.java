@@ -42,6 +42,7 @@ public class AndroidGraphics implements Graphics {
     private float yScale;
 
     private float fontSize;
+    private Paint shooterFillPaint;
 
     public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
         this.assets = assets;
@@ -86,7 +87,11 @@ public class AndroidGraphics implements Graphics {
         shooterPaint.setStyle(Style.FILL_AND_STROKE);
         shooterPaint.setStrokeWidth(scale(10));
         shooterPaint.setShadowLayer(scale(10.0f), scale(2.0f), scale(2.0f), ColorPalette.buttonShadow);
-    }
+
+        shooterFillPaint = new Paint();
+        shooterFillPaint.set(shooterPaint);
+        shooterFillPaint.setColor(ColorPalette.progress);
+}
 
     @Override
     public int scaleX(int in) {
@@ -393,13 +398,9 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
-    public void drawShooter(int currentPoint, int height, boolean pressed) {
+    public void drawShooter(int currentPoint, int height, float fractionShotsLeft) {
         RectF rect = new RectF(currentPoint - height, getHeight() - height, currentPoint + height, getHeight() + height);
-        if (pressed) {
-            shooterPaint.setStyle(Style.FILL_AND_STROKE);
-        } else {
-            shooterPaint.setStyle(Style.STROKE);
-        }
-        drawPartialArc(rect, -25, 50, shooterPaint);
+        canvas.drawArc(rect, -180, 180, false, shooterPaint);
+        canvas.drawArc(rect, -180, 180 * fractionShotsLeft, true, shooterFillPaint);
     }
 }

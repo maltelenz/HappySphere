@@ -85,6 +85,6 @@ public interface Graphics {
 
     public void drawBarrier(Barrier b, Paint paint);
 
-    public void drawShooter(int currentPoint, int height, boolean pressed);
+    public void drawShooter(int currentPoint, int height, float fractionShotsLeft);
 
 }

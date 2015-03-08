@@ -34,8 +34,6 @@ public class Level7Screen extends LevelScreen {
     private int shooterHeight;
     private int barrierPadding;
     private int maxShots;
-    private boolean pressed;
-    private float pressedTimeLeft;
 
     public Level7Screen(Game game) {
         super(game);
@@ -60,8 +58,6 @@ public class Level7Screen extends LevelScreen {
         shotSpeed = game.scaleY(15);
 
         barriersLeft = new ArrayList<Barrier>();
-
-        pressed = false;
 
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 5; x++) {
@@ -96,18 +92,12 @@ public class Level7Screen extends LevelScreen {
 
     @Override
     protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime) {
-        pressedTimeLeft -= deltaTime;
-        if (pressedTimeLeft < 0) {
-            pressed = false;
-        }
 
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_DOWN && maxShots > shots.size()) {
                 shots.add(new Point(currentPoint, gameHeight - game.scaleY(shooterHeight)));
-                pressed = true;
-                pressedTimeLeft = 20;
             }
         }
         
@@ -181,7 +171,7 @@ public class Level7Screen extends LevelScreen {
             g.drawLine(p.x, p.y, p.x, p.y + shotLength, shotPaint);
         }
 
-        g.drawShooter(currentPoint, shooterHeight, pressed);
+        g.drawShooter(currentPoint, shooterHeight, ((float) maxShots - shots.size()) / maxShots);
     }
 
 }
