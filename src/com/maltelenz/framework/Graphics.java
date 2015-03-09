@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import com.maltelenz.sensortrouble.Barrier;
 import com.maltelenz.sensortrouble.Button;
 import com.maltelenz.sensortrouble.GridArea.LaserDirection;
+import com.maltelenz.sensortrouble.PieCircle;
 import com.maltelenz.sensortrouble.TouchPoint;
 
 public interface Graphics {
@@ -86,5 +87,7 @@ public interface Graphics {
     public void drawBarrier(Barrier b, Paint paint);
 
     public void drawShooter(int currentPoint, int height, float fractionShotsLeft);
+
+    public void drawPie(PieCircle pie);
 
 }

@@ -22,6 +22,7 @@ import com.maltelenz.sensortrouble.Barrier;
 import com.maltelenz.sensortrouble.Button;
 import com.maltelenz.sensortrouble.ColorPalette;
 import com.maltelenz.sensortrouble.GridArea.LaserDirection;
+import com.maltelenz.sensortrouble.PieCircle;
 import com.maltelenz.sensortrouble.TouchPoint;
 
 public class AndroidGraphics implements Graphics {
@@ -43,6 +44,7 @@ public class AndroidGraphics implements Graphics {
 
     private float fontSize;
     private Paint shooterFillPaint;
+    private Paint piePaint;
 
     public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
         this.assets = assets;
@@ -91,6 +93,11 @@ public class AndroidGraphics implements Graphics {
         shooterFillPaint = new Paint();
         shooterFillPaint.set(shooterPaint);
         shooterFillPaint.setColor(ColorPalette.progress);
+
+        piePaint = new Paint();
+        piePaint.setAntiAlias(true);
+        piePaint.setStyle(Style.FILL);
+        piePaint.setShadowLayer(scale(10.0f), scale(2.0f), scale(2.0f), ColorPalette.buttonShadow);
 }
 
     @Override
@@ -402,5 +409,41 @@ public class AndroidGraphics implements Graphics {
         RectF rect = new RectF(currentPoint - height, getHeight() - height, currentPoint + height, getHeight() + height);
         canvas.drawArc(rect, -180, 180, false, shooterPaint);
         canvas.drawArc(rect, -180, 180 * fractionShotsLeft, true, shooterFillPaint);
+    }
+
+    @Override
+    public void drawPie(PieCircle pie) {
+        float centerHeight = getHeight()/2;
+        float centerWidth = getWidth()/2;
+        RectF rectangle = new RectF(
+                centerWidth - pie.getMaxRadius(),
+                centerHeight - pie.getMaxRadius(),
+                centerWidth + pie.getMaxRadius(),
+                centerHeight + pie.getMaxRadius());
+
+        int pieceColor;
+        ArrayList<Integer> colors = pie.getColors();
+        int cSize = colors.size();
+        for (int i = 0; i < cSize; i++) {
+            Integer c = colors.get(i);
+            switch (c.intValue()) {
+            case 0:
+                pieceColor = ColorPalette.box;
+                break;
+            case 1:
+                pieceColor = ColorPalette.button;
+                break;
+            case 2:
+                pieceColor = ColorPalette.laser;
+                break;
+            case 3:
+            default:
+                pieceColor = ColorPalette.progress;
+                break;
+            }
+            
+            piePaint.setColor(pieceColor);
+            canvas.drawArc(rectangle, i * 360f / cSize, 360f / cSize, true, piePaint);
+        }
     }
 }
