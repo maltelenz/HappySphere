@@ -102,7 +102,6 @@ public class Level8Screen extends LevelScreen {
             PieCircle pie = (PieCircle) iterator.next();
             g.drawPie(pie);
         }
-        g.drawStringCentered(Float.toString(circleRadius));
     }
 
 }
