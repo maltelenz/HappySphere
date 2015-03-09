@@ -27,7 +27,6 @@ public class Level7Screen extends LevelScreen {
     private List<Barrier> barriersLeft;
     private List<Barrier> targetBarriers;
     private List<Point> shots;
-    private float shotWidth;
     private int speed;
     private int shotSize;
     private int shotSpeed;
@@ -52,7 +51,6 @@ public class Level7Screen extends LevelScreen {
         
         maxShots = 5;
 
-        shotWidth = game.scaleX(15);
         shotSize = game.scaleY(20);
 
         speed = game.scaleX(20);
