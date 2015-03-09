@@ -9,12 +9,12 @@ public class PieCircle {
 
     ArrayList<Integer> pieces;
     int rotation = 0;
-    private int maxRadius;
-    private int minRadius;
+    private float maxRadius;
+    private float minRadius;
     private int centerX;
     private int centerY;
 
-    public PieCircle(ArrayList<Integer> colors, int minRadius, int maxRadius, int centerX, int centerY) {
+    public PieCircle(ArrayList<Integer> colors, float minRadius, float maxRadius, int centerX, int centerY) {
         this.pieces = colors;
         this.minRadius = minRadius;
         this.maxRadius = maxRadius;
@@ -42,7 +42,7 @@ public class PieCircle {
         return pieces;
     }
 
-    public int getMaxRadius() {
+    public float getMaxRadius() {
         return maxRadius;
     }
 }

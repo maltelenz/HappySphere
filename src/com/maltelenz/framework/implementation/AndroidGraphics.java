@@ -415,11 +415,12 @@ public class AndroidGraphics implements Graphics {
     public void drawPie(PieCircle pie) {
         float centerHeight = getHeight()/2;
         float centerWidth = getWidth()/2;
+        float maxRadius = pie.getMaxRadius();
         RectF rectangle = new RectF(
-                centerWidth - pie.getMaxRadius(),
-                centerHeight - pie.getMaxRadius(),
-                centerWidth + pie.getMaxRadius(),
-                centerHeight + pie.getMaxRadius());
+                centerWidth - maxRadius,
+                centerHeight - maxRadius,
+                centerWidth + maxRadius,
+                centerHeight + maxRadius);
 
         int pieceColor;
         ArrayList<Integer> colors = pie.getColors();
@@ -441,7 +442,7 @@ public class AndroidGraphics implements Graphics {
                 pieceColor = ColorPalette.progress;
                 break;
             }
-            
+
             piePaint.setColor(pieceColor);
             canvas.drawArc(rectangle, i * 360f / cSize, 360f / cSize, true, piePaint);
         }

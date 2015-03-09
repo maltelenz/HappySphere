@@ -15,7 +15,7 @@ public class Level8Screen extends LevelScreen {
 
     private int gameWidth;
 
-    private int circleRadius;
+    private float circleRadius;
     private ArrayList<PieCircle> circles;
     private int nCircles = 3;
     private int nPieces = 7;
@@ -23,8 +23,11 @@ public class Level8Screen extends LevelScreen {
     private int gameHeight;
 
     private int centerX;
-
     private int centerY;
+
+    private boolean currentlyLasering = false;
+    private float timeToFinish = 150;
+    private float timeLeftLasering = timeToFinish;
 
     private HashSet<ArrayList<Integer>> allColors;
 
@@ -37,15 +40,16 @@ public class Level8Screen extends LevelScreen {
         centerX = gameWidth/2;
         centerY = gameHeight/2;
 
-        circleRadius = game.scale(gameWidth/nCircles/2);
+        circleRadius = gameWidth * 0.9f / 2 / nCircles;
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
+        Random rand = new Random();
         for (int j = 0; j < nPieces; j++) {
-            colors.add(new Random().nextInt(4));
+            colors.add(rand.nextInt(4));
         }
         circles =  new ArrayList<PieCircle>();
         for (int i = 0; i < nCircles; i++) {
-            int rotations = new Random().nextInt(nPieces);
+            int rotations = rand.nextInt(nPieces);
             Collections.rotate(colors, rotations);
             circles.add(new PieCircle(new ArrayList<Integer>(colors), i * circleRadius, (i + 1) * circleRadius, centerX, centerY));
         }
@@ -55,6 +59,18 @@ public class Level8Screen extends LevelScreen {
 
     @Override
     protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime) {
+        if (currentlyLasering) {
+            timeLeftLasering  -= deltaTime;
+            if (timeLeftLasering < 0) {
+                state = GameState.Finished;
+            }
+        } else {
+            //Not lasering, progress goes backwards
+            timeLeftLasering = Math.min(timeToFinish, timeLeftLasering + deltaTime);
+        }
+        // Assume not lasering unless found shown otherwise below.
+        currentlyLasering = false;
+
         int len = touchEvents.size();
         allColors = new HashSet<ArrayList<Integer>>();
         for (Iterator<PieCircle> iterator = circles.iterator(); iterator.hasNext();) {
@@ -68,13 +84,13 @@ public class Level8Screen extends LevelScreen {
             }
         }
         if (allColors.size() == 1) {
-            state = GameState.Finished;
+            currentlyLasering = true;
         }
     }
 
     @Override
     double percentDone() {
-        return ((float) nCircles - allColors.size()) / (nCircles - 1);
+        return (((float) nCircles - allColors.size()) / (nCircles - 1))/2 + (1 - timeLeftLasering/timeToFinish)/2;
     }
 
     @Override
@@ -86,6 +102,7 @@ public class Level8Screen extends LevelScreen {
             PieCircle pie = (PieCircle) iterator.next();
             g.drawPie(pie);
         }
+        g.drawStringCentered(Float.toString(circleRadius));
     }
 
 }
