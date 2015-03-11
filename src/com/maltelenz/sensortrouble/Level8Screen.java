@@ -14,13 +14,12 @@ import com.maltelenz.framework.Input.TouchEvent;
 public class Level8Screen extends LevelScreen {
 
     private int gameWidth;
+    private int gameHeight;
 
     private float circleRadius;
     private ArrayList<PieCircle> circles;
     private int nCircles = 3;
     private int nPieces = 7;
-
-    private int gameHeight;
 
     private int centerX;
     private int centerY;
