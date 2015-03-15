@@ -12,7 +12,7 @@ import com.maltelenz.framework.Input.TouchEvent;
 public class Level5Screen extends LevelScreen {
 
     private int gameHeight;
-    private double gameWidth;
+    private int gameWidth;
     private int maxXDeviation;
     private int maxYDeviation;
     private int currentPointY;
@@ -24,6 +24,7 @@ public class Level5Screen extends LevelScreen {
     private float reverseSpeed;
     private Paint touchedPointPaint;
     private Paint unFinishedPixelPaint;
+    private int targetThickness;
 
     public Level5Screen(Game game) {
         super(game);
@@ -59,6 +60,8 @@ public class Level5Screen extends LevelScreen {
             drawingPoints[y * 2] = getXValue(y);
             drawingPoints[y * 2 + 1] = y;
         }
+
+        targetThickness = game.scaleY(50);
 
         reverseSpeed = game.scaleY(4.0f);
 
@@ -106,6 +109,10 @@ public class Level5Screen extends LevelScreen {
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
+
+        g.drawTargetLine(0, gameHeight, gameWidth, gameHeight, targetThickness);
+
+        g.drawArrow(4 * gameWidth/5, 2 * gameHeight/3 - game.scaleY(400), 4 * gameWidth/5, 2 * gameHeight/3 - game.scaleY(150));
 
         float[] finishedPoints = Arrays.copyOfRange(drawingPoints, 0, currentPointY * 2);
         float[] unFinishedPoints = Arrays.copyOfRange(drawingPoints, currentPointY * 2, drawingPoints.length);

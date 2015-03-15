@@ -39,8 +39,7 @@ public class Level9Screen extends LevelScreen {
     private int targetX1;
     private int targetX2;
     private int targetY;
-    private Paint targetPaint;
-    private float targetThickness;
+    private int targetThickness;
 
     public Level9Screen(Game game) {
         super(game);
@@ -82,10 +81,6 @@ public class Level9Screen extends LevelScreen {
         barrierPaintWithShadow = new Paint();
         barrierPaintWithShadow.set(barrierPaint);
         barrierPaintWithShadow.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
-
-        targetPaint = new Paint();
-        targetPaint.setStrokeWidth(targetThickness);
-        targetPaint.setColor(ColorPalette.progress);
 
         state = GameState.Running;
     }
@@ -189,7 +184,7 @@ public class Level9Screen extends LevelScreen {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
 
-        g.drawLine(targetX1, targetY, targetX2, targetY, targetPaint);
+        g.drawTargetLine(targetX1, targetY, targetX2, targetY, targetThickness);
 
         // Draw some arrows pointing on the target
         g.drawArrow(targetX1/2, targetY - game.scaleY(400), targetX1, targetY - game.scaleY(150));

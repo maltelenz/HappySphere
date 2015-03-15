@@ -33,6 +33,8 @@ public interface Graphics {
 
     public void drawLine(int x, int y, int x2, int y2, Paint paint);
 
+    public void drawTargetLine(int x, int y, int x2, int y2, int thickness);
+
     public void drawLaserLine(int x, int y, int x2, int y2);
 
     public void drawLaser(int x, int y, int width, int height, int rotation);

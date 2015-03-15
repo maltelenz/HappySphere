@@ -26,6 +26,7 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor gravitySensor;
     private float speed;
+    private int targetThickness;
 
     public Level6Screen(Game game) {
         super(game);
@@ -47,6 +48,8 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
 
         sensorManager = (SensorManager) game.getContext().getSystemService(Context.SENSOR_SERVICE);
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+
+        targetThickness = game.scaleY(50);
 
         state = GameState.Running;
     }
@@ -71,7 +74,12 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
 
-        g.drawArrow(gameWidth/2, gameHeight/6, gameWidth/2, 5 * gameHeight/6);
+//        g.drawArrow(gameWidth/2, gameHeight/6, gameWidth/2, 5 * gameHeight/6);
+        for (int i = 1; i <= 4; i++) {
+            g.drawArrow(i * gameWidth/5, gameHeight - game.scaleY(400), i * gameWidth/5, gameHeight - game.scaleY(150));
+        }
+
+        g.drawTargetLine(0, gameHeight, gameWidth, gameHeight, targetThickness);
 
         g.drawCircle(currentPointX, currentPointY, pointSize, pointPaint);
     }

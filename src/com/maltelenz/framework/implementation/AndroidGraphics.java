@@ -47,6 +47,7 @@ public class AndroidGraphics implements Graphics {
     private Paint shooterFillPaint;
     private Paint piePaint;
     private Paint arrowPaint;
+    private Paint targetPaint;
 
     public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
         this.assets = assets;
@@ -105,6 +106,9 @@ public class AndroidGraphics implements Graphics {
         arrowPaint.setColor(ColorPalette.inactiveProgress);
         arrowPaint.setAntiAlias(true);
         arrowPaint.setStyle(Style.FILL);
+
+        targetPaint = new Paint();
+        targetPaint.setColor(ColorPalette.progress);
 }
 
     @Override
@@ -151,6 +155,12 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void drawLine(int x, int y, int x2, int y2, Paint paint) {
         canvas.drawLine(x, y, x2, y2, paint);
+    }
+
+    @Override
+    public void drawTargetLine(int x, int y, int x2, int y2, int thickness) {
+        targetPaint.setStrokeWidth(thickness);
+        canvas.drawLine(x, y, x2, y2, targetPaint);
     }
 
     @Override
