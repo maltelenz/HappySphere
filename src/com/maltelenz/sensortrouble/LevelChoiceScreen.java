@@ -18,8 +18,8 @@ public class LevelChoiceScreen extends Screen {
     private int startButtonWidth;
     private int startButtonHeight;
 
-    private int screenWidth;
-    private int screenHeight;
+    private int gameWidth;
+    private int gameHeight;
     private Button lowerButton;
     private Button higherButton;
     private Button startButton;
@@ -35,31 +35,31 @@ public class LevelChoiceScreen extends Screen {
 
     public LevelChoiceScreen(Game game) {
         super(game);
-        screenWidth = game.getGraphics().getWidth();
-        screenHeight = game.getGraphics().getHeight();
+        gameWidth = game.getGraphics().getWidth();
+        gameHeight = game.getGraphics().getHeight();
 
         buttonWidth = game.scaleX(150);
         buttonHeight = game.scaleY(150);
-        textWidth = game.scale(200);
+        textWidth = game.scale(400);
 
         startButtonWidth = game.scaleX(500);
         startButtonHeight = game.scaleY(150);
 
         lowerButton = new Button("-",
-                (screenWidth - textWidth)/2 - buttonWidth,
-                (screenHeight - buttonHeight)/2,
-                (screenWidth - textWidth)/2,
-                (screenHeight + buttonHeight)/2);
+                (gameWidth - textWidth)/2 - buttonWidth,
+                (gameHeight - buttonHeight)/2,
+                (gameWidth - textWidth)/2,
+                (gameHeight + buttonHeight)/2);
         higherButton = new Button("+",
-                (screenWidth + textWidth)/2,
-                (screenHeight - buttonHeight)/2,
-                (screenWidth + textWidth)/2 + buttonWidth,
-                (screenHeight + buttonHeight)/2);
+                (gameWidth + textWidth)/2,
+                (gameHeight - buttonHeight)/2,
+                (gameWidth + textWidth)/2 + buttonWidth,
+                (gameHeight + buttonHeight)/2);
         startButton = new Button("Start",
-                (screenWidth - startButtonWidth)/2,
-                (screenHeight - startButtonHeight)/2 + 2 * buttonHeight,
-                (screenWidth + startButtonWidth)/2,
-                (screenHeight + startButtonHeight)/2 + 2 * buttonHeight);
+                (gameWidth - startButtonWidth)/2,
+                (gameHeight - startButtonHeight)/2 + 3 * buttonHeight,
+                (gameWidth + startButtonWidth)/2,
+                (gameHeight + startButtonHeight)/2 + 3 * buttonHeight);
     }
 
     @Override
@@ -116,9 +116,8 @@ public class LevelChoiceScreen extends Screen {
         levelPaint.setAntiAlias(true);
         levelPaint.setColor(ColorPalette.darkText);
         levelPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        g.drawStringCentered(Integer.toString(levelChosen), levelPaint);
 
-        drawGameProgressOverlay(false, false);
+        drawGameProgressOverlay(gameWidth/2, gameHeight/2, levelChosen - 1, true);
     }
 
     @Override

@@ -112,11 +112,24 @@ public class Screen {
         return true;
     }
 
+    protected void drawGameProgressOverlay(boolean playing, boolean finished) {
+        int xPosition = game.getGraphics().getWidth() - levelIndicatorPadding - levelIndicatorRadius;
+        int yPosition = levelIndicatorRadius + levelIndicatorPadding + progressBarHeight;
+
+        int currentLevel = currentLevel();
+
+        if (finished) {
+            currentLevel++;
+        }
+
+        drawGameProgressOverlay(xPosition, yPosition, currentLevel, playing);
+    }
+
     /**
      * Draws the progress overlay for the complete game (number of levels finished)
-     * @param playing if currently playing a level
+     * @param drawIndicator if currently playing a level
      */
-    protected void drawGameProgressOverlay(boolean playing, boolean finished) {
+    protected void drawGameProgressOverlay(int xPosition, int yPosition, int currentLevel, boolean drawIndicator) {
         Graphics g = game.getGraphics();
         // Draw total progress
         Paint arcPainter = new Paint();
@@ -124,8 +137,8 @@ public class Screen {
         arcPainter.setStyle(Style.FILL);
         arcPainter.setAntiAlias(true);
         g.drawCircle(
-                g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
-                levelIndicatorRadius + levelIndicatorPadding + progressBarHeight,
+                xPosition,
+                yPosition,
                 levelIndicatorRadius,
                 arcPainter
             );
@@ -135,10 +148,10 @@ public class Screen {
         arcPainter.setStrokeWidth(game.scale(15));
         arcPainter.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
         RectF arcRect = new RectF(
-                g.getWidth() - levelIndicatorPadding - 2 * levelIndicatorRadius,
-                levelIndicatorPadding + progressBarHeight,
-                g.getWidth() - levelIndicatorPadding,
-                2 * levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
+                xPosition - levelIndicatorRadius,
+                yPosition - levelIndicatorRadius,
+                xPosition + levelIndicatorRadius,
+                yPosition + levelIndicatorRadius
             );
         int maxLevelAchieved = game.getMaxLevel();
         float percentDone = (float) maxLevelAchieved/numberOfLevels();
@@ -148,13 +161,8 @@ public class Screen {
         arcPainter.clearShadowLayer();
         g.drawArc(arcRect, 100 - (float) maxLevelAchieved/numberOfLevels(), arcPainter);
 
-        if (playing) {
+        if (drawIndicator) {
             // Draw small indicator at current level
-            
-            int currentLevel = currentLevel();
-            if (finished) {
-                currentLevel++;
-            }
             float currentPercent = (float) currentLevel/numberOfLevels();
 
             arcPainter.setColor(ColorPalette.laser);
@@ -162,9 +170,9 @@ public class Screen {
         }
 
         g.drawString(
-                Integer.toString(Math.min(currentLevel() + 1, numberOfLevels())),
-                g.getWidth() - levelIndicatorPadding - levelIndicatorRadius,
-                levelIndicatorRadius + levelIndicatorPadding + progressBarHeight
+                Integer.toString(Math.min(currentLevel + 1, numberOfLevels())),
+                xPosition,
+                yPosition
             );
     }
 
