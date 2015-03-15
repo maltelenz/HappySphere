@@ -1,9 +1,12 @@
 package com.maltelenz.sensortrouble;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,16 +20,25 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
 
     private int gameHeight;
     private int gameWidth;
+
     private int pointSize;
-    private int currentPointY;
-    private int currentPointX;
+    private PointF currentPoint;
     private Paint pointPaint;
+
     private float gX;
     private float gY;
+
     private SensorManager sensorManager;
     private Sensor gravitySensor;
+
     private float speed;
+    private float vX;
+    private float vY;
+
     private int targetThickness;
+
+    private List<Barrier> gameSideBarriers;
+    private int barrierHeight;
 
     public Level6Screen(Game game) {
         super(game);
@@ -36,10 +48,11 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
 
         pointSize = game.scale(100);
 
-        speed = game.scaleY(4);
+        speed = game.scaleY(0.1f);
+        vX = 0;
+        vY = 0;
 
-        currentPointY = pointSize;
-        currentPointX = gameWidth/2;
+        currentPoint = new PointF(gameWidth/2, pointSize * 2);
 
         pointPaint = new Paint();
         pointPaint.setColor(ColorPalette.laser);
@@ -49,6 +62,14 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
         sensorManager = (SensorManager) game.getContext().getSystemService(Context.SENSOR_SERVICE);
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
+        barrierHeight = game.scaleY(100);
+
+        // Barriers around the top, left and right side of the game
+        gameSideBarriers = new ArrayList<Barrier>();
+        gameSideBarriers.add(new Barrier(0, -barrierHeight, gameWidth, 0));
+        gameSideBarriers.add(new Barrier(-barrierHeight, 0, 0, gameHeight));
+        gameSideBarriers.add(new Barrier(gameWidth, 0, gameWidth + barrierHeight, gameHeight));
+
         targetThickness = game.scaleY(50);
 
         state = GameState.Running;
@@ -56,9 +77,33 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
 
     @Override
     protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime) {
-        currentPointY = Math.max(currentPointY + Math.round(deltaTime * gY * speed), pointSize);
-        currentPointX = Math.max(Math.min(currentPointX - Math.round(deltaTime * gX * speed), gameWidth - pointSize), pointSize);
-        if (currentPointY >= gameHeight - pointSize) {
+        vX = vX + gX;
+        vY = vY + gY;
+
+        PointF newPoint = new PointF(
+                currentPoint.x - deltaTime * vX * speed,
+                currentPoint.y + deltaTime * vY * speed
+            );
+        PointF originalNewPoint = new PointF();
+        originalNewPoint.set(newPoint);
+
+        // Handle collisions
+        for (Iterator<Barrier> iterator = gameSideBarriers.iterator(); iterator.hasNext();) {
+            Barrier b = (Barrier) iterator.next();
+            newPoint = b.move(currentPoint, newPoint, pointSize);
+        }
+
+        // Check if there was a collision
+        if (originalNewPoint.x != newPoint.x) {
+            vX = 0;
+        }
+        if (originalNewPoint.y != newPoint.y) {
+            vY = 0;
+        }
+
+        currentPoint = newPoint;
+
+        if (currentPoint.y >= gameHeight - pointSize) {
             state = GameState.Finished;
         }
     }
@@ -66,7 +111,7 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
     @Override
     double percentDone() {
         // The - pointSize and - 2 * pointSize are because there are buffers at the top and bottom of the screen
-        return (currentPointY - pointSize)/((double) gameHeight - 2 * pointSize);
+        return (currentPoint.y - pointSize)/((double) gameHeight - 2 * pointSize);
     }
 
     @Override
@@ -74,14 +119,13 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
 
-//        g.drawArrow(gameWidth/2, gameHeight/6, gameWidth/2, 5 * gameHeight/6);
         for (int i = 1; i <= 4; i++) {
             g.drawArrow(i * gameWidth/5, gameHeight - game.scaleY(400), i * gameWidth/5, gameHeight - game.scaleY(150));
         }
 
         g.drawTargetLine(0, gameHeight, gameWidth, gameHeight, targetThickness);
 
-        g.drawCircle(currentPointX, currentPointY, pointSize, pointPaint);
+        g.drawCircle(Math.round(currentPoint.x), Math.round(currentPoint.y), pointSize, pointPaint);
     }
 
     @Override
@@ -101,8 +145,8 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
         if (event.sensor.getType() != Sensor.TYPE_GRAVITY) {
             return;
         }
-        gX = gX/3 + 2 * event.values[0]/3;
-        gY = gY/3 + 2 * event.values[1]/3;
+        gX = event.values[0];
+        gY = event.values[1];
     }
 
     @Override
