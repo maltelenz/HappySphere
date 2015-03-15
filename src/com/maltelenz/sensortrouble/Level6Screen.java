@@ -4,8 +4,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.Path;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -28,8 +26,6 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor gravitySensor;
     private float speed;
-    private Path arrowPath;
-    private Paint arrowPaint;
 
     public Level6Screen(Game game) {
         super(game);
@@ -48,23 +44,6 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
         pointPaint.setColor(ColorPalette.laser);
         pointPaint.setAntiAlias(true);
         pointPaint.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
-
-        arrowPaint = new Paint();
-        arrowPaint.setColor(ColorPalette.inactiveProgress);
-        arrowPaint.setAntiAlias(true);
-        arrowPaint.setStyle(Style.FILL);
-
-        arrowPath = new Path();
-        arrowPath.moveTo(Math.round(2.0 * gameWidth/5), Math.round(1.0 * gameHeight/5));
-        arrowPath.lineTo(Math.round(2.0 * gameWidth/5), Math.round(1.0 * gameHeight/5));
-        arrowPath.lineTo(Math.round(3.0 * gameWidth/5), Math.round(1.0 * gameHeight/5));
-        arrowPath.lineTo(Math.round(3.0 * gameWidth/5), Math.round(3.0 * gameHeight/5));
-        arrowPath.lineTo(Math.round(4.0 * gameWidth/5), Math.round(3.0 * gameHeight/5));
-        arrowPath.lineTo(Math.round(2.5 * gameWidth/5), Math.round(4.0 * gameHeight/5));
-        arrowPath.lineTo(Math.round(1.0 * gameWidth/5), Math.round(3.0 * gameHeight/5));
-        arrowPath.lineTo(Math.round(2.0 * gameWidth/5), Math.round(3.0 * gameHeight/5));
-        arrowPath.lineTo(Math.round(2.0 * gameWidth/5), Math.round(1.0 * gameHeight/5));
-        arrowPath.close();
 
         sensorManager = (SensorManager) game.getContext().getSystemService(Context.SENSOR_SERVICE);
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
@@ -91,8 +70,8 @@ public class Level6Screen extends LevelScreen implements SensorEventListener {
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
-        
-        g.drawPath(arrowPath, arrowPaint);
+
+        g.drawArrow(gameWidth/2, gameHeight/6, gameWidth/2, 5 * gameHeight/6);
 
         g.drawCircle(currentPointX, currentPointY, pointSize, pointPaint);
     }

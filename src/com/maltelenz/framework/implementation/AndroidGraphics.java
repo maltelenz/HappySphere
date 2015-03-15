@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
@@ -45,6 +46,7 @@ public class AndroidGraphics implements Graphics {
     private float fontSize;
     private Paint shooterFillPaint;
     private Paint piePaint;
+    private Paint arrowPaint;
 
     public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
         this.assets = assets;
@@ -98,6 +100,11 @@ public class AndroidGraphics implements Graphics {
         piePaint.setAntiAlias(true);
         piePaint.setStyle(Style.FILL);
         piePaint.setShadowLayer(scale(10.0f), scale(2.0f), scale(2.0f), ColorPalette.buttonShadow);
+
+        arrowPaint = new Paint();
+        arrowPaint.setColor(ColorPalette.inactiveProgress);
+        arrowPaint.setAntiAlias(true);
+        arrowPaint.setStyle(Style.FILL);
 }
 
     @Override
@@ -446,5 +453,31 @@ public class AndroidGraphics implements Graphics {
             piePaint.setColor(pieceColor);
             canvas.drawArc(rectangle, i * 360f / cSize, 360f / cSize, true, piePaint);
         }
+    }
+
+    @Override
+    public void drawArrow(int xmin, int ymin, int xmax, int ymax) {
+        Path arrowPath = new Path();
+        float tailWidth = 0.2f;
+        float headWidth = 0.4f;
+        float tailLength = 0.5f;
+        float arrowLength = 1;
+        arrowPath.moveTo(-tailWidth, 0);
+        arrowPath.lineTo(-tailWidth, 0);
+        arrowPath.lineTo(tailWidth, 0);
+        arrowPath.lineTo(tailWidth, tailLength);
+        arrowPath.lineTo(headWidth, tailLength);
+        arrowPath.lineTo(0, arrowLength);
+        arrowPath.lineTo(-headWidth, tailLength);
+        arrowPath.lineTo(-tailWidth, tailLength);
+        arrowPath.lineTo(-tailWidth, 0);
+        arrowPath.close();
+
+        Matrix transform = new Matrix();
+        float src[] = {0, 0, 0, arrowLength};
+        float dst[] = {xmin, ymin, xmax, ymax};
+        transform.setPolyToPoly(src, 0, dst, 0, 2);
+        arrowPath.transform(transform);
+        drawPath(arrowPath, arrowPaint);
     }
 }

@@ -119,11 +119,13 @@ public class Level9Screen extends LevelScreen {
 
         if (distanceBetweenBallAndBarrier() < barrierRadius + ballRadius) {
             bouncePaintTimeLeft = paintChangeTime;
+            // Move the ball back to be collision point
             while(distanceBetweenBallAndBarrier() < barrierRadius + ballRadius) {
                 xPositionBall -= dxBall * 0.0001;
                 yPositionBall -= dyBall * 0.0001;
             }
 
+            // Compute the new position and direction
             double quota = (xPositionBarrier - xPositionBall)/(yPositionBall - yPositionBarrier);
             double divExpr = 1 + Math.pow(Math.abs(quota), 2);
             float newdxBall = (float) (dxBall + (2 * quota * (dyBall - dxBall * quota))/divExpr);
@@ -189,14 +191,20 @@ public class Level9Screen extends LevelScreen {
 
         g.drawLine(targetX1, targetY, targetX2, targetY, targetPaint);
 
+        // Draw some arrows pointing on the target
+        g.drawArrow(targetX1/2, targetY - game.scaleY(400), targetX1, targetY - game.scaleY(150));
+        g.drawArrow((gameWidth + targetX2)/2, targetY - game.scaleY(400), targetX2, targetY - game.scaleY(150));
+
         g.drawCircle(Math.round(xPositionBall), Math.round(yPositionBall), ballRadius, ballPaint);
-        
+
+        // Indicate bouncing by adding a shadow to the barrier
         if (bouncePaintTimeLeft > 0) {
             g.drawCircle(xPositionBarrier, yPositionBarrier, barrierRadius, barrierPaintWithShadow);
         } else {
             g.drawCircle(xPositionBarrier, yPositionBarrier, barrierRadius, barrierPaint);
         }
 
+        // Draw a phantom barrier when trying to put it on top of the ball
         if (phantomPaintTimeLeft > 0) {
             g.drawCircle(xPositionPhantomBarrier, yPositionPhantomBarrier, barrierRadius, phantomBarrierPaint);
         }

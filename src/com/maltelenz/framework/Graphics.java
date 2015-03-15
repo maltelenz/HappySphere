@@ -90,4 +90,6 @@ public interface Graphics {
 
     public void drawPie(PieCircle pie);
 
+    public void drawArrow(int xmin, int ymin, int xmax, int ymax);
+
 }
