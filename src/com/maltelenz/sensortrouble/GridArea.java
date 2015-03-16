@@ -1,5 +1,9 @@
 package com.maltelenz.sensortrouble;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.maltelenz.framework.Input.TouchEvent;
 
 public class GridArea {
@@ -16,7 +20,7 @@ public class GridArea {
     Shape shape;
     int rotation = 0;
     boolean lasered = false;
-    LaserDirection inCominglaserDirection = LaserDirection.Left;
+    List<LaserDirection> inCominglaserDirections;
 
     public GridArea(int x, int y, int x0, int y0, int x1, int y1, Shape s, int rotation) {
         this.x = x;
@@ -27,6 +31,8 @@ public class GridArea {
         this.y1 = y1;
         this.shape = s;
         this.rotation = rotation;
+        this.inCominglaserDirections = new ArrayList<LaserDirection>();
+        inCominglaserDirections.add(LaserDirection.Left);
     }
 
     public boolean inBounds(TouchEvent event) {
@@ -40,11 +46,36 @@ public class GridArea {
         return this.rotation % 360;
     }
     
-    public LaserDirection getLaserDirection() {
-        return this.inCominglaserDirection;
+    public List<LaserDirection> getLaserDirections() {
+        return this.inCominglaserDirections;
     }
 
     public boolean isInComingHorizontal() {
-        return inCominglaserDirection == LaserDirection.Left || inCominglaserDirection == LaserDirection.Right;
+        for (Iterator<LaserDirection> iterator = inCominglaserDirections.iterator(); iterator.hasNext();) {
+            LaserDirection d = (LaserDirection) iterator.next();
+            if (d == LaserDirection.Left || d == LaserDirection.Right) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isInComingVertical() {
+        for (Iterator<LaserDirection> iterator = inCominglaserDirections.iterator(); iterator.hasNext();) {
+            LaserDirection d = (LaserDirection) iterator.next();
+            if (d == LaserDirection.Top || d == LaserDirection.Bottom) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addInCominglaserDirection(LaserDirection d) {
+        inCominglaserDirections.add(d);
+    }
+
+    public void clearLasers() {
+        inCominglaserDirections.clear();
+        lasered = false;
     }
 }

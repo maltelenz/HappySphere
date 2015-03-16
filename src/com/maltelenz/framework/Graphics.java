@@ -1,5 +1,7 @@
 package com.maltelenz.framework;
 
+import java.util.List;
+
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -39,7 +41,7 @@ public interface Graphics {
 
     public void drawLaser(int x, int y, int width, int height, int rotation);
 
-    public void drawTarget(int x, int y, int width, int height, LaserDirection inComingDirection, boolean lasered);
+    public void drawTarget(int x, int y, int width, int height, List<LaserDirection> inComingDirections, boolean lasered);
 
     public void drawTriangle(int x, int y, int width, int height, int rotation, int color, boolean lasered);
 

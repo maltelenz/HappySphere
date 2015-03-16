@@ -2,6 +2,7 @@ package com.maltelenz.framework.implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.res.AssetManager;
@@ -201,26 +202,27 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
-    public void drawTarget(int x, int y, int width, int height, LaserDirection inComingDirection, boolean lasered) {
+    public void drawTarget(int x, int y, int width, int height, List<LaserDirection> inComingDirections, boolean lasered) {
         if (lasered) {
             Point incomingPoint = null;
-            switch (inComingDirection) {
-            case Left:
-                incomingPoint = new Point(x, y + height/2);
-                break;
-            case Right:
-                incomingPoint = new Point(x + width, y + height/2);
-                break;
-            case Top:
-                incomingPoint = new Point(x + width/2, y);
-                break;
-            case Bottom: default:
-                incomingPoint = new Point(x + width/2, y + height);
-                break;
-
+            for (Iterator<LaserDirection> iterator = inComingDirections.iterator(); iterator.hasNext();) {
+                LaserDirection d = (LaserDirection) iterator.next();
+                switch (d) {
+                case Left:
+                    incomingPoint = new Point(x, y + height/2);
+                    break;
+                case Right:
+                    incomingPoint = new Point(x + width, y + height/2);
+                    break;
+                case Top:
+                    incomingPoint = new Point(x + width/2, y);
+                    break;
+                case Bottom: default:
+                    incomingPoint = new Point(x + width/2, y + height);
+                    break;
+                }
+                drawLine(incomingPoint.x, incomingPoint.y, x + width/2, y + width/2, laserPaint);
             }
-
-            drawLine(incomingPoint.x, incomingPoint.y, x + width/2, y + width/2, laserPaint);
         }
 
         Paint laserCircle = new Paint();
