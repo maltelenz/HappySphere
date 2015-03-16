@@ -39,9 +39,13 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
     private int targetThickness;
 
     protected List<Barrier> barriers;
+    protected List<Barrier> dangerBarriers;
     private List<Barrier> gameSideBarriers;
     private Paint barrierPaint;
+    private Paint dangerBarrierPaint;
     protected int barrierHeight;
+    private int startPointX;
+    private int startPointY;
 
     public LabyrinthLevel(Game game) {
         super(game);
@@ -55,7 +59,10 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
         vX = 0;
         vY = 0;
 
-        currentPoint = new PointF(gameWidth/2, pointSize * 2);
+        startPointX = gameWidth/2;
+        startPointY = pointSize * 2;
+
+        currentPoint = new PointF(startPointX, startPointY);
 
         pointPaint = new Paint();
         pointPaint.setColor(ColorPalette.laser);
@@ -69,6 +76,8 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
 
         barriers = new ArrayList<Barrier>();
 
+        dangerBarriers = new ArrayList<Barrier>();
+
         // Barriers around the top, left and right side of the game
         gameSideBarriers = new ArrayList<Barrier>();
         gameSideBarriers.add(new Barrier(0, -barrierHeight, gameWidth, 0));
@@ -80,6 +89,11 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
         barrierPaint.setAntiAlias(true);
         barrierPaint.setStyle(Style.FILL_AND_STROKE);
         barrierPaint.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
+
+        dangerBarrierPaint = new Paint();
+        dangerBarrierPaint.set(barrierPaint);
+        dangerBarrierPaint.clearShadowLayer();
+        dangerBarrierPaint.setColor(ColorPalette.oopsie);
 
         targetThickness = game.scaleY(50);
     }
@@ -104,6 +118,14 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
         for (Iterator<Barrier> iterator = gameSideBarriers.iterator(); iterator.hasNext();) {
             Barrier b = (Barrier) iterator.next();
             newPoint = b.move(currentPoint, newPoint, pointSize);
+        }
+
+        // Handle danger barriers (reset the game)
+        for (Iterator<Barrier> iterator = dangerBarriers.iterator(); iterator.hasNext();) {
+            Barrier b = (Barrier) iterator.next();
+            if (b.inBounds(newPoint, pointSize)) {
+                newPoint = new PointF(startPointX, startPointY);
+            }
         }
 
         // Check if there was a collision
@@ -139,6 +161,11 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
         for (Iterator<Barrier> iterator = barriers.iterator(); iterator.hasNext();) {
             Barrier b = (Barrier) iterator.next();
             g.drawBarrier(b, barrierPaint);
+        }
+
+        for (Iterator<Barrier> iterator = dangerBarriers.iterator(); iterator.hasNext();) {
+            Barrier b = (Barrier) iterator.next();
+            g.drawBarrier(b, dangerBarrierPaint);
         }
 
         g.drawTargetLine(0, gameHeight, gameWidth, gameHeight, targetThickness);

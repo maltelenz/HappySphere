@@ -48,9 +48,16 @@ public class Barrier {
     }
 
     public boolean inBounds(float x, float y) {
-        if (x >= x0 && x <= x1 && y >= y0 && y <= y1)
+        if (x >= x0 && x <= x1 && y >= y0 && y <= y1) {
             return true;
-        else
-            return false;
+        }
+        return false;
+    }
+
+    public boolean inBounds(PointF point, int radius) {
+        if (point.y >= y0 - radius && point.y <= y1 + radius && point.x >= x0 - radius && point.x <= x1 + radius) {
+            return true;
+        }
+        return false;
     }
 }
