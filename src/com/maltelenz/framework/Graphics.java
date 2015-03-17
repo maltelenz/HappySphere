@@ -31,9 +31,9 @@ public interface Graphics {
 
     public void clearScreen(int color);
 
-    public void drawLine(int x, int y, int x2, int y2, int color);
+    public void drawLine(double x, double y, double x2, double y2, int color);
 
-    public void drawLine(int x, int y, int x2, int y2, Paint paint);
+    public void drawLine(double x, double y, double x2, double y2, Paint paint);
 
     public void drawTargetLine(int x, int y, int x2, int y2, int thickness);
 
@@ -58,7 +58,7 @@ public interface Graphics {
 
     public void drawString(String text, int x, int y);
 
-    public void drawString(String text, int x, int y, Paint painter);
+    public void drawString(String text, double x, double y, Paint painter);
 
     public void drawStringCentered(String text);
 
@@ -76,7 +76,7 @@ public interface Graphics {
 
     public void drawARGB(int i, int j, int k, int l);
 
-    public void drawCircle(int x, int y, int radius, Paint painter);
+    public void drawCircle(double x, double y, float f, Paint painter);
 
     public void drawArc(RectF rect, float percent, Paint painter);
 

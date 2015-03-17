@@ -148,14 +148,14 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
-    public void drawLine(int x, int y, int x2, int y2, int color) {
+    public void drawLine(double x, double y, double x2, double y2, int color) {
         paint.setColor(color);
-        canvas.drawLine(x, y, x2, y2, paint);
+        canvas.drawLine(Math.round(x), Math.round(y), Math.round(x2), Math.round(y2), paint);
     }
 
     @Override
-    public void drawLine(int x, int y, int x2, int y2, Paint paint) {
-        canvas.drawLine(x, y, x2, y2, paint);
+    public void drawLine(double x, double y, double x2, double y2, Paint paint) {
+        canvas.drawLine(Math.round(x), Math.round(y), Math.round(x2), Math.round(y2), paint);
     }
 
     @Override
@@ -170,8 +170,8 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
-    public void drawCircle(int x, int y, int radius, Paint painter) {
-        canvas.drawCircle(x, y, radius, painter);
+    public void drawCircle(double x, double y, float radius, Paint painter) {
+        canvas.drawCircle(Math.round(x), Math.round(y), radius, painter);
     }
 
     @Override
@@ -316,8 +316,8 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
-    public void drawString(String text, int x, int y, Paint painter) {
-        canvas.drawText(text, x, y + painter.getFontMetrics().bottom, painter);
+    public void drawString(String text, double x, double y, Paint painter) {
+        canvas.drawText(text, Math.round(x), Math.round(y) + painter.getFontMetrics().bottom, painter);
     }
 
     @Override
