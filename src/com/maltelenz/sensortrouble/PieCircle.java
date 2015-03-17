@@ -5,31 +5,15 @@ import java.util.Collections;
 
 import com.maltelenz.framework.Input.TouchEvent;
 
-public class PieCircle {
+public class PieCircle extends CircleButton {
 
     ArrayList<Integer> pieces;
     int rotation = 0;
-    private float maxRadius;
-    private float minRadius;
-    private int centerX;
-    private int centerY;
 
     public PieCircle(ArrayList<Integer> colors, float minRadius, float maxRadius, int centerX, int centerY) {
-        this.pieces = colors;
-        this.minRadius = minRadius;
-        this.maxRadius = maxRadius;
-        this.centerX = centerX;
-        this.centerY = centerY;
-    }
+        super(minRadius, maxRadius, centerX, centerY);
 
-    private boolean inBounds(TouchEvent event) {
-        int dx = centerX - event.x;
-        int dy = centerY - event.y;
-        double radius = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-        if (radius < maxRadius && radius > minRadius)
-            return true;
-        else
-            return false;
+        this.pieces = colors;
     }
 
     public void touch(TouchEvent event) {
@@ -40,9 +24,5 @@ public class PieCircle {
 
     public ArrayList<Integer> getColors() {
         return pieces;
-    }
-
-    public float getMaxRadius() {
-        return maxRadius;
     }
 }
