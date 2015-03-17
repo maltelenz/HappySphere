@@ -43,7 +43,7 @@ public interface Graphics {
 
     public void drawTarget(int x, int y, int width, int height, List<LaserDirection> inComingDirections, boolean lasered);
 
-    public void drawTriangle(int x, int y, int width, int height, int rotation, int color, boolean lasered);
+    public void drawLaserDeflectorTriangle(int x, int y, int width, int height, int rotation, int color, boolean lasered);
 
     public void drawRect(int x, int y, int width, int height, int color);
 

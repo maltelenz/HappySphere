@@ -238,7 +238,7 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
-    public void drawTriangle(int x, int y, int width, int height, int rotation, int color, boolean lasered) {
+    public void drawLaserDeflectorTriangle(int x, int y, int width, int height, int rotation, int color, boolean lasered) {
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setStrokeWidth(10);

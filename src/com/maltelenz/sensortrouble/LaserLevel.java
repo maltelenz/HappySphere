@@ -272,7 +272,7 @@ public class LaserLevel extends LevelScreen {
             } else if (area.shape == Shape.Box) {
                 g.drawRect(area.x0, area.y0, width, height, ColorPalette.box);
             } else if (area.shape == Shape.Triangle) {
-                g.drawTriangle(area.x0, area.y0, width, height, area.getRotation(), ColorPalette.button, area.lasered);
+                g.drawLaserDeflectorTriangle(area.x0, area.y0, width, height, area.getRotation(), ColorPalette.button, area.lasered);
             } else if (area.shape == Shape.Laser) {
                 g.drawLaser(area.x0, area.y0, width, height, area.getRotation());
             } else if (area.shape == Shape.Target) {
