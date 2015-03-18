@@ -38,6 +38,8 @@ public class ButtonGraphLevel extends LevelScreen {
     private int reStartButtonWidth;
     private int reStartButtonHeight;
 
+    private Paint circlePainter;
+
     public ButtonGraphLevel(Game game) {
         super(game);
 
@@ -59,6 +61,14 @@ public class ButtonGraphLevel extends LevelScreen {
                 gameHeight - 2 * reStartButtonHeight,
                 (gameWidth + reStartButtonWidth)/2,
                 gameHeight - reStartButtonHeight);
+
+        circlePainter = new Paint();
+        circlePainter.setColor(ColorPalette.button);
+        circlePainter.setStyle(Style.FILL_AND_STROKE);
+        circlePainter.setStrokeWidth(game.scale(5));
+        circlePainter.setAntiAlias(true);
+        circlePainter.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
+
     }
 
     @Override
@@ -69,6 +79,7 @@ public class ButtonGraphLevel extends LevelScreen {
 
         for (int j = 0; j < circles.size(); j++) {
             CountdownButton button = circles.get(j);
+            button.decreaseFlashTime(deltaTime);
             for (int i = 0; i < len; i++) {
                 TouchEvent event = touchEvents.get(i);
                 if (event.type == TouchEvent.TOUCH_DOWN) {
@@ -109,19 +120,12 @@ public class ButtonGraphLevel extends LevelScreen {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
 
-        Paint circlePainter = new Paint();
-        circlePainter.setColor(ColorPalette.button);
-        circlePainter.setStyle(Style.FILL_AND_STROKE);
-        circlePainter.setStrokeWidth(game.scale(5));
-        circlePainter.setAntiAlias(true);
-        circlePainter.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
-
-        Paint largePainter = new Paint();
-        largePainter.setTextSize(circleRadius/2);
-        largePainter.setTextAlign(Paint.Align.CENTER);
-        largePainter.setAntiAlias(true);
-        largePainter.setColor(Color.WHITE);
-        largePainter.setTypeface(Typeface.DEFAULT_BOLD);
+        Paint buttonTextPainter = new Paint();
+        buttonTextPainter.setTextSize(circleRadius/2);
+        buttonTextPainter.setTextAlign(Paint.Align.CENTER);
+        buttonTextPainter.setAntiAlias(true);
+        buttonTextPainter.setColor(Color.WHITE);
+        buttonTextPainter.setTypeface(Typeface.DEFAULT_BOLD);
 
         for (Iterator<ButtonLink> iterator = edges.iterator(); iterator.hasNext();) {
             ButtonLink edge = (ButtonLink) iterator.next();
@@ -158,13 +162,19 @@ public class ButtonGraphLevel extends LevelScreen {
             transform.setPolyToPoly(src, 0, dst, 0, 2);
             arrowPath.transform(transform);
             g.drawPath(arrowPath, linePaint);
-
-
         }
+
         for (Iterator<CountdownButton> iterator = circles.iterator(); iterator.hasNext();) {
             CountdownButton button = (CountdownButton) iterator.next();
+            if (button.isFlashing()) {
+                circlePainter.setColor(ColorPalette.progress);
+            } else if (button.getTouchesLeft() < 0) {
+                circlePainter.setColor(ColorPalette.oopsie);
+            } else {
+                circlePainter.setColor(ColorPalette.button);
+            }
             g.drawCircle(button.centerX, button.centerY, button.getMaxRadius(), circlePainter);
-            g.drawString(Integer.toString(button.getTouchesLeft()), button.centerX, button.centerY, largePainter);
+            g.drawString(Integer.toString(button.getTouchesLeft()), button.centerX, button.centerY, buttonTextPainter);
         }
 
         g.drawButton(reStartButton);
