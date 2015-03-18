@@ -5,7 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 
@@ -132,6 +134,31 @@ public class ButtonGraphLevel extends LevelScreen {
                 linePaint.setColor(ColorPalette.laser);
             }
             g.drawLine(fCircle.centerX, fCircle.centerY, tCircle.centerX, tCircle.centerY, linePaint);
+
+            Path arrowPath = new Path();
+            float width = 0.5f;
+            float length = 0.5f;
+            arrowPath.moveTo(-width/2, 0);
+            arrowPath.lineTo(-width/2, 0);
+            arrowPath.lineTo(width/2, 0);
+            arrowPath.lineTo(0, length);
+            arrowPath.lineTo(-width/2, 0);
+            arrowPath.close();
+
+            float dx = (float) (tCircle.centerX - fCircle.centerX);
+            float dy = (float) (tCircle.centerY - fCircle.centerY);
+            Matrix transform = new Matrix();
+            float src[] = {0, 0, 0, length};
+            float dst[] = {
+                    (float) (fCircle.centerX + dx * 0.5f),
+                    (float) (fCircle.centerY + dy * 0.5f),
+                    (float) (fCircle.centerX + dx * 0.6f),
+                    (float) (fCircle.centerY + dy * 0.6f),
+                };
+            transform.setPolyToPoly(src, 0, dst, 0, 2);
+            arrowPath.transform(transform);
+            g.drawPath(arrowPath, linePaint);
+
 
         }
         for (Iterator<CountdownButton> iterator = circles.iterator(); iterator.hasNext();) {
