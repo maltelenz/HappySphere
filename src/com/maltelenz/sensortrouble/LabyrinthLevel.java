@@ -38,6 +38,7 @@ public class LabyrinthLevel extends LevelScreen {
     protected int barrierHeight;
     private int startPointX;
     private int startPointY;
+    private Paint exhaustPaint;
 
     public LabyrinthLevel(Game game) {
         super(game);
@@ -83,6 +84,10 @@ public class LabyrinthLevel extends LevelScreen {
         dangerBarrierPaint.set(barrierPaint);
         dangerBarrierPaint.clearShadowLayer();
         dangerBarrierPaint.setColor(ColorPalette.oopsie);
+
+        exhaustPaint = new Paint();
+        exhaustPaint.setColor(ColorPalette.laser);
+        exhaustPaint.setStrokeWidth(game.scale(10f));
 
         targetThickness = game.scaleY(50);
     }
@@ -151,6 +156,8 @@ public class LabyrinthLevel extends LevelScreen {
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
+
+        g.drawLine(currentPoint.x, currentPoint.y, currentPoint.x + gX * game.scale(100), currentPoint.y - gY * game.scale(100), exhaustPaint);
 
         for (int i = 1; i <= 4; i++) {
             g.drawArrow(i * gameWidth/5, gameHeight - game.scaleY(400), i * gameWidth/5, gameHeight - game.scaleY(150));
