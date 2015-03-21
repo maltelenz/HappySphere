@@ -4,33 +4,25 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.PointF;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 
 import com.maltelenz.framework.Game;
 import com.maltelenz.framework.Graphics;
 import com.maltelenz.framework.Input.TouchEvent;
 
-public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
+public class LabyrinthLevel extends LevelScreen {
 
     protected int gameHeight;
     protected int gameWidth;
 
     private int pointSize;
-    private PointF currentPoint;
+    protected PointF currentPoint;
     private Paint pointPaint;
 
-    private float gX;
-    private float gY;
-
-    private SensorManager sensorManager;
-    private Sensor gravitySensor;
+    protected float gX;
+    protected float gY;
 
     private float speed;
     private float vX;
@@ -69,9 +61,6 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
         pointPaint.setAntiAlias(true);
         pointPaint.setShadowLayer(game.scale(10.0f), game.scale(2.0f), game.scale(2.0f), ColorPalette.buttonShadow);
 
-        sensorManager = (SensorManager) game.getContext().getSystemService(Context.SENSOR_SERVICE);
-        gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-
         barrierHeight = game.scaleY(100);
 
         barriers = new ArrayList<Barrier>();
@@ -100,6 +89,9 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
 
     @Override
     protected void updateGameRunning(List<TouchEvent> touchEvents, float deltaTime) {
+        
+        updateAccelerations(touchEvents, deltaTime);
+        
         vX = vX + gX;
         vY = vY + gY;
 
@@ -143,6 +135,12 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
         }
     }
 
+    
+    /**
+     * Updates the acceleration variables gX and gY
+     */
+    void updateAccelerations(List<TouchEvent> touchEvents, float deltaTime) { }
+
     @Override
     double percentDone() {
         // The - pointSize and - 2 * pointSize are because there are buffers at the top and bottom of the screen
@@ -171,30 +169,5 @@ public class LabyrinthLevel extends LevelScreen implements SensorEventListener {
         g.drawTargetLine(0, gameHeight, gameWidth, gameHeight, targetThickness);
 
         g.drawCircle(Math.round(currentPoint.x), Math.round(currentPoint.y), pointSize, pointPaint);
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
-        sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-    @Override
-    public void pause() {
-        super.pause();
-        sensorManager.unregisterListener(this);
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() != Sensor.TYPE_GRAVITY) {
-            return;
-        }
-        gX = event.values[0];
-        gY = event.values[1];
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 }

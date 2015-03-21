@@ -2,7 +2,7 @@ package com.maltelenz.sensortrouble;
 
 import com.maltelenz.framework.Game;
 
-public class Level12Screen extends LabyrinthLevel {
+public class Level12Screen extends GravityLevel {
 
     public Level12Screen(Game game) {
         super(game);
