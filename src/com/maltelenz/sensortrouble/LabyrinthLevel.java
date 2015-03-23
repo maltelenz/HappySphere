@@ -36,8 +36,8 @@ public class LabyrinthLevel extends LevelScreen {
     private Paint barrierPaint;
     private Paint dangerBarrierPaint;
     protected int barrierHeight;
-    private int startPointX;
-    private int startPointY;
+    protected int startPointX;
+    protected int startPointY;
     private Paint exhaustPaint;
 
     public LabyrinthLevel(Game game) {
@@ -163,6 +163,8 @@ public class LabyrinthLevel extends LevelScreen {
             g.drawArrow(i * gameWidth/5, gameHeight - game.scaleY(400), i * gameWidth/5, gameHeight - game.scaleY(150));
         }
 
+        g.drawTargetLine(0, gameHeight, gameWidth, gameHeight, targetThickness);
+
         for (Iterator<Barrier> iterator = barriers.iterator(); iterator.hasNext();) {
             Barrier b = (Barrier) iterator.next();
             g.drawBarrier(b, barrierPaint);
@@ -172,8 +174,6 @@ public class LabyrinthLevel extends LevelScreen {
             Barrier b = (Barrier) iterator.next();
             g.drawBarrier(b, dangerBarrierPaint);
         }
-
-        g.drawTargetLine(0, gameHeight, gameWidth, gameHeight, targetThickness);
 
         g.drawCircle(Math.round(currentPoint.x), Math.round(currentPoint.y), pointSize, pointPaint);
     }
