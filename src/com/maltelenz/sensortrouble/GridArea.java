@@ -21,6 +21,7 @@ public class GridArea {
     int rotation = 0;
     boolean lasered = false;
     List<LaserDirection> inCominglaserDirections;
+    public boolean selected;
 
     public GridArea(int x, int y, int x0, int y0, int x1, int y1, Shape s, int rotation) {
         this.x = x;
@@ -31,6 +32,7 @@ public class GridArea {
         this.y1 = y1;
         this.shape = s;
         this.rotation = rotation;
+        this.selected = false;
         this.inCominglaserDirections = new ArrayList<LaserDirection>();
         inCominglaserDirections.add(LaserDirection.Left);
     }
