@@ -2,8 +2,6 @@ package com.maltelenz.sensortrouble;
 
 import java.util.HashSet;
 
-import android.util.Log;
-
 import com.maltelenz.framework.Input.TouchEvent;
 
 public class ContinuousCountdownButton extends CircleButton {
