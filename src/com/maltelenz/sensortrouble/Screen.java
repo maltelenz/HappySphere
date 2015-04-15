@@ -45,6 +45,7 @@ public class Screen {
         levels.add(Level15Screen.class);
         levels.add(Level16Screen.class);
         levels.add(Level17Screen.class);
+        levels.add(Level18Screen.class);
     }
 
     /**
