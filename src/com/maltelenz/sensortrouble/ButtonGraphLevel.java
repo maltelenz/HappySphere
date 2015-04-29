@@ -97,7 +97,7 @@ public class ButtonGraphLevel extends LevelScreen {
                     }
                 } else if (event.type == TouchEvent.TOUCH_UP) {
                     if (reStartButton.inBounds(event)) {
-                        // Start Game
+                        // Restart level
                         startLevel(currentLevel());
                         return;
                     }

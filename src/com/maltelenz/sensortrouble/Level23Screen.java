@@ -2,9 +2,9 @@ package com.maltelenz.sensortrouble;
 
 import com.maltelenz.framework.Game;
 
-public class Level7Screen extends ShooterLevel {
+public class Level23Screen extends ShooterLevel {
 
-    public Level7Screen(Game game) {
+    public Level23Screen(Game game) {
         super(game);
 
         for (int y = 0; y < 2; y++) {
@@ -14,7 +14,11 @@ public class Level7Screen extends ShooterLevel {
         }
 
         for (int x = 0; x < 5; x++) {
-            targetBarriers.add(new Barrier(barrierWidth * x + barrierPadding * (x + 1), progressBarHeight, barrierWidth * (x + 1) + barrierPadding * x, progressBarHeight + barrierHeight));
+            if (x == 1 || x == 3) {
+                dangerBarriers.add(new Barrier(barrierWidth * x + barrierPadding * (x + 1), progressBarHeight, barrierWidth * (x + 1) + barrierPadding * x, progressBarHeight + barrierHeight));
+            } else {
+                targetBarriers.add(new Barrier(barrierWidth * x + barrierPadding * (x + 1), progressBarHeight, barrierWidth * (x + 1) + barrierPadding * x, progressBarHeight + barrierHeight));
+            }
         }
         nrTargetBarriers = targetBarriers.size();
 
