@@ -18,6 +18,7 @@ public abstract class LevelScreen extends Screen {
     private int nextButtonHeight;
 
     private Button nextButton;
+    private Button againButton;
 
     private boolean updatedLevelFinished = false;
 
@@ -31,6 +32,12 @@ public abstract class LevelScreen extends Screen {
                 game.getGraphics().getWidth() - nextButtonWidth,
                 game.getGraphics().getHeight() - nextButtonHeight,
                 game.getGraphics().getWidth(),
+                game.getGraphics().getHeight());
+
+        againButton = new Button("Play Again",
+                0,
+                game.getGraphics().getHeight() - nextButtonHeight,
+                nextButtonWidth,
                 game.getGraphics().getHeight());
     }
 
@@ -69,16 +76,20 @@ public abstract class LevelScreen extends Screen {
     }
 
     private void updateGameFinished(List<TouchEvent> touchEvents) {
-        Graphics g = game.getGraphics();
-        g.drawButton(nextButton);
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
-            if (event.type == TouchEvent.TOUCH_UP) {
+            if (event.type == TouchEvent.TOUCH_DOWN) {
                 if (nextButton.inBounds(event)) {
                     // Start next level
                     nullify();
                     nextLevel();
+                    return;
+                }
+                if (againButton.inBounds(event)) {
+                    // Start next level
+                    nullify();
+                    startLevel(currentLevel());
                     return;
                 }
             }
@@ -118,6 +129,7 @@ public abstract class LevelScreen extends Screen {
         g.clearScreen(ColorPalette.background);
         g.drawStringCentered("SUCCESS.");
         g.drawButton(nextButton);
+        g.drawButton(againButton);
         drawGameProgressOverlay(true, true);
         drawLevelProgressOverlay();
     }
