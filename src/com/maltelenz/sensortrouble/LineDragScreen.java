@@ -141,14 +141,38 @@ public class LineDragScreen extends LevelScreen {
         double minDistance = gameHeight * 2;
         double distance;
         Point minPoint = new Point();
-        for (Iterator<Point> iterator = drawingPoints.iterator(); iterator.hasNext();) {
-            Point point = (Point) iterator.next();
+        int minIndex = 0;
+
+        for (int i = 0; i < drawingPoints.size(); i++) {
+            Point point = drawingPoints.get(i);
+            distance = getDistance(point, inPoint);
+            if (distance < minDistance) {
+                minDistance = distance;
+                minPoint = point;
+                minIndex = i;
+            }
+        }
+
+        // Also check the lines to either side of the closest point
+        if (minIndex < drawingPoints.size() - 1) {
+            // Not the last point
+            Point point = MathExt.getClosestPointOnLine(drawingPoints.get(minIndex), drawingPoints.get(minIndex + 1), inPoint);
             distance = getDistance(point, inPoint);
             if (distance < minDistance) {
                 minDistance = distance;
                 minPoint = point;
             }
         }
+        if (minIndex > 0) {
+            // Not the first point
+            Point point = MathExt.getClosestPointOnLine(minPoint, drawingPoints.get(minIndex - 1), inPoint);
+            distance = getDistance(point, inPoint);
+            if (distance < minDistance) {
+                minDistance = distance;
+                minPoint = point;
+            }
+        }
+
         return minPoint;
     }
 
