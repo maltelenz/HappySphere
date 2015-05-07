@@ -138,8 +138,8 @@ public abstract class LevelScreen extends Screen {
     private void drawGameFinishedUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
-        g.drawStringCentered("SUCCESS.");
-        g.drawString(Float.toString(getTimeSpent()), g.getWidth()/2, 2 * g.getHeight()/3);
+        g.drawHappySphere(Happy.Ok);
+        g.drawString(Float.toString(getTimeSpent()), g.getWidth()/2, 7 * g.getHeight() / 8);
         g.drawButton(nextButton);
         g.drawButton(againButton);
         drawGameProgressOverlay(true, true);

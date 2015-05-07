@@ -22,6 +22,8 @@ public class ColorPalette {
 
     public static int oopsie = Color.rgb(214, 128, 36);
 
+    public static int yellow = Color.rgb(255, 234, 79);
+
     public static int rectangleShadow = Color.BLACK;
     public static int buttonShadow = Color.BLACK;
 }
