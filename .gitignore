@@ -32,3 +32,5 @@ proguard/
 build/
 
 .directory
+
+captures/
