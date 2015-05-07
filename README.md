@@ -1,3 +1,3 @@
-# SensorTrouble
+# Happy Sphere
 
-A puzzle game experiment, with the primary purpose of refreshing my Java and Android knowledge.
+A puzzle game experiment.

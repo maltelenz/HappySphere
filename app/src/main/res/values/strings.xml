@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="app_name">SensorTrouble</string>
-    <string name="level_preference_file_key">com.laserfountain.sensortrouble.leveling</string>
+    <string name="app_name">Happy Sphere</string>
+    <string name="level_preference_file_key">com.laserfountain.happysphere.leveling</string>
     <string name="max_level_achieved">MaxLevelAchieved</string>
 
 </resources>
