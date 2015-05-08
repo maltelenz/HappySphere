@@ -16,8 +16,8 @@ import com.laserfountain.framework.FileIO;
 import com.laserfountain.framework.Game;
 import com.laserfountain.framework.Graphics;
 import com.laserfountain.framework.Input;
-import com.laserfountain.sensortrouble.R;
-import com.laserfountain.sensortrouble.Screen;
+import com.laserfountain.happysphere.R;
+import com.laserfountain.happysphere.Screen;
 
 public abstract class AndroidGame extends Activity implements Game {
     AndroidFastRenderView renderView;

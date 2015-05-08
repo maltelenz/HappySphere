@@ -2,7 +2,7 @@ package com.laserfountain.framework;
 
 import android.content.Context;
 
-import com.laserfountain.sensortrouble.Screen;
+import com.laserfountain.happysphere.Screen;
 
 public interface Game {
 

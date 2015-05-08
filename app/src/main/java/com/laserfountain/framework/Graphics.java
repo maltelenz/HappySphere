@@ -6,13 +6,15 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 
-import com.laserfountain.sensortrouble.Barrier;
-import com.laserfountain.sensortrouble.Button;
-import com.laserfountain.sensortrouble.GridArea.LaserDirection;
-import com.laserfountain.sensortrouble.PieCircle;
-import com.laserfountain.sensortrouble.TouchPoint;
+import com.laserfountain.happysphere.Barrier;
+import com.laserfountain.happysphere.Button;
+import com.laserfountain.happysphere.GridArea.LaserDirection;
+import com.laserfountain.happysphere.Happy;
+import com.laserfountain.happysphere.PieCircle;
+import com.laserfountain.happysphere.TouchPoint;
 
 public interface Graphics {
+
     public static enum ImageFormat {
         ARGB8888, ARGB4444, RGB565
     }
@@ -96,4 +98,5 @@ public interface Graphics {
 
     public void drawArrow(int xmin, int ymin, int xmax, int ymax);
 
+    public void drawHappySphere(Happy happiness);
 }

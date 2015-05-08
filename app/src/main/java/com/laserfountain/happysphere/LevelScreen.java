@@ -138,7 +138,7 @@ public abstract class LevelScreen extends Screen {
     private void drawGameFinishedUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
-        g.drawHappySphere(Happy.Ok);
+        g.drawHappySphere(Happy.Happy);
         g.drawString(Float.toString(getTimeSpent()), g.getWidth()/2, 7 * g.getHeight() / 8);
         g.drawButton(nextButton);
         g.drawButton(againButton);

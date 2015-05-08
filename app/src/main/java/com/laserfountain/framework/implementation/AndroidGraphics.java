@@ -20,12 +20,13 @@ import android.graphics.Typeface;
 
 import com.laserfountain.framework.Graphics;
 import com.laserfountain.framework.Image;
-import com.laserfountain.sensortrouble.Barrier;
-import com.laserfountain.sensortrouble.Button;
-import com.laserfountain.sensortrouble.ColorPalette;
-import com.laserfountain.sensortrouble.GridArea.LaserDirection;
-import com.laserfountain.sensortrouble.PieCircle;
-import com.laserfountain.sensortrouble.TouchPoint;
+import com.laserfountain.happysphere.Barrier;
+import com.laserfountain.happysphere.Button;
+import com.laserfountain.happysphere.ColorPalette;
+import com.laserfountain.happysphere.GridArea.LaserDirection;
+import com.laserfountain.happysphere.Happy;
+import com.laserfountain.happysphere.PieCircle;
+import com.laserfountain.happysphere.TouchPoint;
 
 public class AndroidGraphics implements Graphics {
     AssetManager assets;
@@ -49,6 +50,11 @@ public class AndroidGraphics implements Graphics {
     private Paint piePaint;
     private Paint arrowPaint;
     private Paint targetPaint;
+    private Paint happyPaint;
+    private Paint eyePaint;
+    private Paint eyeInnerPaint;
+    private Paint nosePaint;
+    private Paint mouthpaint;
 
     public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
         this.assets = assets;
@@ -110,7 +116,27 @@ public class AndroidGraphics implements Graphics {
 
         targetPaint = new Paint();
         targetPaint.setColor(ColorPalette.progress);
-}
+
+        happyPaint = new Paint();
+        happyPaint.set(arrowPaint);
+        happyPaint.setColor(ColorPalette.yellow);
+
+        eyePaint = new Paint();
+        eyePaint.set(happyPaint);
+        eyePaint.setColor(ColorPalette.box);
+
+        eyeInnerPaint = new Paint();
+        eyeInnerPaint.set(eyePaint);
+        eyeInnerPaint.setColor(ColorPalette.progress);
+
+        nosePaint = new Paint();
+        nosePaint.set(eyePaint);
+        nosePaint.setColor(ColorPalette.inactiveProgress);
+
+        mouthpaint = new Paint();
+        mouthpaint.set(eyeInnerPaint);
+        mouthpaint.setStrokeWidth(getWidth()/50);
+    }
 
     @Override
     public int scaleX(int in) {
@@ -491,5 +517,26 @@ public class AndroidGraphics implements Graphics {
         transform.setPolyToPoly(src, 0, dst, 0, 2);
         arrowPath.transform(transform);
         drawPath(arrowPath, arrowPaint);
+    }
+
+    @Override
+    public void drawHappySphere(Happy happyness) {
+        canvas.drawCircle(getWidth()/2f, getHeight()/2f, getWidth()/2.5f, happyPaint);
+
+        canvas.drawCircle(getWidth()/3f, getHeight() * 5f/14f, getWidth()/10f, eyePaint);
+        canvas.drawCircle(2 * getWidth()/3f, getHeight() * 5f/14f, getWidth()/10f, eyePaint);
+
+        canvas.drawCircle(getWidth()/3f * 1.03f, getHeight()/2.8f, getWidth()/25f, eyeInnerPaint);
+        canvas.drawCircle(2 * getWidth() / 3f * 1.03f, getHeight() / 2.8f, getWidth() / 25f, eyeInnerPaint);
+
+        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, getWidth() / 25f, nosePaint);
+
+        if (happyness == Happy.Ok) {
+            canvas.drawLine(4 * getWidth() / 12f, getHeight() * 9f / 14f, 8 * getWidth() / 12f, getHeight() * 9f / 14f, mouthpaint);
+        } else if (happyness == Happy.Happy) {
+            canvas.drawArc(4.5f * getWidth() / 12f, getHeight() * 8f / 14f, 7.5f * getWidth() / 12f, getHeight() * 9f / 14f, 0f, 180f, false, mouthpaint);
+        } else if (happyness == Happy.Exstatic) {
+            canvas.drawArc(4 * getWidth() / 12f, getHeight() * 7f / 14f, 8 * getWidth() / 12f, getHeight() * 9f / 14f, 0f, 180f, false, mouthpaint);
+        }
     }
 }
