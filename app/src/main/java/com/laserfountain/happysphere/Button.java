@@ -19,9 +19,6 @@ public class Button {
     }
 
     public boolean inBounds(TouchEvent event) {
-        if (event.x > x0 && event.x < x1 && event.y > y0 && event.y < y1)
-            return true;
-        else
-            return false;
+        return event.x > x0 && event.x < x1 && event.y > y0 && event.y < y1;
     }
 }

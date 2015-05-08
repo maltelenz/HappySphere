@@ -1,28 +1,20 @@
 package com.laserfountain.happysphere;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
 import com.laserfountain.framework.Game;
 import com.laserfountain.framework.Graphics;
 import com.laserfountain.framework.Input.TouchEvent;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+
 public class Level8Screen extends LevelScreen {
 
-    private int gameWidth;
-    private int gameHeight;
-
-    private float circleRadius;
     private ArrayList<PieCircle> circles;
     private int nCircles = 3;
     private int nPieces = 7;
-
-    private int centerX;
-    private int centerY;
 
     private boolean currentlyLasering = false;
     private float timeToFinish = 150;
@@ -33,13 +25,13 @@ public class Level8Screen extends LevelScreen {
     public Level8Screen(Game game) {
         super(game);
 
-        gameWidth = game.getGraphics().getWidth();
-        gameHeight = game.getGraphics().getHeight();
+        int gameWidth = game.getGraphics().getWidth();
+        int gameHeight = game.getGraphics().getHeight();
 
-        centerX = gameWidth/2;
-        centerY = gameHeight/2;
+        int centerX = gameWidth / 2;
+        int centerY = gameHeight / 2;
 
-        circleRadius = gameWidth * 0.9f / 2 / nCircles;
+        float circleRadius = gameWidth * 0.9f / 2 / nCircles;
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
         Random rand = new Random();
@@ -72,8 +64,7 @@ public class Level8Screen extends LevelScreen {
 
         int len = touchEvents.size();
         allColors = new HashSet<ArrayList<Integer>>();
-        for (Iterator<PieCircle> iterator = circles.iterator(); iterator.hasNext();) {
-            PieCircle pie = (PieCircle) iterator.next();
+        for (PieCircle pie : circles) {
             allColors.add(pie.getColors());
             for (int i = 0; i < len; i++) {
                 TouchEvent event = touchEvents.get(i);
@@ -97,8 +88,7 @@ public class Level8Screen extends LevelScreen {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
 
-        for (Iterator<PieCircle> iterator = circles.iterator(); iterator.hasNext();) {
-            PieCircle pie = (PieCircle) iterator.next();
+        for (PieCircle pie : circles) {
             g.drawPie(pie);
         }
     }

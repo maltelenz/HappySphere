@@ -15,11 +15,10 @@ public class MathExt {
 
         double subExpression = Math.abs((x0 - x1) * (x2 - x1) + (y0 - y1) * (y2 - y1))/(Math.pow(-x1+x2, 2) + Math.pow(-y1+y2, 2));
         float fsubExpression = (float) subExpression;
-        Point p = new Point(
+
+        return new Point(
                 Math.round(x1 + (x2 - x1) * fsubExpression),
                 Math.round(y1 + (y2 - y1) * fsubExpression)
             );
-        
-        return p;
     }
 }

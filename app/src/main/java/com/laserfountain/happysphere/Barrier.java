@@ -1,9 +1,8 @@
 package com.laserfountain.happysphere;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import android.graphics.PointF;
+
+import java.util.ArrayList;
 
 public class Barrier {
 
@@ -34,8 +33,7 @@ public class Barrier {
             // is assumed to be the correct one.
             PointF chosenPoint = alternatives.get(0);
             double shortestDistance = Math.pow(chosenPoint.x - before.x, 2) + Math.pow(chosenPoint.y - before.y, 2);
-            for (Iterator<PointF> iterator = alternatives.iterator(); iterator.hasNext();) {
-                PointF p = (PointF) iterator.next();
+            for (PointF p : alternatives) {
                 double distance = Math.pow(p.x - before.x, 2) + Math.pow(p.y - before.y, 2);
                 if (distance < shortestDistance) {
                     shortestDistance = distance;
@@ -48,16 +46,10 @@ public class Barrier {
     }
 
     public boolean inBounds(float x, float y) {
-        if (x >= x0 && x <= x1 && y >= y0 && y <= y1) {
-            return true;
-        }
-        return false;
+        return x >= x0 && x <= x1 && y >= y0 && y <= y1;
     }
 
     public boolean inBounds(PointF point, int radius) {
-        if (point.y >= y0 - radius && point.y <= y1 + radius && point.x >= x0 - radius && point.x <= x1 + radius) {
-            return true;
-        }
-        return false;
+        return point.y >= y0 - radius && point.y <= y1 + radius && point.x >= x0 - radius && point.x <= x1 + radius;
     }
 }

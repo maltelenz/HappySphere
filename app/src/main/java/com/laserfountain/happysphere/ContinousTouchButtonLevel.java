@@ -1,9 +1,5 @@
 package com.laserfountain.happysphere;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -12,6 +8,9 @@ import android.graphics.Typeface;
 import com.laserfountain.framework.Game;
 import com.laserfountain.framework.Graphics;
 import com.laserfountain.framework.Input.TouchEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContinousTouchButtonLevel extends LevelScreen {
 
@@ -87,8 +86,7 @@ public class ContinousTouchButtonLevel extends LevelScreen {
 
         buttonTextPainter.setTextSize(circleRadius/2);
 
-        for (Iterator<ContinuousCountdownButton> iterator = circles.iterator(); iterator.hasNext();) {
-            ContinuousCountdownButton button = (ContinuousCountdownButton) iterator.next();
+        for (ContinuousCountdownButton button : circles) {
             if (button.isTouched()) {
                 circlePainter.setColor(ColorPalette.progress);
             } else {

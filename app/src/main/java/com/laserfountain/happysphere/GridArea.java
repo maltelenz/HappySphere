@@ -38,10 +38,7 @@ public class GridArea {
     }
 
     public boolean inBounds(TouchEvent event) {
-        if (event.x > x0 && event.x < x1 && event.y > y0 && event.y < y1)
-            return true;
-        else
-            return false;
+        return event.x > x0 && event.x < x1 && event.y > y0 && event.y < y1;
     }
 
     public int getRotation() {
@@ -53,8 +50,7 @@ public class GridArea {
     }
 
     public boolean isInComingHorizontal() {
-        for (Iterator<LaserDirection> iterator = inCominglaserDirections.iterator(); iterator.hasNext();) {
-            LaserDirection d = (LaserDirection) iterator.next();
+        for (LaserDirection d : inCominglaserDirections) {
             if (d == LaserDirection.Left || d == LaserDirection.Right) {
                 return true;
             }
@@ -63,8 +59,7 @@ public class GridArea {
     }
 
     public boolean isInComingVertical() {
-        for (Iterator<LaserDirection> iterator = inCominglaserDirections.iterator(); iterator.hasNext();) {
-            LaserDirection d = (LaserDirection) iterator.next();
+        for (LaserDirection d : inCominglaserDirections) {
             if (d == LaserDirection.Top || d == LaserDirection.Bottom) {
                 return true;
             }

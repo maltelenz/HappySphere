@@ -1,20 +1,19 @@
 package com.laserfountain.happysphere;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Typeface;
 
 import com.laserfountain.framework.Game;
 import com.laserfountain.framework.Graphics;
 import com.laserfountain.framework.Input.TouchEvent;
 import com.laserfountain.happysphere.ButtonLink.Type;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ButtonGraphLevel extends LevelScreen {
 
@@ -35,8 +34,6 @@ public class ButtonGraphLevel extends LevelScreen {
     Paint linePaint;
 
     private Button reStartButton;
-    private int reStartButtonWidth;
-    private int reStartButtonHeight;
 
     private Paint circlePainter;
 
@@ -53,8 +50,8 @@ public class ButtonGraphLevel extends LevelScreen {
         linePaint.setAntiAlias(true);
         linePaint.setStrokeWidth(game.scale(10));
 
-        reStartButtonWidth = game.scaleX(500);
-        reStartButtonHeight = game.scaleY(150);
+        int reStartButtonWidth = game.scaleX(500);
+        int reStartButtonHeight = game.scaleY(150);
 
         reStartButton = new Button("Restart",
                 (gameWidth - reStartButtonWidth)/2,
@@ -84,8 +81,7 @@ public class ButtonGraphLevel extends LevelScreen {
                 TouchEvent event = touchEvents.get(i);
                 if (event.type == TouchEvent.TOUCH_DOWN) {
                     if (button.touch(event)) {
-                        for (Iterator<ButtonLink> iterator2 = edges.iterator(); iterator2.hasNext();) {
-                            ButtonLink edge = (ButtonLink) iterator2.next();
+                        for (ButtonLink edge : edges) {
                             if (edge.getFrom() == j) {
                                 if (edge.getType() == Type.PlusOne) {
                                     circles.get(edge.getTo()).increaseTouchesLeft();
@@ -127,8 +123,7 @@ public class ButtonGraphLevel extends LevelScreen {
         buttonTextPainter.setColor(Color.WHITE);
         buttonTextPainter.setTypeface(Typeface.DEFAULT_BOLD);
 
-        for (Iterator<ButtonLink> iterator = edges.iterator(); iterator.hasNext();) {
-            ButtonLink edge = (ButtonLink) iterator.next();
+        for (ButtonLink edge : edges) {
             CountdownButton fCircle = circles.get(edge.getFrom());
             CountdownButton tCircle = circles.get(edge.getTo());
 
@@ -142,11 +137,11 @@ public class ButtonGraphLevel extends LevelScreen {
             Path arrowPath = new Path();
             float width = 0.5f;
             float length = 0.5f;
-            arrowPath.moveTo(-width/2, 0);
-            arrowPath.lineTo(-width/2, 0);
-            arrowPath.lineTo(width/2, 0);
+            arrowPath.moveTo(-width / 2, 0);
+            arrowPath.lineTo(-width / 2, 0);
+            arrowPath.lineTo(width / 2, 0);
             arrowPath.lineTo(0, length);
-            arrowPath.lineTo(-width/2, 0);
+            arrowPath.lineTo(-width / 2, 0);
             arrowPath.close();
 
             float dx = (float) (tCircle.centerX - fCircle.centerX);
@@ -158,14 +153,13 @@ public class ButtonGraphLevel extends LevelScreen {
                     (float) (fCircle.centerY + dy * 0.5f),
                     (float) (fCircle.centerX + dx * 0.6f),
                     (float) (fCircle.centerY + dy * 0.6f),
-                };
+            };
             transform.setPolyToPoly(src, 0, dst, 0, 2);
             arrowPath.transform(transform);
             g.drawPath(arrowPath, linePaint);
         }
 
-        for (Iterator<CountdownButton> iterator = circles.iterator(); iterator.hasNext();) {
-            CountdownButton button = (CountdownButton) iterator.next();
+        for (CountdownButton button : circles) {
             if (button.isFlashing()) {
                 circlePainter.setColor(ColorPalette.progress);
             } else if (button.getTouchesLeft() < 0) {

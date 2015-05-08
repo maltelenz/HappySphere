@@ -8,21 +8,16 @@ import com.laserfountain.framework.Input.TouchEvent;
 
 public class MainMenuScreen extends Screen {
 
-    private int buttonWidth;
-    private int buttonHeight;
-
-    private int screenWidth;
-    private int screenHeight;
     private Button startButton;
     private Button levelChoiceButton;
 
     public MainMenuScreen(Game game) {
         super(game);
-        screenWidth = game.getGraphics().getWidth();
-        screenHeight = game.getGraphics().getHeight();
+        int screenWidth = game.getGraphics().getWidth();
+        int screenHeight = game.getGraphics().getHeight();
 
-        buttonWidth = game.scaleX(500);
-        buttonHeight = game.scaleY(150);
+        int buttonWidth = game.scaleX(500);
+        int buttonHeight = game.scaleY(150);
 
         startButton = new Button("Start",
                 (screenWidth - buttonWidth)/2,

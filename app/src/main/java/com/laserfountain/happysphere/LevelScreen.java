@@ -14,9 +14,6 @@ public abstract class LevelScreen extends Screen {
 
     GameState state = GameState.Initializing;
 
-    private int nextButtonWidth;
-    private int nextButtonHeight;
-
     private Button nextButton;
     private Button againButton;
 
@@ -27,8 +24,8 @@ public abstract class LevelScreen extends Screen {
     public LevelScreen(Game game) {
         super(game);
 
-        nextButtonWidth = game.scaleX(500);
-        nextButtonHeight = game.scaleY(150);
+        int nextButtonWidth = game.scaleX(500);
+        int nextButtonHeight = game.scaleY(150);
 
         nextButton = new Button("Next",
                 game.getGraphics().getWidth() - nextButtonWidth,
@@ -50,11 +47,9 @@ public abstract class LevelScreen extends Screen {
     abstract double percentDone();
 
     void updateGameInitializing(float deltaTime) {
-        return;
     }
 
     void drawInitializingUI() {
-        return;
     }
 
     /**

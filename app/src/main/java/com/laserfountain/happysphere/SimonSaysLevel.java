@@ -93,8 +93,7 @@ public class SimonSaysLevel extends LevelScreen {
             }
         }
 
-        for (Iterator<TouchButton> iterator = circles.iterator(); iterator.hasNext();) {
-            TouchButton button = (TouchButton) iterator.next();
+        for (TouchButton button : circles) {
             if (drawFailure) {
                 button.resetFlash();
             } else {
@@ -132,8 +131,7 @@ public class SimonSaysLevel extends LevelScreen {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
 
-        for (Iterator<TouchButton> iterator = circles.iterator(); iterator.hasNext();) {
-            TouchButton button = (TouchButton) iterator.next();
+        for (TouchButton button : circles) {
             if (drawFailure) {
                 circlePainter.setColor(ColorPalette.button);
             } else if (button.isFlashing()) {

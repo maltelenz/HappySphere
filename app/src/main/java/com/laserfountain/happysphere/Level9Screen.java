@@ -98,7 +98,7 @@ public class Level9Screen extends LevelScreen {
         } else if (t > 1) {
             res = dist2(xPositionBall, targetX2, yPositionBall, targetY);
         } else {
-            res = dist2(xPositionBall, targetX1 + t * (targetX2 - targetX1), yPositionBall, targetY + t * (targetY - targetY));
+            res = dist2(xPositionBall, targetX1 + t * (targetX2 - targetX1), yPositionBall, targetY);
         }
         return Math.sqrt(res) - ballRadius - targetThickness;
     }

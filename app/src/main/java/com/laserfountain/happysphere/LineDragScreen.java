@@ -1,15 +1,14 @@
 package com.laserfountain.happysphere;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import android.graphics.Paint;
 import android.graphics.Point;
 
 import com.laserfountain.framework.Game;
 import com.laserfountain.framework.Graphics;
 import com.laserfountain.framework.Input.TouchEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LineDragScreen extends LevelScreen {
 
@@ -21,7 +20,6 @@ public class LineDragScreen extends LevelScreen {
     private boolean grabbed = false;
     private Paint finishedPixelPaint;
     private Paint unTouchedPointPaint;
-    private int lineRadius;
     protected ArrayList<Point> drawingPoints;
     private float reverseSpeed;
     private Paint touchedPointPaint;
@@ -32,7 +30,7 @@ public class LineDragScreen extends LevelScreen {
         super(game);
 
         maxDeviation = Math.max(game.scale(100), 50);
-        lineRadius = game.scale(20);
+        int lineRadius = game.scale(20);
 
         gameHeight = game.getGraphics().getHeight();
         gameWidth = game.getGraphics().getWidth();
@@ -180,8 +178,7 @@ public class LineDragScreen extends LevelScreen {
         double minYDistance = gameHeight * 2;
         double yDistance;
         Point minPoint = new Point();
-        for (Iterator<Point> iterator = drawingPoints.iterator(); iterator.hasNext();) {
-            Point point = (Point) iterator.next();
+        for (Point point : drawingPoints) {
             yDistance = Math.abs(point.y - y);
             if (yDistance < minYDistance) {
                 minYDistance = yDistance;

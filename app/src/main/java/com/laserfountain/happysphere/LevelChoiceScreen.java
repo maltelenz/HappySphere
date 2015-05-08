@@ -11,13 +11,6 @@ import com.laserfountain.framework.Input.TouchEvent;
 
 public class LevelChoiceScreen extends Screen {
 
-    private int buttonWidth;
-    private int buttonHeight;
-    private int textWidth;
-
-    private int startButtonWidth;
-    private int startButtonHeight;
-
     private int gameWidth;
     private int gameHeight;
     private Button lowerButton;
@@ -38,12 +31,12 @@ public class LevelChoiceScreen extends Screen {
         gameWidth = game.getGraphics().getWidth();
         gameHeight = game.getGraphics().getHeight();
 
-        buttonWidth = game.scaleX(150);
-        buttonHeight = game.scaleY(150);
-        textWidth = game.scale(400);
+        int buttonWidth = game.scaleX(150);
+        int buttonHeight = game.scaleY(150);
+        int textWidth = game.scale(400);
 
-        startButtonWidth = game.scaleX(500);
-        startButtonHeight = game.scaleY(150);
+        int startButtonWidth = game.scaleX(500);
+        int startButtonHeight = game.scaleY(150);
 
         lowerButton = new Button("-",
                 (gameWidth - textWidth)/2 - buttonWidth,

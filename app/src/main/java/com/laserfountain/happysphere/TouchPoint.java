@@ -1,7 +1,5 @@
 package com.laserfountain.happysphere;
 
-import com.laserfountain.framework.Input.TouchEvent;
-
 public class TouchPoint {
 
     public int x, y;
@@ -13,12 +11,6 @@ public class TouchPoint {
         this.touched = false;
     }
 
-    public double distance(TouchEvent event) {
-        int dx = Math.abs(event.x - this.x);
-        int dy = Math.abs(event.y - this.y);
-        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-    }
-    
     public boolean isTouched() {
         return touched;
     }

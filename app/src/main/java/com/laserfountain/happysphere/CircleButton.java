@@ -24,11 +24,7 @@ public class CircleButton {
         double dx = centerX - event.x;
         double dy = centerY - event.y;
         double radius = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-        if (radius < maxRadius && radius > minRadius) {
-            return true;
-        } else {
-            return false;
-        }
+        return radius < maxRadius && radius > minRadius;
     }
 
     public float getMaxRadius() {

@@ -1,9 +1,5 @@
 package com.laserfountain.happysphere;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
@@ -11,6 +7,9 @@ import android.graphics.Point;
 import com.laserfountain.framework.Game;
 import com.laserfountain.framework.Graphics;
 import com.laserfountain.framework.Input.TouchEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShooterLevel extends LevelScreen {
 
@@ -108,16 +107,14 @@ public class ShooterLevel extends LevelScreen {
         
         ArrayList<Point> shotsToRemove = new ArrayList<Point>();
         ArrayList<Barrier> barriersToRemove = new ArrayList<Barrier>();
-        for (Iterator<Point> iterator = shots.iterator(); iterator.hasNext();) {
-            Point p = (Point) iterator.next();
+        for (Point p : shots) {
             p.y -= shotSpeed;
             if (p.y < 0) {
                 // Off screen
                 shotsToRemove.add(p);
                 continue;
             }
-            for (Iterator<Barrier> iterator2 = barriersLeft.iterator(); iterator2.hasNext();) {
-                Barrier b = (Barrier) iterator2.next();
+            for (Barrier b : barriersLeft) {
                 if (b.inBounds(p.x, p.y)) {
                     shotsToRemove.add(p);
                     barriersToRemove.add(b);
@@ -130,11 +127,9 @@ public class ShooterLevel extends LevelScreen {
 
         ArrayList<Barrier> targetsToRemove = new ArrayList<Barrier>();
         ArrayList<Point> shotsToRemove2 = new ArrayList<Point>();
-        for (Iterator<Point> iterator = shots.iterator(); iterator.hasNext();) {
-            Point p = (Point) iterator.next();
+        for (Point p : shots) {
             p.y -= shotSpeed;
-            for (Iterator<Barrier> iterator2 = targetBarriers.iterator(); iterator2.hasNext();) {
-                Barrier b = (Barrier) iterator2.next();
+            for (Barrier b : targetBarriers) {
                 if (b.inBounds(p.x, p.y)) {
                     targetsToRemove.add(b);
                     shotsToRemove2.add(p);
@@ -148,11 +143,9 @@ public class ShooterLevel extends LevelScreen {
             state = GameState.Finished;
         }
 
-        for (Iterator<Point> iterator = shots.iterator(); iterator.hasNext();) {
-            Point p = (Point) iterator.next();
+        for (Point p : shots) {
             p.y -= shotSpeed;
-            for (Iterator<Barrier> iterator2 = dangerBarriers.iterator(); iterator2.hasNext();) {
-                Barrier b = (Barrier) iterator2.next();
+            for (Barrier b : dangerBarriers) {
                 if (b.inBounds(p.x, p.y)) {
                     failed = true;
                     break;
@@ -177,24 +170,20 @@ public class ShooterLevel extends LevelScreen {
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
-        
-        for (Iterator<Barrier> iterator = barriersLeft.iterator(); iterator.hasNext();) {
-            Barrier b = (Barrier) iterator.next();
+
+        for (Barrier b : barriersLeft) {
             g.drawBarrier(b, barrierPaint);
         }
 
-        for (Iterator<Barrier> iterator = targetBarriers.iterator(); iterator.hasNext();) {
-            Barrier b = (Barrier) iterator.next();
+        for (Barrier b : targetBarriers) {
             g.drawBarrier(b, targetPaint);
         }
 
-        for (Iterator<Barrier> iterator = dangerBarriers.iterator(); iterator.hasNext();) {
-            Barrier b = (Barrier) iterator.next();
+        for (Barrier b : dangerBarriers) {
             g.drawBarrier(b, dangerPaint);
         }
 
-        for (Iterator<Point> iterator = shots.iterator(); iterator.hasNext();) {
-            Point p = (Point) iterator.next();
+        for (Point p : shots) {
             g.drawCircle(p.x, p.y + shotSize, shotSize, shotPaint);
         }
 

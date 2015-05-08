@@ -1,10 +1,9 @@
 package com.laserfountain.happysphere;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.laserfountain.framework.Game;
 import com.laserfountain.framework.Input.TouchEvent;
+
+import java.util.List;
 
 public class FighterLevel extends LabyrinthLevel {
 
@@ -18,14 +17,13 @@ public class FighterLevel extends LabyrinthLevel {
     void updateAccelerations(List<TouchEvent> touchEvents, float deltaTime) {
         gX = gX/1.2f;
         gY = gY/1.2f;
-        for (Iterator<TouchEvent> iterator = touchEvents.iterator(); iterator.hasNext();) {
-            TouchEvent event = (TouchEvent) iterator.next();
+        for (TouchEvent event : touchEvents) {
             if (event.type == TouchEvent.TOUCH_DOWN) {
                 gX = -(currentPoint.x - event.x);
                 gY = (currentPoint.y - event.y);
-                
+
                 float maxForce = Math.max(Math.abs(gX), Math.abs(gY));
-                
+
                 gX = speedupFactor * gX / maxForce;
                 gY = speedupFactor * gY / maxForce;
             }

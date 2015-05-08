@@ -6,51 +6,38 @@ import com.laserfountain.happysphere.Screen;
 
 public interface Game {
 
-    public Input getInput();
+    Input getInput();
 
-    public FileIO getFileIO();
+    Graphics getGraphics();
 
-    public Graphics getGraphics();
+    void setScreen(Screen screen);
 
-    public void setScreen(Screen screen);
+    Screen getCurrentScreen();
 
-    public Screen getCurrentScreen();
+    Screen getInitScreen();
 
-    public Screen getInitScreen();
+    Context getContext();
 
-    public Context getContext();
+    int scaleX(int in);
 
-    public int scaleX(int in);
+    int scaleY(int in);
 
-    public int scaleY(int in);
+    int scale(int in);
 
-    public int scale(int in);
+    float scaleY(float in);
 
-    public float scaleX(float in);
+    float scale(float in);
 
-    public float scaleY(float in);
-
-    public float scale(float in);
-
-    public void updateMaxLevel(int level);
+    void updateMaxLevel(int level);
 
     /**
      * @return the highest level finished, 1-indexed
      */
-    public int getMaxLevel();
-
-    /**
-     * Unlocks the screen orientation.
-     */
-    public void unLockOrientation();
+    int getMaxLevel();
 
     /**
      * Locks the screen in portrait mode.
      */
-    public void lockOrientationPortrait();
+    void lockOrientationPortrait();
 
-    /**
-     * Locks the screen in landscape mode.
-     */
-    public void lockOrientationLandscape();
 }

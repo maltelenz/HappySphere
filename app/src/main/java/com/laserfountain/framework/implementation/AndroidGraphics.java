@@ -1,10 +1,5 @@
 package com.laserfountain.framework.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -28,6 +23,10 @@ import com.laserfountain.happysphere.Happy;
 import com.laserfountain.happysphere.PieCircle;
 import com.laserfountain.happysphere.TouchPoint;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class AndroidGraphics implements Graphics {
     AssetManager assets;
     Bitmap frameBuffer;
@@ -45,7 +44,6 @@ public class AndroidGraphics implements Graphics {
     private float xScale;
     private float yScale;
 
-    private float fontSize;
     private Paint shooterFillPaint;
     private Paint piePaint;
     private Paint arrowPaint;
@@ -66,7 +64,7 @@ public class AndroidGraphics implements Graphics {
         xScale = getWidth()/1080f;
         yScale = getHeight()/1920f;
 
-        fontSize = scale(50);
+        float fontSize = scale(50);
 
         darkTextPaint.setTextSize(fontSize);
         darkTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -230,24 +228,24 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void drawTarget(int x, int y, int width, int height, List<LaserDirection> inComingDirections, boolean lasered) {
         if (lasered) {
-            Point incomingPoint = null;
-            for (Iterator<LaserDirection> iterator = inComingDirections.iterator(); iterator.hasNext();) {
-                LaserDirection d = (LaserDirection) iterator.next();
+            Point incomingPoint;
+            for (LaserDirection d : inComingDirections) {
                 switch (d) {
-                case Left:
-                    incomingPoint = new Point(x, y + height/2);
-                    break;
-                case Right:
-                    incomingPoint = new Point(x + width, y + height/2);
-                    break;
-                case Top:
-                    incomingPoint = new Point(x + width/2, y);
-                    break;
-                case Bottom: default:
-                    incomingPoint = new Point(x + width/2, y + height);
-                    break;
+                    case Left:
+                        incomingPoint = new Point(x, y + height / 2);
+                        break;
+                    case Right:
+                        incomingPoint = new Point(x + width, y + height / 2);
+                        break;
+                    case Top:
+                        incomingPoint = new Point(x + width / 2, y);
+                        break;
+                    case Bottom:
+                    default:
+                        incomingPoint = new Point(x + width / 2, y + height);
+                        break;
                 }
-                drawLine(incomingPoint.x, incomingPoint.y, x + width/2, y + width/2, laserPaint);
+                drawLine(incomingPoint.x, incomingPoint.y, x + width / 2, y + width / 2, laserPaint);
             }
         }
 
@@ -394,22 +392,6 @@ public class AndroidGraphics implements Graphics {
         canvas.drawBitmap(((AndroidImage) Image).bitmap, x, y, null);
     }
 
-    public void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth,
-            int srcHeight) {
-
-        srcRect.left = srcX;
-        srcRect.top = srcY;
-        srcRect.right = srcX + srcWidth;
-        srcRect.bottom = srcY + srcHeight;
-
-        dstRect.left = x;
-        dstRect.top = y;
-        dstRect.right = x + width;
-        dstRect.bottom = y + height;
-
-        canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
-    }
-
     @Override
     public int getWidth() {
         return frameBuffer.getWidth();
@@ -472,7 +454,7 @@ public class AndroidGraphics implements Graphics {
         int cSize = colors.size();
         for (int i = 0; i < cSize; i++) {
             Integer c = colors.get(i);
-            switch (c.intValue()) {
+            switch (c) {
             case 0:
                 pieceColor = ColorPalette.box;
                 break;
@@ -534,9 +516,11 @@ public class AndroidGraphics implements Graphics {
         if (happyness == Happy.Ok) {
             canvas.drawLine(4 * getWidth() / 12f, getHeight() * 9f / 14f, 8 * getWidth() / 12f, getHeight() * 9f / 14f, mouthpaint);
         } else if (happyness == Happy.Happy) {
-            canvas.drawArc(4.5f * getWidth() / 12f, getHeight() * 8f / 14f, 7.5f * getWidth() / 12f, getHeight() * 9f / 14f, 0f, 180f, false, mouthpaint);
+            RectF rect = new RectF(4.5f * getWidth() / 12f, getHeight() * 8f / 14f, 7.5f * getWidth() / 12f, getHeight() * 9f / 14f);
+            canvas.drawArc(rect, 0f, 180f, false, mouthpaint);
         } else if (happyness == Happy.Exstatic) {
-            canvas.drawArc(4 * getWidth() / 12f, getHeight() * 7f / 14f, 8 * getWidth() / 12f, getHeight() * 9f / 14f, 0f, 180f, false, mouthpaint);
+            RectF rect = new RectF(4 * getWidth() / 12f, getHeight() * 7f / 14f, 8 * getWidth() / 12f, getHeight() * 9f / 14f);
+            canvas.drawArc(rect, 0f, 180f, false, mouthpaint);
         }
     }
 }

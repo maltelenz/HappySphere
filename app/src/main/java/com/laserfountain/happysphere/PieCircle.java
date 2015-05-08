@@ -8,7 +8,6 @@ import com.laserfountain.framework.Input.TouchEvent;
 public class PieCircle extends CircleButton {
 
     ArrayList<Integer> pieces;
-    int rotation = 0;
 
     public PieCircle(ArrayList<Integer> colors, float minRadius, float maxRadius, int centerX, int centerY) {
         super(minRadius, maxRadius, centerX, centerY);

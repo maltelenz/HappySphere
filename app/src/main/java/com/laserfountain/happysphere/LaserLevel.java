@@ -70,10 +70,9 @@ public class LaserLevel extends LevelScreen {
             TouchEvent event = touchEvents.get(i);
 
             touched = new ArrayList<GridArea>();
-            for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
-                GridArea area = (GridArea) iterator.next();
+            for (GridArea area : grid) {
                 area.lasered = false;
-                if(!somethingIsSelected && area.inBounds(event)) {
+                if (!somethingIsSelected && area.inBounds(event)) {
                     if (game.getInput().isTouchDown(event.pointer)) {
                         touched.add(area);
                     }
@@ -100,25 +99,22 @@ public class LaserLevel extends LevelScreen {
 
         // Clear lasers from last round and check if anything is selected
         somethingIsSelected = false;
-        for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
-            GridArea a = (GridArea) iterator.next();
+        for (GridArea a : grid) {
             a.clearLasers();
             if (a.selected) {
                 somethingIsSelected = true;
             }
         }
 
-        for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
-            GridArea area = (GridArea) iterator.next();
-            if(area.shape == Shape.Laser) {
+        for (GridArea area : grid) {
+            if (area.shape == Shape.Laser) {
                 followLaser(area, 0, 0, false);
             }
         }
 
         // Check how many targets are lasered
-        for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
-            GridArea area = (GridArea) iterator.next();
-            if(area.shape == Shape.Target && area.lasered) {
+        for (GridArea area : grid) {
+            if (area.shape == Shape.Target && area.lasered) {
                 nrLasering++;
             }
         }
@@ -153,21 +149,20 @@ public class LaserLevel extends LevelScreen {
                 newPositionY = area.y + 1;
             }
         }
-        for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
-            GridArea a = (GridArea) iterator.next();
-            if(a.x == newPositionX && a.y == newPositionY) {
+        for (GridArea a : grid) {
+            if (a.x == newPositionX && a.y == newPositionY) {
                 newx0 = a.x0;
                 newy0 = a.y0;
                 newx1 = a.x1;
                 newy1 = a.y1;
-                
+
                 a.x = area.x;
                 a.y = area.y;
                 a.x0 = area.x0;
                 a.y0 = area.y0;
                 a.x1 = area.x1;
                 a.y1 = area.y1;
-                
+
                 area.x = newPositionX;
                 area.y = newPositionY;
                 area.x0 = newx0;
@@ -315,9 +310,8 @@ public class LaserLevel extends LevelScreen {
         nextGridPointX = area.x + nextdx;
         nextGridPointY = area.y + nextdy;
 
-        for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
-            GridArea a = (GridArea) iterator.next();
-            if(a.x == nextGridPointX && a.y == nextGridPointY) {
+        for (GridArea a : grid) {
+            if (a.x == nextGridPointX && a.y == nextGridPointY) {
                 if (nextdx == 1) {
                     a.addInCominglaserDirection(LaserDirection.Left);
                 } else if (nextdx == -1) {
@@ -342,8 +336,7 @@ public class LaserLevel extends LevelScreen {
     void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.clearScreen(ColorPalette.background);
-        for (Iterator<GridArea> iterator = grid.iterator(); iterator.hasNext();) {
-            GridArea area = (GridArea) iterator.next();
+        for (GridArea area : grid) {
             int width = area.x1 - area.x0;
             int height = area.y1 - area.y0;
             // Always draw a rectangle to get an unbroken grid look.
@@ -351,10 +344,10 @@ public class LaserLevel extends LevelScreen {
             if (area.shape == Shape.Empty) {
                 if (area.lasered) {
                     if (area.isInComingHorizontal()) {
-                        g.drawLaserLine(area.x0, area.y0 + height/2, area.x1, area.y0 + height/2);
+                        g.drawLaserLine(area.x0, area.y0 + height / 2, area.x1, area.y0 + height / 2);
                     }
-                    if (area.isInComingVertical()){
-                        g.drawLaserLine(area.x0 + width/2, area.y0, area.x0 + width/2, area.y1);
+                    if (area.isInComingVertical()) {
+                        g.drawLaserLine(area.x0 + width / 2, area.y0, area.x0 + width / 2, area.y1);
                     }
                 }
             } else if (area.shape == Shape.Box) {
@@ -362,15 +355,15 @@ public class LaserLevel extends LevelScreen {
                 if (area.selected) {
                     // Draw small arrows
                     Path p = new Path();
-                    p.moveTo(area.x0 + boxWidth/3, area.y0);
-                    p.lineTo(area.x0 + boxWidth/3, area.y0);
-                    p.lineTo(area.x0 + boxWidth/2, area.y0 - boxWidth/5);
-                    p.lineTo(area.x0 + 2 * boxWidth/3, area.y0);
+                    p.moveTo(area.x0 + boxWidth / 3, area.y0);
+                    p.lineTo(area.x0 + boxWidth / 3, area.y0);
+                    p.lineTo(area.x0 + boxWidth / 2, area.y0 - boxWidth / 5);
+                    p.lineTo(area.x0 + 2 * boxWidth / 3, area.y0);
                     p.close();
                     g.drawPath(p, arrowPaint);
-                    
+
                     Matrix transform = new Matrix();
-                    transform.setRotate(90, area.x0 + boxWidth/2, area.y0 + boxWidth/2);
+                    transform.setRotate(90, area.x0 + boxWidth / 2, area.y0 + boxWidth / 2);
                     p.transform(transform);
                     g.drawPath(p, arrowPaint);
                     p.transform(transform);
@@ -386,8 +379,7 @@ public class LaserLevel extends LevelScreen {
                 g.drawTarget(area.x0, area.y0, width, height, area.getLaserDirections(), area.lasered);
             }
         }
-        for (Iterator<GridArea> iterator = touched.iterator(); iterator.hasNext();) {
-            GridArea area = (GridArea) iterator.next();
+        for (GridArea area : touched) {
             g.drawRect(area.x0, area.y0, area.x1 - area.x0, area.y1 - area.y0, ColorPalette.progress);
         }
     }

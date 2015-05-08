@@ -7,12 +7,10 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
-import android.provider.MediaStore.Audio;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.laserfountain.framework.FileIO;
 import com.laserfountain.framework.Game;
 import com.laserfountain.framework.Graphics;
 import com.laserfountain.framework.Input;
@@ -22,9 +20,7 @@ import com.laserfountain.happysphere.Screen;
 public abstract class AndroidGame extends Activity implements Game {
     AndroidFastRenderView renderView;
     Graphics graphics;
-    Audio audio;
     Input input;
-    FileIO fileIO;
     Screen screen;
 
     @Override
@@ -43,7 +39,6 @@ public abstract class AndroidGame extends Activity implements Game {
         renderView = new AndroidFastRenderView(this, frameBuffer);
         graphics = new AndroidGraphics(getAssets(), frameBuffer);
 
-        fileIO = new AndroidFileIO(this);
         input = new AndroidInput(this, renderView);
         screen = getInitScreen();
         setContentView(renderView);
@@ -82,11 +77,6 @@ public abstract class AndroidGame extends Activity implements Game {
     @Override
     public Input getInput() {
         return input;
-    }
-
-    @Override
-    public FileIO getFileIO() {
-        return fileIO;
     }
 
     @Override
@@ -131,10 +121,6 @@ public abstract class AndroidGame extends Activity implements Game {
         return graphics.scale(in);
     }
 
-    public float scaleX(float in) {
-        return graphics.scaleX(in);
-    }
-
     public float scaleY(float in) {
         return graphics.scaleY(in);
     }
@@ -164,16 +150,6 @@ public abstract class AndroidGame extends Activity implements Game {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    @Override
-    public void lockOrientationLandscape() {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
-
-    @Override
-    public void unLockOrientation() {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-    }
-
     @SuppressWarnings("deprecation")
     private int getFrameBufferWidth() {
         return getWindowManager().getDefaultDisplay().getWidth();
@@ -186,7 +162,6 @@ public abstract class AndroidGame extends Activity implements Game {
     private Bitmap getFrameBuffer() {
         Log.d("FB Width", Integer.toString(getFrameBufferWidth()));
         Log.d("FB Height", Integer.toString(getFrameBufferHeight()));
-        Bitmap frameBuffer = Bitmap.createBitmap(getFrameBufferWidth(), getFrameBufferHeight(), Config.RGB_565);
-        return frameBuffer;
+        return Bitmap.createBitmap(getFrameBufferWidth(), getFrameBufferHeight(), Config.RGB_565);
     }
 }

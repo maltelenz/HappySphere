@@ -108,18 +108,15 @@ public class LabyrinthLevel extends LevelScreen {
         originalNewPoint.set(newPoint);
 
         // Handle collisions
-        for (Iterator<Barrier> iterator = barriers.iterator(); iterator.hasNext();) {
-            Barrier b = (Barrier) iterator.next();
+        for (Barrier b : barriers) {
             newPoint = b.move(currentPoint, newPoint, pointSize);
         }
-        for (Iterator<Barrier> iterator = gameSideBarriers.iterator(); iterator.hasNext();) {
-            Barrier b = (Barrier) iterator.next();
+        for (Barrier b : gameSideBarriers) {
             newPoint = b.move(currentPoint, newPoint, pointSize);
         }
 
         // Handle danger barriers (reset the game)
-        for (Iterator<Barrier> iterator = dangerBarriers.iterator(); iterator.hasNext();) {
-            Barrier b = (Barrier) iterator.next();
+        for (Barrier b : dangerBarriers) {
             if (b.inBounds(newPoint, pointSize)) {
                 newPoint = new PointF(startPointX, startPointY);
             }
@@ -165,13 +162,11 @@ public class LabyrinthLevel extends LevelScreen {
 
         g.drawTargetLine(0, gameHeight, gameWidth, gameHeight, targetThickness);
 
-        for (Iterator<Barrier> iterator = barriers.iterator(); iterator.hasNext();) {
-            Barrier b = (Barrier) iterator.next();
+        for (Barrier b : barriers) {
             g.drawBarrier(b, barrierPaint);
         }
 
-        for (Iterator<Barrier> iterator = dangerBarriers.iterator(); iterator.hasNext();) {
-            Barrier b = (Barrier) iterator.next();
+        for (Barrier b : dangerBarriers) {
             g.drawBarrier(b, dangerBarrierPaint);
         }
 
